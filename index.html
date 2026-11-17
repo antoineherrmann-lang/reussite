@@ -50,7 +50,7 @@
    Réussite — styles
    Identité : l'icône. Aubergine → violet → orchidée, et des couches de verre emboîtées.
    Clair : lilas pâle. Sombre : le dégradé de l'icône.
-   Rose pour l'histoire, indigo pour la géographie.
+   Ambre pour les lettres, rose pour l'histoire, indigo pour la géographie.
    ============================================================ */
 :root{
   --font:"Google Sans","Google Sans Text",-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
@@ -60,7 +60,7 @@
   --grad-flame:linear-gradient(160deg,#dba6e2,#a53bb3 55%,#7a1186);
   --grad-h:linear-gradient(90deg,#870b91,#d08ad8);
   --on-grad:#fff;
-  --hist:#bd2c7c; --geo:#5650c8; --spec:#5b7fe0;
+  --let:#a8650c; --hist:#bd2c7c; --geo:#5650c8; --spec:#5b7fe0;
   --accent:#870b91; --danger:#cf3f4a; --ok:#1f8f63; --on-accent:#fff;
   --bg-a:#e7d5ed; --bg-b:#f1e6f3; --bg-c:#f7eef5;
   --ink:#2a1233; --ink2:rgba(42,18,51,.64); --ink3:rgba(42,18,51,.4);
@@ -74,7 +74,7 @@
 }
 html[data-theme="dark"]{
   --grad-h:linear-gradient(90deg,#c574d0,#f1c6f5);
-  --hist:#ff9fd0; --geo:#aeacff; --spec:#9db8ff;
+  --let:#f4bd6a; --hist:#ff9fd0; --geo:#aeacff; --spec:#9db8ff;
   --accent:#e4a9ec; --danger:#ff8a94; --ok:#6fdcae; --on-accent:#2a1233;
   --bg-a:#2a1233; --bg-b:#2a1233; --bg-c:#2a1233;
   --ink:#f8f0f9; --ink2:rgba(248,240,249,.66); --ink3:rgba(248,240,249,.38);
@@ -386,7 +386,7 @@ html[data-dg] .btn.big{width:100%}
 .th .bar{margin-top:9px}
 .th .bar i{background:var(--dc);min-width:0}
 .th-v{flex:none;width:44px;text-align:right;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink2)}
-.d-h{--dc:var(--hist)} .d-g{--dc:var(--geo)}
+.d-l{--dc:var(--let)} .d-h{--dc:var(--hist)} .d-g{--dc:var(--geo)}
 .fiche-h{margin:2px 4px 0}
 .fiche-h .th-p{font-size:13.5px}
 .fiche-h h2{margin:2px 0 0;font-size:25px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
@@ -432,6 +432,7 @@ html[data-dg] .btn.big{width:100%}
 .ep-v{flex:none;text-align:right;font-size:13px;line-height:1.35;color:var(--ink2);white-space:nowrap}
 .ep-v b{display:block;font-size:15px;font-weight:600;color:var(--ink)}
 .quote{margin:0;font-size:17px;line-height:1.4;font-weight:500;-webkit-user-select:text;user-select:text}
+.quote.small{font-size:15.5px;font-weight:400;line-height:1.45}
 .q-tag{margin-bottom:8px;font-size:13px;font-weight:600;color:var(--accent)}
 .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .inp.date{width:160px}
@@ -537,6 +538,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 .ob-btn{width:100%;height:56px;border:0;border-radius:28px;background:#fff;color:#4a1458;font:600 17px/1 var(--font);cursor:pointer;box-shadow:0 12px 28px rgba(40,10,50,.28);transition:transform .12s}
 .ob-btn:active{transform:scale(.97)}
 .ob-lnk{border:0;background:none;color:rgba(255,255,255,.8);font:500 15px var(--font);padding:12px 10px;cursor:pointer;min-height:44px}
+.ob-lnk.left{align-self:flex-start;text-align:left;padding:10px 2px;font-size:14.5px;text-decoration:underline;text-underline-offset:3px}
 .ob-back{width:44px;height:44px;border:0;border-radius:22px;padding:0;background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26);color:#fff;display:grid;place-items:center;cursor:pointer}
 .ob-back svg{width:22px;height:22px}
 .inp.name{width:150px;text-align:right}
@@ -632,10 +634,10 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
     <p class="kicker">Le programme du concours</p>
     <h1 class="large">Réviser</h1>
     <div class="seg-wrap">
-      <div class="seg" id="discSeg" data-glass-full aria-label="Discipline"><button data-v="h">Histoire</button><button data-v="g">Géographie</button></div>
+      <div class="seg" id="discSeg" data-glass-full aria-label="Discipline"><button data-v="l">Lettres</button><button data-v="h">Histoire</button><button data-v="g">Géographie</button></div>
     </div>
     <div class="group" id="themeList" style="margin-top:12px"></div>
-    <p class="note">Touche un thème pour ouvrir sa fiche : repères à connaître, sujets d’entraînement et séance ciblée.</p>
+    <p class="note" id="studyNote"></p>
   </section>
 
   <!-- ======================= Progrès ======================= -->
@@ -670,7 +672,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 
   <!-- ======================= Concours ======================= -->
   <section class="page" id="page-exam" role="tabpanel" aria-label="Concours" hidden>
-    <p class="kicker">CAPES externe d’histoire-géographie</p>
+    <p class="kicker">CAFEP-CAPLP, lettres-histoire et géographie</p>
     <h1 class="large">Concours</h1>
 
     <div class="card" style="margin-top:0">
@@ -686,22 +688,37 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 
     <h2 class="sec">Les épreuves</h2>
     <div class="group" id="epList"></div>
-    <p class="note">Programme et note du jury de la session 2027, concours externe au niveau licence (bac+3). Une note inférieure ou égale à 5 à un écrit est éliminatoire. Vérifie les dates et les textes officiels sur devenirenseignant.gouv.fr.</p>
+    <p class="note">Concours externe au niveau licence (bac+3). Les épreuves du CAFEP, pour l’enseignement privé sous contrat, sont identiques à celles du CAPLP public. Une note inférieure ou égale à 5 à un écrit est éliminatoire. Vérifie les dates et les textes officiels sur devenirenseignant.gouv.fr.</p>
+
+    <h2 class="sec">Ton oral disciplinaire</h2>
+    <div class="card" style="margin-top:0">
+      <div class="q-tag" id="oralTag"></div>
+      <p class="quote small" id="oralQ"></p>
+      <div class="sub">La majeure se choisit à l’inscription. Tu peux l’indiquer dans les réglages.</div>
+    </div>
+
+    <h2 class="sec">Question de langue</h2>
+    <div class="card" style="margin-top:0">
+      <div class="q-tag">Lettres, écrit</div>
+      <p class="quote" id="lanQ"></p>
+      <div class="sub">Sur une page de ton choix : définis la notion, relève et classe les occurrences, puis dis ce qu’elles apportent au texte.</div>
+      <div class="acts"><button class="btn" id="btnLan">Autre question</button></div>
+    </div>
+
+    <h2 class="sec">Sujet de dissertation</h2>
+    <div class="card" style="margin-top:0">
+      <div class="q-tag" id="sujTag"></div>
+      <p class="quote" id="sujQ"></p>
+      <div class="sub">Dix minutes au brouillon : les bornes, une problématique, un plan en trois parties.</div>
+      <div class="acts"><button class="btn" id="btnSuj">Autre sujet</button></div>
+    </div>
 
     <h2 class="sec">Entretien avec le jury</h2>
     <div class="card" style="margin-top:0">
       <div class="q-tag" id="juryTag"></div>
       <p class="quote" id="juryQ"></p>
-      <div class="sub">Réponds à voix haute pendant deux minutes : les valeurs en jeu, ce que cela implique pour l’école, ta position d’enseignant.</div>
+      <div class="sub">Réponds à voix haute pendant deux minutes : les valeurs en jeu, ce que cela implique pour l’école, ta position d’enseignant.</div>
       <div class="acts"><button class="btn" id="btnJury">Autre question</button></div>
-    </div>
-
-    <h2 class="sec">Sujet d’entraînement</h2>
-    <div class="card" style="margin-top:0">
-      <div class="q-tag" id="sujTag"></div>
-      <p class="quote" id="sujQ"></p>
-      <div class="sub">Dix minutes au brouillon : les bornes, une problématique, un plan en trois parties.</div>
-      <div class="acts"><button class="btn" id="btnSuj">Autre sujet</button></div>
     </div>
   </section>
 </main>
@@ -759,7 +776,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
     <div class="ob-step mid" data-step="0">
       <div class="ob-mark"><svg class="mark p4" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg></div>
       <h2 class="brand">Réussite</h2>
-      <p>Le CAPES d’histoire-géographie, un peu chaque jour. Quelques réglages et on commence.</p>
+      <p>Le CAPLP lettres-histoire, un peu chaque jour. Quelques réglages et on commence.</p>
     </div>
     <div class="ob-step" data-step="1" hidden>
       <h2>Comment tu t’appelles ?</h2>
@@ -771,6 +788,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
       <p>La date lance le compte à rebours. Si tu ne la connais pas encore, passe cette étape.</p>
       <input class="ob-inp" id="obDate" type="date" aria-label="Date des écrits">
       <div class="ob-live" id="obDateLive"></div>
+      <button type="button" class="ob-lnk left" id="obHint">Écrits annoncés les 23 et 24 mars 2027 : utiliser le 23 mars</button>
     </div>
     <div class="ob-step" data-step="3" hidden>
       <h2>Ton objectif par jour</h2>
@@ -783,12 +801,12 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
       <div class="ob-live" id="obGoalLive"></div>
     </div>
     <div class="ob-step" data-step="4" hidden>
-      <h2>Sur quoi veux-tu insister ?</h2>
-      <p>Les nouvelles cartes de tes séances suivront cette priorité. Les révisions, elles, couvrent tout.</p>
-      <div class="choices" id="obPrio" role="radiogroup" aria-label="Priorité">
-        <button type="button" class="choice" data-v="h" role="radio"><div><b>L’histoire</b><span>Deux nouvelles cartes sur trois en histoire</span></div></button>
-        <button type="button" class="choice" data-v="b" role="radio"><div><b>Les deux, à parts égales</b><span>Autant d’histoire que de géographie</span></div></button>
-        <button type="button" class="choice" data-v="g" role="radio"><div><b>La géographie</b><span>Deux nouvelles cartes sur trois en géographie</span></div></button>
+      <h2>Quelle est ta majeure ?</h2>
+      <p>Tu la choisis à l’inscription. À l’oral, elle compte pour 13 points sur 20. Deux nouvelles cartes sur trois en viendront.</p>
+      <div class="choices" id="obPrio" role="radiogroup" aria-label="Majeure">
+        <button type="button" class="choice" data-v="l" role="radio"><div><b>Lettres</b><span>À l’oral : un texte littéraire et une image</span></div></button>
+        <button type="button" class="choice" data-v="hg" role="radio"><div><b>Histoire-géographie</b><span>À l’oral : le commentaire d’un ou deux documents</span></div></button>
+        <button type="button" class="choice" data-v="b" role="radio"><div><b>Je n’ai pas encore choisi</b><span>Autant de lettres que d’histoire-géographie</span></div></button>
       </div>
     </div>
     <div class="ob-step mid" data-step="5" hidden>
@@ -834,8 +852,8 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
         <input type="text" class="inp name" id="nameInp" maxlength="24" autocomplete="given-name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Ton prénom" aria-label="Prénom">
       </div>
       <div class="row stack">
-        <div class="row-l"><div class="row-t">Priorité</div><div class="row-s">La discipline qui fournit le plus de nouvelles cartes</div></div>
-        <div class="seg" id="prioSeg" data-glass-full aria-label="Priorité"><button data-v="h">Histoire</button><button data-v="b">Équilibré</button><button data-v="g">Géographie</button></div>
+        <div class="row-l"><div class="row-t">Majeure au concours</div><div class="row-s">Deux nouvelles cartes sur trois viennent de ta majeure</div></div>
+        <div class="seg" id="prioSeg" data-glass-full aria-label="Majeure au concours"><button data-v="l">Lettres</button><button data-v="b">Indécis</button><button data-v="hg">Hist.-géo</button></div>
       </div>
       <div class="row stack">
         <div class="row-l"><div class="row-t">Objectif par jour</div><div class="row-s">Le nombre de réponses qui valide la journée et fait avancer la série</div></div>
@@ -877,7 +895,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 
     <h3 class="group-title">À propos</h3>
     <div class="group">
-      <div class="row"><div class="row-l"><div class="row-t">Réussite</div><div class="row-s">Contenu rédigé à partir du programme officiel de la session 2027. Il ne remplace ni tes cours ni les manuels. Tes données restent sur ton téléphone.</div><div class="row-s" id="scrLine" style="margin-top:6px;opacity:.7"></div></div><div class="row-v" id="verAbout"></div></div>
+      <div class="row"><div class="row-l"><div class="row-t">Réussite</div><div class="row-s">Histoire et géographie suivent le programme officiel du CAPLP, session 2027 ; les lettres suivent les attendus de l’épreuve. Il ne remplace ni tes cours ni les manuels. Tes données restent sur ton téléphone.</div><div class="row-s" id="scrLine" style="margin-top:6px;opacity:.7"></div></div><div class="row-v" id="verAbout"></div></div>
     </div>
     <div class="group" style="margin-top:12px"><div class="row actions"><button class="btn" id="btnIntro">Refaire le parcours d’accueil</button></div></div>
     <p class="credit">App développée avec Claude - AH Studio - 2026</p>
@@ -892,12 +910,20 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 (function(){
 'use strict';
 
-const APP_VERSION = '0.2.0';          // ← à changer à chaque version (et VERSION dans sw.js)
+const APP_VERSION = '0.3.0';          // ← à changer à chaque version (et VERSION dans sw.js)
 const SETTINGS_KEY = 'reussite.settings', DATA_KEY = 'reussite.data';
 const OLD_SETTINGS_KEY = 'revision.settings', OLD_DATA_KEY = 'revision.data';   // nom provisoire de la v0.1.0 : relu une fois, jamais réécrit
 
 /* ---------- nouveautés (la plus récente en premier) ---------- */
 const CHANGELOG = [
+  { v:'0.3.0', date:'17 novembre 2026', items:[
+    'L’app prépare maintenant le CAFEP-CAPLP externe, section lettres-histoire et géographie.',
+    'Les lettres arrivent : mouvements littéraires, genres, analyse de texte et d’image, grammaire pour la question de langue, auteurs et œuvres.',
+    'Histoire et géographie resserrées sur les huit questions du programme du CAPLP (session 2027).',
+    'Majeure et mineure : tu indiques ta majeure, et deux nouvelles cartes sur trois en viennent.',
+    'Onglet Concours refait : les quatre épreuves du CAPLP, ton oral selon ta majeure, questions de langue, sujets de dissertation, entretien tourné vers le lycée professionnel.',
+    'Ta série, tes points et tes cartes déjà vues sur les thèmes conservés sont gardés.'
+  ] },
   { v:'0.2.0', date:'17 novembre 2026', items:[
     'L’app s’appelle maintenant Réussite, avec sa nouvelle icône.',
     'Nouvelle identité tirée de l’icône : violets, orchidée, et des couches de verre qui s’allument à mesure que la journée avance.',
@@ -908,7 +934,7 @@ const CHANGELOG = [
   ] },
   { v:'0.1.0', date:'17 novembre 2026', items:[
     'Première version, sous le nom provisoire « Révision ».',
-    'Les 16 thèmes du programme du CAPES externe d’histoire-géographie (session 2027) : 129 questions et 120 repères.',
+    'Premier contenu en histoire-géographie, avec questions et cartes de repères.',
     'Séance du jour, mode Éclair, cartes de repères et révision des erreurs, avec répétition espacée.',
     'Série quotidienne, jokers, niveaux, badges et calendrier de régularité.',
     'Onglet Concours : compte à rebours, épreuves, questions d’entretien et sujets d’entraînement.',
@@ -917,106 +943,166 @@ const CHANGELOG = [
 ];
 
 /* ============================================================
-   Contenu — programme du CAPES externe d’histoire-géographie (bac+3), session 2027
-   Source des intitulés : devenirenseignant.gouv.fr (programme publié en juillet 2026).
-   r : repères [recto, verso]   q : QCM [question, [bonne réponse, 3 leurres], explication]   s : sujets d’entraînement
-   Dans les QCM, la bonne réponse est TOUJOURS la première : l’app mélange à l’affichage.
+   Contenu — CAFEP-CAPLP externe, section lettres-histoire et géographie (bac+3), session 2027
+   Histoire et géographie : les huit questions du programme officiel (devenirenseignant.gouv.fr, octobre 2026).
+   Lettres : pas de programme limitatif ; les thèmes suivent ce que demande l’épreuve (corpus littéraire, question de langue, analyse).
+   r : repères [recto, verso]   q : QCM [question, [bonne réponse, 3 leurres], explication]   s : pistes d’entraînement
+   k : (facultatif) question affichée au recto des cartes du thème
+   Dans les QCM, la bonne réponse est TOUJOURS la première : l’app mélange à l’affichage.
    ============================================================ */
 const THEMES = [
+/* ----------------------------- LETTRES ----------------------------- */
+{ id:'l1', d:'l', p:'Histoire littéraire', t:'Les mouvements littéraires', o:'Les mouvements littéraires',
+  r:[
+    ['Humanisme', 'XVIe siècle. Retour aux textes antiques, confiance dans l’homme et dans l’éducation. Rabelais, Montaigne.'],
+    ['La Pléiade', 'Groupe de poètes du XVIe siècle réunis autour de Ronsard et Du Bellay, qui veulent enrichir et illustrer la langue française.'],
+    ['Classicisme', 'Seconde moitié du XVIIe siècle. Ordre, mesure, vraisemblance et bienséance ; plaire et instruire. Molière, Racine, La Fontaine.'],
+    ['Lumières', 'XVIIIe siècle. La raison critique contre les préjugés, le combat pour la tolérance. Voltaire, Diderot, Montesquieu, Rousseau.'],
+    ['Romantisme', 'Première moitié du XIXe siècle. Expression du moi, des passions, de la nature ; liberté des formes. Hugo, Lamartine, Musset.'],
+    ['Réalisme', 'Milieu du XIXe siècle. Représenter la société telle qu’elle est, en s’appuyant sur l’observation. Balzac, Stendhal, Flaubert.'],
+    ['Naturalisme', 'Fin du XIXe siècle. Zola prolonge le réalisme avec une ambition scientifique : l’hérédité et le milieu expliquent les personnages.'],
+    ['Surréalisme', 'Années 1920. Autour d’André Breton : explorer le rêve et l’inconscient, libérer l’écriture.']
+  ],
+  q:[
+    ['Quel texte de 1549 sert de manifeste à la Pléiade ?', ['Défense et illustration de la langue française', 'Les Essais', 'L’Art poétique', 'La préface de Cromwell'], 'Du Bellay y appelle à enrichir le français pour en faire une grande langue littéraire. L’Art poétique de Boileau date de 1674.'],
+    ['La préface de Cromwell (1827), de Victor Hugo, est le manifeste de quel mouvement ?', ['Le romantisme', 'Le réalisme', 'Le symbolisme', 'Le classicisme'], 'Hugo y défend le drame romantique, qui mêle le grotesque et le sublime et refuse les règles classiques.'],
+    ['Qui est le chef de file du naturalisme ?', ['Émile Zola', 'Gustave Flaubert', 'Honoré de Balzac', 'Stendhal'], 'Zola en expose la théorie dans Le Roman expérimental (1880) et l’applique dans les Rougon-Macquart.'],
+    ['Qui publie le Manifeste du surréalisme en 1924 ?', ['André Breton', 'Guillaume Apollinaire', 'Louis Aragon', 'Paul Éluard'], 'Aragon et Éluard appartiennent au groupe. Apollinaire avait inventé le mot « surréaliste » en 1917.'],
+    ['À quel courant rattache-t-on le théâtre de Beckett et de Ionesco ?', ['Le théâtre de l’absurde', 'Le Nouveau Roman', 'Le symbolisme', 'Le drame romantique'], 'Dans les années 1950, ces pièces montrent une existence privée de sens, par un langage qui se dérègle.'],
+    ['Quelles sont les trois unités du théâtre classique ?', ['Temps, lieu, action', 'Ton, lieu, personnage', 'Temps, vers, action', 'Lieu, décor, intrigue'], 'Une seule intrigue, en un seul lieu, en vingt-quatre heures.'],
+    ['Quel mouvement des années 1950 remet en cause le personnage et l’intrigue traditionnels du roman ?', ['Le Nouveau Roman', 'Le naturalisme', 'L’existentialisme', 'Le surréalisme'], 'Alain Robbe-Grillet et Nathalie Sarraute en sont les principales figures.'],
+    ['Quel mouvement poétique de la fin du XIXe siècle privilégie la suggestion et la musicalité, avec Verlaine et Mallarmé ?', ['Le symbolisme', 'Le Parnasse', 'Le romantisme', 'Le réalisme'], 'Le symbolisme préfère suggérer plutôt que nommer. Le Parnasse, juste avant, recherchait la perfection formelle.'],
+    ['Quelle pièce de Victor Hugo déclenche une « bataille » entre classiques et romantiques en 1830 ?', ['Hernani', 'Ruy Blas', 'Lorenzaccio', 'Cromwell'], 'Les représentations d’Hernani à la Comédie-Française opposent les partisans des deux esthétiques. Lorenzaccio est de Musset.']
+  ],
+  s:['Situer un texte dans son mouvement : les trois indices à chercher en premier.', 'Romantisme et réalisme : ce qui les oppose, ce qui les relie.'] },
+
+{ id:'l2', d:'l', p:'Histoire littéraire', t:'Genres et formes', o:'Les genres littéraires et leurs formes',
+  r:[
+    ['Tragédie classique', 'Pièce en cinq actes et en vers, aux personnages de haut rang, dont le dénouement est malheureux. Elle inspire terreur et pitié.'],
+    ['Comédie', 'Pièce aux personnages de condition moyenne, au dénouement heureux, qui corrige les mœurs par le rire.'],
+    ['Drame romantique', 'Pièce du XIXe siècle qui mêle le tragique et le comique et refuse les unités de temps et de lieu.'],
+    ['Sonnet', 'Poème de quatorze vers : deux quatrains suivis de deux tercets.'],
+    ['Alexandrin', 'Vers de douze syllabes, souvent coupé en deux hémistiches de six syllabes par la césure.'],
+    ['Apologue', 'Court récit à visée morale : fable, conte philosophique, parabole.'],
+    ['Autobiographie', 'Récit qu’une personne réelle fait de sa propre vie. Auteur, narrateur et personnage ne font qu’un.'],
+    ['Roman épistolaire', 'Roman composé de lettres échangées entre les personnages, comme Les Liaisons dangereuses.']
+  ],
+  q:[
+    ['Qu’est-ce qu’une didascalie ?', ['Une indication de mise en scène donnée par l’auteur', 'Une réplique très longue', 'Le résumé d’un acte', 'Une parole adressée au public'], 'Elle précise les gestes, le ton, le décor ou les déplacements. Elle n’est pas prononcée.'],
+    ['À quoi sert une scène d’exposition ?', ['Présenter les personnages, le lieu et la situation', 'Résoudre l’intrigue', 'Créer un coup de théâtre', 'Faire entrer le chœur'], 'Elle donne au spectateur les informations nécessaires, au début de la pièce.'],
+    ['Que désigne la catharsis chez Aristote ?', ['La purgation des passions du spectateur', 'Le retournement de situation', 'La faute du héros', 'La reconnaissance entre deux personnages'], 'En éprouvant terreur et pitié, le spectateur se libère de ses propres passions.'],
+    ['Comment appelle-t-on une réplique qu’un personnage dit pour lui-même, sans que les autres soient censés l’entendre ?', ['Un aparté', 'Un monologue', 'Une tirade', 'Une stichomythie'], 'Dans un monologue, le personnage est seul en scène. La stichomythie est un échange rapide de répliques courtes.'],
+    ['Quel schéma suivent des rimes embrassées ?', ['ABBA', 'ABAB', 'AABB', 'ABCA'], 'ABAB : rimes croisées. AABB : rimes suivies, ou plates.'],
+    ['Combien de syllabes un décasyllabe compte-t-il ?', ['10', '8', '12', '6'], 'L’octosyllabe en compte huit, l’alexandrin douze.'],
+    ['Qu’appelle-t-on l’incipit d’un roman ?', ['Ses premières lignes', 'Sa dernière page', 'Son résumé', 'Son titre'], 'Il installe le cadre, le ton et le pacte de lecture. La fin d’un récit s’appelle l’excipit.'],
+    ['Qui a défini le « pacte autobiographique » ?', ['Philippe Lejeune', 'Gérard Genette', 'Roland Barthes', 'Tzvetan Todorov'], 'En 1975. L’auteur s’engage à dire la vérité sur sa vie ; auteur, narrateur et personnage portent le même nom.'],
+    ['Qu’est-ce qu’un quiproquo ?', ['Une méprise : on prend une personne ou une chose pour une autre', 'Un mot inventé', 'Une réplique répétée', 'Un dénouement inattendu'], 'C’est un ressort classique de la comédie.']
+  ],
+  s:['Les caractéristiques d’une scène d’exposition, à partir d’une pièce que tu connais.', 'Tragédie classique et drame romantique : compare-les en trois points.'] },
+
+{ id:'l3', d:'l', p:'Analyse', t:'Analyser un texte et une image', o:'Les outils de l’analyse littéraire et de l’analyse d’image',
+  r:[
+    ['Métaphore', 'Rapprochement de deux réalités sans outil de comparaison : « cet homme est un roc ».'],
+    ['Métonymie', 'Désigner une chose par une autre qui lui est liée : « boire un verre », le contenant pour le contenu.'],
+    ['Anaphore', 'Reprise d’un même mot ou groupe de mots au début de phrases ou de vers successifs.'],
+    ['Oxymore', 'Alliance de deux mots de sens contraires dans un même groupe : « une douce violence ».'],
+    ['Focalisation interne', 'Le récit passe par la perception d’un personnage : le lecteur ne sait que ce que ce personnage voit, sent et pense.'],
+    ['Registre pathétique', 'Tonalité qui cherche à émouvoir et à faire naître la compassion.'],
+    ['Enjambement', 'La phrase déborde d’un vers sur le suivant, sans pause en fin de vers.'],
+    ['Plongée et contre-plongée', 'Angles de prise de vue. La plongée regarde d’en haut et écrase le sujet ; la contre-plongée regarde d’en bas et le grandit.']
+  ],
+  q:[
+    ['Quelle figure consiste à exagérer pour frapper l’esprit ?', ['L’hyperbole', 'La litote', 'L’euphémisme', 'La périphrase'], '« Je meurs de faim » : l’hyperbole amplifie. La périphrase remplace un mot par une expression.'],
+    ['« Ce n’est pas mauvais » pour dire que c’est très bon : quelle figure ?', ['Une litote', 'Un euphémisme', 'Une antithèse', 'Une hyperbole'], 'La litote dit moins pour faire entendre plus. L’euphémisme, lui, atténue une réalité pénible.'],
+    ['« Il nous a quittés » pour « il est mort » : quelle figure ?', ['Un euphémisme', 'Une litote', 'Une métonymie', 'Une anaphore'], 'L’euphémisme adoucit une réalité jugée trop dure.'],
+    ['Comment appelle-t-on le point de vue d’un narrateur qui sait tout des personnages ?', ['La focalisation zéro', 'La focalisation interne', 'La focalisation externe', 'Le point de vue subjectif'], 'On parle aussi de narrateur omniscient. En focalisation externe, il ne livre que ce qui se voit de l’extérieur.'],
+    ['Quelle figure prête des traits humains à une chose ou à une idée ?', ['La personnification', 'La comparaison', 'L’allégorie', 'La synecdoque'], '« Le vent gémit ». L’allégorie, elle, représente une idée abstraite sous une forme concrète tout au long d’un passage.'],
+    ['Quelle figure dispose quatre éléments selon le schéma ABBA ?', ['Le chiasme', 'Le parallélisme', 'L’antithèse', 'La gradation'], 'Le parallélisme suit le schéma ABAB.'],
+    ['Quel registre exprime les sentiments personnels de celui qui parle ?', ['Le registre lyrique', 'Le registre épique', 'Le registre polémique', 'Le registre didactique'], 'Première personne, vocabulaire des émotions, musicalité. L’épique célèbre des exploits ; le polémique attaque.'],
+    ['Qu’est-ce qu’un champ lexical ?', ['Un ensemble de mots qui se rapportent à un même thème', 'L’ensemble des sens d’un mot', 'Une famille de mots de même racine', 'Une liste de synonymes'], 'L’ensemble des sens d’un mot est son champ sémantique.'],
+    ['Dans une image, quel plan cadre un personnage à mi-cuisses ?', ['Le plan américain', 'Le gros plan', 'Le plan d’ensemble', 'Le plan moyen'], 'Le plan moyen montre le personnage en pied ; le gros plan isole un visage ou un objet.'],
+    ['Dire le contraire de ce que l’on pense pour le faire comprendre : de quoi s’agit-il ?', ['L’ironie', 'La métaphore', 'L’hyperbole', 'La prétérition'], 'Elle repose souvent sur l’antiphrase. Voltaire en fait une arme dans ses contes.']
+  ],
+  s:['Relève trois figures de style dans une page que tu aimes et dis ce qu’elles produisent.', 'Décris une image : cadrage, angle, lumière, composition, puis l’effet sur celui qui regarde.'] },
+
+{ id:'l4', d:'l', p:'Langue', t:'La phrase et les classes de mots', o:'Grammaire : classes de mots, fonctions, phrase complexe',
+  r:[
+    ['Classe grammaticale', 'Catégorie à laquelle un mot appartient : nom, verbe, adjectif, déterminant, pronom, adverbe, préposition, conjonction. On dit aussi sa nature.'],
+    ['Fonction', 'Rôle d’un mot ou d’un groupe dans la phrase : sujet, complément d’objet, attribut, complément circonstanciel… Elle change d’une phrase à l’autre.'],
+    ['Subordonnée relative', 'Proposition introduite par un pronom relatif (qui, que, dont, où, lequel). Elle complète un nom, son antécédent.'],
+    ['Subordonnée complétive', 'Proposition introduite par « que », le plus souvent complément d’objet du verbe : « Je pense qu’il viendra ».'],
+    ['Subordonnée circonstancielle', 'Proposition introduite par une conjonction de subordination (quand, parce que, si, bien que…). Elle exprime le temps, la cause, la condition, la concession…'],
+    ['Expansions du nom', 'Ce qui complète un nom : adjectif épithète, complément du nom, subordonnée relative.'],
+    ['Attribut du sujet', 'Mot ou groupe qui caractérise le sujet par l’intermédiaire d’un verbe attributif : être, sembler, devenir, rester…'],
+    ['Phrase complexe', 'Phrase qui contient plusieurs propositions, reliées par juxtaposition, coordination ou subordination.']
+  ],
+  q:[
+    ['Dans « Le livre dont tu parles est épuisé », quelle est la classe de « dont » ?', ['Pronom relatif', 'Conjonction de subordination', 'Préposition', 'Déterminant'], '« Dont » reprend « le livre » et introduit une subordonnée relative.'],
+    ['Dans « Elle semble fatiguée », quelle est la fonction de « fatiguée » ?', ['Attribut du sujet', 'Épithète', 'Complément d’objet direct', 'Apposition'], '« Sembler » est un verbe attributif : l’adjectif caractérise le sujet à travers lui.'],
+    ['Dans « Il sort bien qu’il pleuve », qu’exprime la subordonnée ?', ['La concession', 'La cause', 'La condition', 'Le but'], '« Bien que » introduit une concession et se construit avec le subjonctif.'],
+    ['Dans « Je me demande s’il viendra », de quelle subordonnée s’agit-il ?', ['Une interrogative indirecte', 'Une circonstancielle de condition', 'Une relative', 'Une circonstancielle de temps'], 'Ici, « si » ne pose pas une condition : il introduit une question rapportée.'],
+    ['Avec l’auxiliaire avoir, avec quoi le participe passé s’accorde-t-il ?', ['Avec le complément d’objet direct, s’il est placé avant le verbe', 'Avec le sujet', 'Avec le complément d’objet indirect', 'Il ne s’accorde jamais'], '« Les lettres que j’ai écrites » : le COD « que », mis pour « lettres », précède le verbe.'],
+    ['Dans « Il parle à son frère », quelle est la fonction de « à son frère » ?', ['Complément d’objet indirect', 'Complément circonstanciel', 'Complément du nom', 'Attribut'], 'Il est construit avec une préposition et ne peut être ni supprimé ni déplacé librement.'],
+    ['Dans « La souris est mangée par le chat », quelle est la fonction de « par le chat » ?', ['Complément d’agent', 'Complément d’objet direct', 'Sujet', 'Complément circonstanciel de moyen'], 'À la voix passive, le complément d’agent désigne celui qui fait l’action.'],
+    ['Dans « Paris, capitale de la France, attire les touristes », quelle est la fonction du groupe entre virgules ?', ['Apposition', 'Épithète', 'Attribut du sujet', 'Complément du nom'], 'Le groupe est détaché par des virgules et désigne la même réalité que « Paris ».'],
+    ['Dans « Je le vois », quelle est la classe de « le » ?', ['Pronom personnel', 'Article défini', 'Adverbe', 'Pronom démonstratif'], 'Devant un verbe, « le » remplace un nom. Devant un nom, c’est un article défini.'],
+    ['À quelle classe appartient le mot « très » ?', ['Adverbe', 'Adjectif', 'Préposition', 'Déterminant'], 'Invariable, il modifie ici un adjectif ou un autre adverbe.']
+  ],
+  s:['Question de langue : les expansions du nom dans un paragraphe descriptif.', 'Question de langue : les propositions subordonnées d’une phrase complexe.'] },
+
+{ id:'l5', d:'l', p:'Langue', t:'Le verbe et le discours rapporté', o:'Grammaire : modes, temps, valeurs, discours rapporté',
+  r:[
+    ['Modes personnels', 'Indicatif, subjonctif, impératif. Les grammaires récentes rangent le conditionnel parmi les temps de l’indicatif.'],
+    ['Modes non personnels', 'Infinitif et participe. Ils ne se conjuguent pas en personne. Le gérondif s’y rattache : « en marchant ».'],
+    ['Imparfait', 'Temps de l’arrière-plan dans le récit : description, habitude, action en train de se dérouler.'],
+    ['Passé simple', 'Temps du premier plan dans le récit : actions délimitées qui font avancer l’histoire.'],
+    ['Présent de vérité générale', 'Présent qui énonce un fait valable en tout temps : « L’eau bout à 100 degrés ».'],
+    ['Présent de narration', 'Présent employé dans un récit au passé pour rendre une action plus vive.'],
+    ['Discours direct', 'Paroles rapportées telles qu’elles ont été dites, avec des guillemets ou des tirets.'],
+    ['Discours indirect libre', 'Paroles ou pensées fondues dans le récit, sans verbe introducteur ni subordination, aux temps et aux personnes du récit.']
+  ],
+  q:[
+    ['Dans « Si j’avais su, je serais venu », à quel temps est « serais venu » ?', ['Conditionnel passé', 'Plus-que-parfait', 'Futur antérieur', 'Subjonctif passé'], 'Il exprime ici l’irréel du passé. « Avais su » est au plus-que-parfait.'],
+    ['Dans « Il faut que tu viennes », quel est le mode de « viennes » ?', ['Subjonctif', 'Indicatif', 'Impératif', 'Infinitif'], '« Il faut que » commande le subjonctif.'],
+    ['Quelle est la valeur de l’imparfait dans « Chaque matin, il partait à six heures » ?', ['L’habitude', 'La description', 'L’action soudaine', 'L’hypothèse'], 'On parle d’imparfait d’habitude, ou itératif.'],
+    ['Quelle est la valeur du présent dans « La Terre tourne autour du Soleil » ?', ['La vérité générale', 'La narration', 'L’énonciation', 'Le futur proche'], 'Le fait est vrai en tout temps.'],
+    ['Comment rapporter au discours indirect : Il a dit : « Je viendrai demain » ?', ['Il a dit qu’il viendrait le lendemain', 'Il a dit qu’il viendra demain', 'Il a dit que je viendrais le lendemain', 'Il a dit qu’il venait demain'], 'La personne, le temps et l’indicateur de temps changent : je devient il, le futur devient un conditionnel, demain devient le lendemain.'],
+    ['Comment forme-t-on le passé composé ?', ['Auxiliaire au présent et participe passé', 'Auxiliaire à l’imparfait et participe passé', 'Radical et terminaisons en -ai, -as, -a', 'Auxiliaire au futur et participe passé'], 'Avec l’auxiliaire à l’imparfait, on obtient le plus-que-parfait.'],
+    ['Que marque le plus-que-parfait par rapport à un autre fait passé ?', ['L’antériorité', 'La simultanéité', 'La postériorité', 'L’habitude'], '« Il avait fini quand je suis arrivé » : la première action est achevée avant la seconde.'],
+    ['Quelle est la forme verbale « en marchant » ?', ['Un gérondif', 'Un participe passé', 'Un infinitif', 'Un adjectif verbal'], 'Formé de « en » et du participe présent, il joue le rôle d’un complément circonstanciel.'],
+    ['Avec quel auxiliaire les verbes pronominaux se conjuguent-ils aux temps composés ?', ['Être', 'Avoir', 'Aller', 'Les deux, au choix'], '« Elle s’est levée ».'],
+    ['Dans « Quand tu auras fini, nous partirons », à quel temps est « auras fini » ?', ['Futur antérieur', 'Futur simple', 'Conditionnel passé', 'Passé composé'], 'Il marque une action achevée avant une autre action future.']
+  ],
+  s:['Question de langue : les valeurs des temps du passé dans un extrait de récit.', 'Question de langue : les formes du discours rapporté dans une page de roman.'] },
+
+{ id:'l6', d:'l', p:'Culture littéraire', t:'Auteurs et œuvres', o:'Repères : auteurs, œuvres, dates', k:'Qui, quand, de quoi s’agit-il ?',
+  r:[
+    ['Les Essais', 'Montaigne, 1580-1595. Un homme se peint lui-même pour réfléchir à la condition humaine.'],
+    ['Le Cid', 'Corneille, 1637. Rodrigue et Chimène, pris entre l’amour et l’honneur.'],
+    ['Les Fables', 'La Fontaine, 1668-1694. Des récits en vers, souvent animaliers, qui portent une morale.'],
+    ['Candide', 'Voltaire, 1759. Conte philosophique qui tourne en dérision l’optimisme.'],
+    ['Madame Bovary', 'Flaubert, 1857. Emma, nourrie de lectures romanesques, étouffe dans sa vie de province. Le roman vaut un procès à son auteur.'],
+    ['Les Fleurs du mal', 'Baudelaire, 1857. Recueil poétique, condamné pour outrage aux bonnes mœurs.'],
+    ['Les Misérables', 'Hugo, 1862. Le destin de Jean Valjean, ancien forçat, dans la France du XIXe siècle.'],
+    ['Germinal', 'Zola, 1885. Une grève de mineurs dans le Nord. Treizième volume des Rougon-Macquart.'],
+    ['L’Étranger', 'Camus, 1942. Meursault, narrateur détaché, raconte le meurtre qu’il commet et son procès.']
+  ],
+  q:[
+    ['Qui a écrit Le Père Goriot ?', ['Balzac', 'Stendhal', 'Zola', 'Hugo'], 'Publié en 1835, c’est l’un des romans centraux de La Comédie humaine.'],
+    ['Qui est l’auteur de Phèdre ?', ['Racine', 'Corneille', 'Molière', 'Marivaux'], 'Tragédie de 1677, sur une passion coupable et destructrice.'],
+    ['Qui a écrit Le Mariage de Figaro ?', ['Beaumarchais', 'Marivaux', 'Molière', 'Diderot'], 'Jouée en 1784, la comédie fait d’un valet le porte-parole d’une critique des privilèges.'],
+    ['Qui a écrit Les Liaisons dangereuses ?', ['Choderlos de Laclos', 'Rousseau', 'Diderot', 'L’abbé Prévost'], 'Roman épistolaire de 1782, autour de deux libertins manipulateurs.'],
+    ['Qui est l’auteur du roman Le Rouge et le Noir ?', ['Stendhal', 'Balzac', 'Flaubert', 'Maupassant'], 'Publié en 1830, il suit l’ascension et la chute de Julien Sorel.'],
+    ['Qui a écrit Bel-Ami ?', ['Maupassant', 'Zola', 'Flaubert', 'Daudet'], 'Roman de 1885 sur l’ascension d’un ambitieux dans le milieu de la presse parisienne.'],
+    ['Quel poète publie le recueil Alcools en 1913 ?', ['Apollinaire', 'Rimbaud', 'Verlaine', 'Éluard'], 'Apollinaire y supprime toute ponctuation.'],
+    ['Qui a écrit Gargantua ?', ['Rabelais', 'Montaigne', 'Ronsard', 'Du Bellay'], 'Paru en 1534, le récit mêle le comique des géants et une réflexion humaniste sur l’éducation.'],
+    ['Qui est l’auteur des Confessions, publiées après sa mort à partir de 1782 ?', ['Rousseau', 'Voltaire', 'Chateaubriand', 'Montaigne'], 'Rousseau y fonde l’autobiographie moderne.'],
+    ['Quel dramaturge réécrit Antigone en 1944 ?', ['Jean Anouilh', 'Jean Giraudoux', 'Jean-Paul Sartre', 'Albert Camus'], 'Anouilh reprend la tragédie de Sophocle dans le contexte de l’Occupation.']
+  ],
+  s:['Présente une œuvre en deux minutes : auteur, date, mouvement, enjeu.', 'Du XVIe au XXe siècle, associe à chaque siècle un auteur et une œuvre.'] },
+
 /* ----------------------------- HISTOIRE ----------------------------- */
-{ id:'h1', d:'h', p:'Histoire ancienne', t:'La Grèce classique', o:'La Grèce classique',
-  r:[
-    ['508-507 av. J.-C.', 'Réformes de Clisthène à Athènes : dix tribus, isonomie (égalité devant la loi). Les bases de la démocratie.'],
-    ['490 av. J.-C.', 'Marathon : les hoplites athéniens repoussent les Perses (première guerre médique).'],
-    ['480 av. J.-C.', 'Salamine : victoire navale des Grecs sur la flotte de Xerxès (seconde guerre médique).'],
-    ['478-477 av. J.-C.', 'Fondation de la ligue de Délos, alliance maritime dirigée par Athènes, qui devient un empire.'],
-    ['431-404 av. J.-C.', 'Guerre du Péloponnèse entre Athènes et Sparte. Elle s’achève par la défaite d’Athènes.'],
-    ['338 av. J.-C.', 'Chéronée : Philippe II de Macédoine bat Athènes et Thèbes. Fin de l’indépendance des cités.'],
-    ['Ecclésia', 'Assemblée des citoyens athéniens. Elle se réunit sur la Pnyx, vote les lois, la guerre et la paix.'],
-    ['Métèque', 'Étranger libre résidant dans la cité. Il paie une taxe et sert dans l’armée, sans droits politiques.']
-  ],
-  q:[
-    ['Qui est l’auteur des réformes de 508-507 av. J.-C. qui fondent la démocratie athénienne ?', ['Clisthène', 'Solon', 'Périclès', 'Pisistrate'], 'Clisthène répartit les citoyens en dix tribus et instaure l’isonomie. Solon, au début du VIe siècle, avait aboli l’esclavage pour dettes.'],
-    ['À Athènes, qu’est-ce que le misthos ?', ['Une indemnité versée aux citoyens qui exercent une fonction publique', 'Un impôt payé par les métèques', 'Le tribut versé par les alliés', 'Une fête en l’honneur d’Athéna'], 'Instauré au temps de Périclès, le misthos permet aux citoyens modestes de siéger, d’abord comme jurés à l’Héliée.'],
-    ['Que décide une procédure d’ostracisme ?', ['L’exil d’un citoyen pour dix ans', 'La confiscation de ses biens', 'Sa condamnation à mort', 'La perte définitive de sa citoyenneté'], 'L’assemblée vote sur des tessons (ostraka) l’éloignement d’un citoyen jugé dangereux pour la cité. Il garde ses biens.'],
-    ['Quel historien athénien a raconté la guerre du Péloponnèse ?', ['Thucydide', 'Hérodote', 'Plutarque', 'Polybe'], 'Thucydide, lui-même stratège, cherche les causes profondes du conflit. Hérodote a raconté les guerres médiques.'],
-    ['Que prévoit la loi de Périclès de 451 av. J.-C. sur la citoyenneté ?', ['Être né d’un père et d’une mère athéniens', 'Être né d’un père athénien seulement', 'Posséder une terre en Attique', 'Avoir servi deux ans comme hoplite'], 'La loi resserre le corps civique : la double ascendance athénienne devient obligatoire.'],
-    ['Quelle bataille terrestre met fin à la seconde guerre médique en 479 av. J.-C. ?', ['Platées', 'Marathon', 'Les Thermopyles', 'Leuctres'], 'À Platées, les Grecs coalisés, menés par Sparte, battent l’armée perse restée en Grèce après Salamine.'],
-    ['Quel philosophe est condamné à mort par un tribunal athénien en 399 av. J.-C. ?', ['Socrate', 'Platon', 'Aristote', 'Protagoras'], 'Socrate est accusé d’impiété et de corruption de la jeunesse. Son procès est connu par Platon et Xénophon.'],
-    ['Quel est le rôle de la Boulè ?', ['Conseil de 500 citoyens tirés au sort, qui prépare les décrets', 'Tribunal populaire', 'Collège des dix stratèges', 'Conseil des anciens magistrats'], 'La Boulè prépare le travail de l’ecclésia. Le tribunal populaire est l’Héliée ; le conseil des anciens archontes est l’Aréopage.']
-  ],
-  s:['Être citoyen à Athènes aux Ve et IVe siècles av. J.-C.', 'Athènes et la mer à l’époque classique'] },
-
-{ id:'h2', d:'h', p:'Histoire ancienne', t:'Rome : République et Empire', o:'Rome : République et Empire',
-  r:[
-    ['509 av. J.-C.', 'Date traditionnelle de la fondation de la République, après l’expulsion du dernier roi.'],
-    ['264-146 av. J.-C.', 'Guerres puniques contre Carthage, détruite en 146. Rome domine la Méditerranée occidentale.'],
-    ['44 av. J.-C.', 'Assassinat de César aux ides de mars.'],
-    ['27 av. J.-C.', 'Octavien reçoit le titre d’Auguste : début du principat.'],
-    ['212', 'Édit de Caracalla : la citoyenneté romaine est accordée à tous les hommes libres de l’Empire.'],
-    ['313', 'Constantin et Licinius accordent la liberté de culte aux chrétiens (« édit de Milan »).'],
-    ['476', 'Déposition de Romulus Augustule : fin de l’Empire romain d’Occident.'],
-    ['Cursus honorum', 'Carrière des magistratures : questure, édilité, préture, puis consulat.']
-  ],
-  q:[
-    ['Quelle bataille, en 31 av. J.-C., donne à Octavien la maîtrise du monde romain ?', ['Actium', 'Pharsale', 'Philippes', 'Zama'], 'À Actium, Octavien bat Antoine et Cléopâtre. Pharsale (48) est la victoire de César sur Pompée.'],
-    ['Quel est le pouvoir principal des tribuns de la plèbe ?', ['S’opposer aux décisions des magistrats (droit de veto)', 'Commander les légions', 'Rendre la justice civile', 'Recenser les citoyens'], 'Créés au Ve siècle av. J.-C., les tribuns défendent les plébéiens grâce à l’intercessio. Le recensement revient aux censeurs.'],
-    ['Qu’appelle-t-on le limes ?', ['La zone frontière fortifiée de l’Empire', 'Le forum d’une colonie', 'L’impôt foncier des provinces', 'La garde personnelle de l’empereur'], 'Le limes est jalonné de camps, de routes et parfois de murs, comme le mur d’Hadrien en Bretagne.'],
-    ['Quel empereur fait du christianisme la religion officielle de l’Empire en 380 ?', ['Théodose', 'Constantin', 'Dioclétien', 'Julien'], 'L’édit de Thessalonique impose le christianisme nicéen. Constantin l’avait autorisé, pas imposé.'],
-    ['Qui met en place la tétrarchie à la fin du IIIe siècle ?', ['Dioclétien', 'Aurélien', 'Septime Sévère', 'Marc Aurèle'], 'Dioclétien partage le pouvoir entre deux Augustes et deux Césars pour mieux défendre l’Empire.'],
-    ['Qui franchit le Rubicon en 49 av. J.-C., déclenchant une guerre civile ?', ['César', 'Pompée', 'Sylla', 'Marius'], 'En passant ce fleuve avec son armée, César entre en Italie en armes, ce que la loi interdisait.'],
-    ['Que se passe-t-il à Rome en 410 ?', ['Le sac de la ville par les Wisigoths d’Alaric', 'La fondation de Constantinople', 'L’incendie sous Néron', 'Le partage définitif de l’Empire'], 'Le sac de 410 frappe les esprits : Augustin y répond dans La Cité de Dieu. Le partage de l’Empire date de 395.'],
-    ['Que désigne la « romanisation » ?', ['L’adoption progressive des modes de vie romains par les provinciaux', 'L’installation de colons italiens dans chaque province', 'L’interdiction des cultes locaux', 'Le déplacement forcé des populations conquises'], 'Elle passe par les villes, le latin, le droit et la citoyenneté, sans effacer les cultures locales.']
-  ],
-  s:['Gouverner et intégrer : Rome et son empire (Ier-IIIe siècles)', 'La citoyenneté romaine, de la République à l’édit de Caracalla'] },
-
-{ id:'h3', d:'h', p:'Histoire médiévale', t:'Contacts et conflits en Méditerranée', o:'Contacts et conflits en Méditerranée, VIe-XIIIe siècles',
-  r:[
-    ['622', 'Hégire : Muhammad quitte La Mecque pour Médine. An 1 du calendrier musulman.'],
-    ['711', 'Début de la conquête de la péninsule Ibérique par les troupes de Tariq ibn Ziyad.'],
-    ['1054', 'Rupture entre les Églises de Rome et de Constantinople (schisme d’Orient).'],
-    ['1095', 'Appel du pape Urbain II à Clermont, qui lance la première croisade.'],
-    ['1099', 'Prise de Jérusalem par les croisés, naissance des États latins d’Orient.'],
-    ['1187', 'Saladin bat les Francs à Hattin et reprend Jérusalem.'],
-    ['1204', 'La quatrième croisade est détournée : sac de Constantinople par les Latins.'],
-    ['Dhimmi', 'En terre d’Islam, statut des juifs et des chrétiens : protégés, mais soumis à un impôt spécifique.']
-  ],
-  q:[
-    ['Quel empereur byzantin tente de reconstituer l’Empire romain au VIe siècle ?', ['Justinien', 'Héraclius', 'Basile II', 'Alexis Comnène'], 'Justinien (527-565) reconquiert l’Italie et l’Afrique du Nord, et fait bâtir Sainte-Sophie.'],
-    ['Quelle est la capitale du califat omeyyade (661-750) ?', ['Damas', 'Bagdad', 'Le Caire', 'Cordoue'], 'Les Omeyyades gouvernent depuis Damas. Les Abbassides, qui les renversent, fondent Bagdad en 762.'],
-    ['Quelle île, conquise par les Normands au XIe siècle, devient un carrefour des cultures latine, grecque et arabe ?', ['La Sicile', 'Chypre', 'La Crète', 'Malte'], 'À Palerme, la cour de Roger II illustre ces échanges : le géographe al-Idrisi y travaille.'],
-    ['Qu’est-ce qu’un fondouk ?', ['Un entrepôt-auberge pour les marchands étrangers', 'Un navire de commerce', 'Une taxe sur les épices', 'Un quartier juif'], 'Les marchands de Venise, Gênes ou Pise disposent de fondouks dans les ports musulmans.'],
-    ['Quelle bataille de 1212 marque un tournant de la Reconquista ?', ['Las Navas de Tolosa', 'Poitiers', 'Hattin', 'Manzikert'], 'Les royaumes chrétiens coalisés y battent les Almohades. Manzikert (1071) est une défaite byzantine face aux Turcs.'],
-    ['Quel événement, en 1291, met fin aux États latins d’Orient ?', ['La chute d’Acre', 'La prise d’Antioche', 'La bataille de Mansourah', 'Le siège de Damiette'], 'Acre, dernière grande place franque, est prise par les Mamelouks.'],
-    ['Dans quelle ville les traductions de l’arabe vers le latin se développent-elles au XIIe siècle ?', ['Tolède', 'Grenade', 'Venise', 'Marseille'], 'Reprise en 1085, Tolède devient un centre de traduction des savoirs grecs et arabes.'],
-    ['Quelles cités italiennes dominent le commerce méditerranéen aux XIIe-XIIIe siècles ?', ['Venise et Gênes', 'Florence et Milan', 'Rome et Naples', 'Bologne et Sienne'], 'Leurs flottes relient l’Occident à Byzance et au monde musulman. Elles profitent aussi des croisades.']
-  ],
-  s:['La Méditerranée, espace d’échanges (Xe-XIIIe siècles)', 'Les croisades : affrontements et contacts'] },
-
-{ id:'h4', d:'h', p:'Histoire médiévale', t:'Société, Église et pouvoir en Occident', o:'Société, Église et pouvoir politique dans l’Occident médiéval, XIe-XVe siècles',
-  r:[
-    ['1122', 'Concordat de Worms : compromis qui clôt la querelle des Investitures entre le pape et l’empereur.'],
-    ['1214', 'Bouvines : Philippe Auguste bat l’empereur Otton IV et ses alliés.'],
-    ['1215', 'Concile de Latran IV : confession et communion annuelles obligatoires pour tous les fidèles.'],
-    ['1337-1453', 'Guerre de Cent Ans entre les rois de France et d’Angleterre.'],
-    ['1347-1352', 'Peste noire : elle tue entre un tiers et la moitié de la population européenne.'],
-    ['1378-1417', 'Grand Schisme d’Occident : deux, puis trois papes rivaux.'],
-    ['Réforme grégorienne', 'Mouvement du XIe siècle qui veut libérer l’Église de l’emprise des laïcs et discipliner le clergé.'],
-    ['Hommage', 'Cérémonie par laquelle un vassal devient l’homme d’un seigneur, en échange d’un fief.']
-  ],
-  q:[
-    ['Que se passe-t-il à Canossa en 1077 ?', ['L’empereur Henri IV fait pénitence devant le pape Grégoire VII', 'Le pape couronne Charlemagne', 'Les croisés prêtent serment', 'Un concile condamne les cathares'], 'Excommunié, Henri IV vient demander son pardon : épisode clé de la querelle des Investitures.'],
-    ['Quel ordre monastique naît à Cîteaux en 1098 ?', ['Les cisterciens', 'Les clunisiens', 'Les chartreux', 'Les franciscains'], 'Les cisterciens veulent revenir à la règle de saint Benoît. Bernard de Clairvaux en est la grande figure.'],
-    ['Quels ordres mendiants apparaissent au début du XIIIe siècle ?', ['Franciscains et dominicains', 'Templiers et hospitaliers', 'Cisterciens et chartreux', 'Bénédictins et augustins'], 'Installés en ville, ils prêchent et vivent de l’aumône. Les dominicains sont en première ligne contre l’hérésie.'],
-    ['Quel roi de France, mort devant Tunis en 1270, est canonisé en 1297 ?', ['Louis IX', 'Philippe Auguste', 'Louis VII', 'Philippe le Bel'], 'Saint Louis incarne le roi justicier et chrétien. Il meurt lors de la huitième croisade.'],
-    ['Quel conflit oppose Philippe le Bel au pape Boniface VIII ?', ['La suprématie du pape sur les rois', 'La succession de Bourgogne', 'Le contrôle de la Sicile', 'La croisade contre les Albigeois'], 'La bulle Unam Sanctam (1302) affirme la supériorité du pape. Le conflit culmine avec l’attentat d’Anagni en 1303.'],
-    ['Où la papauté s’installe-t-elle de 1309 à 1377 ?', ['Avignon', 'Lyon', 'Florence', 'Constance'], 'Sept papes résident à Avignon avant le retour à Rome, suivi de près par le Grand Schisme.'],
-    ['Quelle ville Jeanne d’Arc contribue-t-elle à délivrer en 1429 ?', ['Orléans', 'Reims', 'Rouen', 'Paris'], 'Après Orléans, Charles VII est sacré à Reims. Jeanne est brûlée à Rouen en 1431.'],
-    ['Selon Adalbéron de Laon, quels sont les trois ordres de la société ?', ['Ceux qui prient, ceux qui combattent, ceux qui travaillent', 'Les nobles, les bourgeois, les paysans', 'Les clercs, les marchands, les artisans', 'Le roi, les seigneurs, les serfs'], 'Formulé vers 1030, ce schéma des oratores, bellatores et laboratores justifie l’ordre social.']
-  ],
-  s:['L’Église et les pouvoirs laïcs en Occident (XIe-XIIIe siècles)', 'L’affirmation de l’État royal en France (XIIIe-XVe siècles)'] },
-
-{ id:'h5', d:'h', p:'Histoire moderne', t:'Première mondialisation, Renaissance et réformes', o:'Première mondialisation, Renaissance, humanisme et réformes, XVe-XVIIe siècles',
+{ id:'h5', d:'h', p:'Temps modernes', t:'Première mondialisation, Renaissance et réformes', o:'Première mondialisation, Renaissance, humanisme et réformes, XVe-XVIIe siècles',
   r:[
     ['Vers 1450', 'Gutenberg met au point l’imprimerie à caractères mobiles, à Mayence.'],
     ['1453', 'Prise de Constantinople par les Ottomans de Mehmed II.'],
@@ -1039,7 +1125,7 @@ const THEMES = [
   ],
   s:['Les Européens et le monde (XVe-XVIe siècles)', 'Réformes et divisions religieuses dans l’Europe du XVIe siècle'] },
 
-{ id:'h6', d:'h', p:'Histoire moderne', t:'L’Europe du XVIIIe siècle, Révolution et Empire', o:'L’Europe du XVIIIe siècle, Révolution française et Empire',
+{ id:'h6', d:'h', p:'Temps modernes', t:'L’Europe du XVIIIe siècle, Révolution et Empire', o:'L’Europe du XVIIIe siècle, révolution française et Empire',
   r:[
     ['1751-1772', 'Publication de l’Encyclopédie, dirigée par Diderot et d’Alembert.'],
     ['26 août 1789', 'Déclaration des droits de l’homme et du citoyen.'],
@@ -1062,7 +1148,7 @@ const THEMES = [
   ],
   s:['Les Lumières et la contestation de l’absolutisme', 'La France en révolution : rompre avec l’Ancien Régime (1789-1799)'] },
 
-{ id:'h7', d:'h', p:'Histoire contemporaine', t:'Le XIXe siècle français', o:'Le XIXe siècle français : économie, société et politique, métropole et colonies (1815-1914)',
+{ id:'h7', d:'h', p:'Temps contemporains', t:'Le XIXe siècle français', o:'Le XIXe siècle français (économie, société et politique, métropole et colonies) et l’entrée progressive en démocratie, 1815-1914',
   r:[
     ['1830', 'Trois Glorieuses et monarchie de Juillet. Début de la conquête de l’Algérie.'],
     ['1848', 'IIe République : suffrage universel masculin et abolition définitive de l’esclavage (décret Schœlcher).'],
@@ -1085,7 +1171,7 @@ const THEMES = [
   ],
   s:['L’enracinement de la République en France (1870-1914)', 'Industrialisation et monde ouvrier en France (1815-1914)'] },
 
-{ id:'h8', d:'h', p:'Histoire contemporaine', t:'Le XXe siècle', o:'Le XXe siècle : guerres mondiales, totalitarismes, génocides, guerre froide, construction européenne, décolonisation',
+{ id:'h8', d:'h', p:'Temps contemporains', t:'Le XXe siècle', o:'Le XXe siècle : guerres mondiales, totalitarismes, génocides, guerre froide, construction européenne, décolonisation',
   r:[
     ['11 novembre 1918', 'Armistice de Rethondes : fin des combats de la Première Guerre mondiale.'],
     ['1917', 'Révolutions russes : chute du tsar en février, prise du pouvoir par les bolcheviks en octobre.'],
@@ -1110,28 +1196,6 @@ const THEMES = [
   s:['Les démocraties face aux totalitarismes (1919-1945)', 'La décolonisation : indépendances et nouveaux États (1945-années 1970)'] },
 
 /* ----------------------------- GÉOGRAPHIE ----------------------------- */
-{ id:'g1', d:'g', p:'Géographie', t:'Géographie de la population', o:'Géographie de la population : démographie, distribution spatiale',
-  r:[
-    ['Transition démographique', 'Passage d’une natalité et d’une mortalité élevées à une natalité et une mortalité faibles, avec une phase de forte croissance entre les deux.'],
-    ['Indice synthétique de fécondité', 'Nombre moyen d’enfants par femme. Le renouvellement des générations est assuré autour de 2,1.'],
-    ['Solde naturel', 'Différence entre les naissances et les décès sur un territoire pendant une période.'],
-    ['Solde migratoire', 'Différence entre les entrées et les sorties d’un territoire.'],
-    ['Foyer de peuplement', 'Grande concentration humaine. Les trois principaux : Asie de l’Est, Asie du Sud, Europe.'],
-    ['Diaspora', 'Dispersion d’un peuple dans plusieurs pays, qui garde des liens entre ses communautés et avec le pays d’origine.'],
-    ['8 milliards', 'Seuil franchi par la population mondiale en novembre 2022, selon l’ONU.']
-  ],
-  q:[
-    ['Quel est le pays le plus peuplé du monde depuis 2023 ?', ['L’Inde', 'La Chine', 'Les États-Unis', 'L’Indonésie'], 'Selon l’ONU, l’Inde a dépassé la Chine en 2023, avec plus de 1,4 milliard d’habitants.'],
-    ['Quel continent connaît la croissance démographique la plus rapide ?', ['L’Afrique', 'L’Asie', 'L’Amérique latine', 'L’Océanie'], 'Sa population pourrait presque doubler d’ici 2050, portée par l’Afrique subsaharienne.'],
-    ['Qu’appelle-t-on le dividende démographique ?', ['L’avantage économique d’une forte part d’actifs dans la population', 'Les revenus envoyés par les émigrés', 'L’excédent des naissances sur les décès', 'Une aide versée aux familles nombreuses'], 'Il apparaît quand la fécondité baisse : moins de jeunes à charge, pas encore beaucoup de personnes âgées.'],
-    ['Que traduit une pyramide des âges à base large et à sommet étroit ?', ['Une population jeune, à forte natalité', 'Une population vieillissante', 'Une forte immigration', 'Une population stable'], 'C’est le profil des pays au début ou au milieu de leur transition démographique.'],
-    ['Quel texte international de 1951 définit le statut de réfugié ?', ['La convention de Genève', 'Le pacte de Marrakech', 'La charte de l’ONU', 'Les accords de Schengen'], 'Est réfugiée la personne qui fuit son pays par crainte fondée de persécution.'],
-    ['Quelle part de la population mondiale vit aujourd’hui en ville ?', ['Un peu plus de la moitié', 'Environ un tiers', 'Environ les trois quarts', 'Près de 90 %'], 'Les urbains sont majoritaires depuis la fin des années 2000.'],
-    ['Entre quels espaces les migrations internationales sont-elles les plus nombreuses ?', ['Entre pays d’une même région du monde', 'Des pays du Sud vers l’Europe', 'De l’Afrique vers l’Amérique', 'De l’Asie vers l’Océanie'], 'La majorité des migrants restent sur leur continent : les flux Sud-Sud pèsent autant que les flux Sud-Nord.'],
-    ['Comment calcule-t-on une densité de population ?', ['Habitants divisés par la superficie', 'Naissances divisées par la population', 'Urbains divisés par ruraux', 'Superficie divisée par habitants'], 'Elle s’exprime en habitants par km² et masque souvent de forts contrastes internes.']
-  ],
-  s:['Les migrations internationales : flux et territoires', 'Le vieillissement de la population, un défi pour les territoires'] },
-
 { id:'g2', d:'g', p:'Géographie', t:'Géographie de la mondialisation', o:'Géographie de la mondialisation : acteurs, territoires, maritimisation, flux',
   r:[
     ['Mondialisation', 'Mise en relation des territoires à l’échelle du monde par des flux de marchandises, de capitaux, de personnes et d’informations.'],
@@ -1219,97 +1283,46 @@ const THEMES = [
     ['Qui a popularisé l’image de la « banane bleue » ?', ['Roger Brunet', 'Jean Gottmann', 'Yves Lacoste', 'Paul Vidal de la Blache'], 'L’expression naît en 1989 d’une étude dirigée par Roger Brunet sur les villes européennes.']
   ],
   s:['L’Union européenne : des territoires inégalement intégrés', 'Les frontières de l’Union européenne'] },
-
-{ id:'g6', d:'g', p:'Géographie', t:'Géopolitique : frontières, conflits', o:'Géopolitique : frontières, conflits',
-  r:[
-    ['Géopolitique', 'Étude des rivalités de pouvoir sur des territoires (définition d’Yves Lacoste).'],
-    ['Frontière', 'Limite de la souveraineté d’un État. Elle sépare, mais elle met aussi en contact.'],
-    ['Dyade', 'Frontière commune à deux États (terme de Michel Foucher).'],
-    ['Soft power', 'Capacité d’influencer sans contraindre, par la culture, les valeurs, l’image (Joseph Nye).'],
-    ['Conflit gelé', 'Conflit sans combats majeurs mais sans règlement politique, comme en Transnistrie.'],
-    ['Eaux territoriales', 'Bande de 12 milles marins où l’État exerce sa pleine souveraineté.'],
-    ['193', 'Nombre d’États membres de l’ONU depuis l’entrée du Soudan du Sud en 2011.']
-  ],
-  q:[
-    ['Quel géographe fonde la revue Hérodote en 1976 ?', ['Yves Lacoste', 'Michel Foucher', 'Roger Brunet', 'Pierre George'], 'Lacoste relance la géopolitique en France avec cette revue.'],
-    ['Qui a forgé la notion de soft power ?', ['Joseph Nye', 'Samuel Huntington', 'Henry Kissinger', 'Francis Fukuyama'], 'Nye l’oppose au hard power, fondé sur la force militaire et économique.'],
-    ['Quelle ligne sépare les deux Corées depuis 1953 ?', ['Une zone démilitarisée autour du 38e parallèle', 'Le 17e parallèle', 'Le fleuve Yalou', 'La ligne Durand'], 'La DMZ fait environ 4 km de large. Le 17e parallèle séparait les deux Vietnam.'],
-    ['Quand la Russie lance-t-elle l’invasion à grande échelle de l’Ukraine ?', ['Le 24 février 2022', 'Le 18 mars 2014', 'Le 8 août 2008', 'Le 1er septembre 2021'], 'L’annexion de la Crimée date de 2014 ; la guerre en Géorgie de 2008.'],
-    ['Combien de membres permanents le Conseil de sécurité de l’ONU compte-t-il ?', ['5', '7', '10', '15'], 'États-Unis, Russie, Chine, France et Royaume-Uni. Ils disposent du droit de veto.'],
-    ['Quels États se disputent le Cachemire ?', ['L’Inde et le Pakistan', 'L’Inde et le Bangladesh', 'L’Iran et l’Afghanistan', 'La Chine et le Népal'], 'Le conflit remonte à la partition de 1947. La Chine contrôle aussi une partie de la région.'],
-    ['Dans quelle mer se trouvent les îles Spratleys, revendiquées par plusieurs États ?', ['La mer de Chine méridionale', 'La mer du Japon', 'La mer d’Arabie', 'La mer des Caraïbes'], 'Chine, Vietnam, Philippines, Malaisie, Brunei et Taïwan y ont des revendications concurrentes.'],
-    ['Quelle est la plus longue frontière terrestre entre deux États ?', ['Canada - États-Unis', 'Russie - Kazakhstan', 'Chili - Argentine', 'Chine - Mongolie'], 'Environ 8 900 km, Alaska compris.']
-  ],
-  s:['Les frontières dans le monde : entre ouverture et fermeture', 'Les espaces maritimes, objets de rivalités'] },
-
-{ id:'g7', d:'g', p:'Géographie', t:'Géographie urbaine', o:'Géographie urbaine : populations, dynamiques, activités',
-  r:[
-    ['Gentrification', 'Installation de catégories aisées dans un quartier populaire, qui en transforme l’habitat et les commerces.'],
-    ['Étalement urbain', 'Extension de la ville plus rapide que la croissance de sa population.'],
-    ['Mégapole', 'Très grande agglomération, de plus de 10 millions d’habitants.'],
-    ['Mégalopole', 'Région urbaine formée de plusieurs métropoles reliées entre elles (Jean Gottmann, 1961).'],
-    ['CBD', 'Central business district : le quartier des affaires d’une métropole.'],
-    ['Ségrégation socio-spatiale', 'Séparation des groupes sociaux dans l’espace urbain, subie ou recherchée.'],
-    ['Habitat informel', 'Logements construits sans droit sur le sol. Environ un milliard de personnes y vivent.']
-  ],
-  q:[
-    ['Quelle région urbaine Jean Gottmann décrit-il sous le nom de Megalopolis en 1961 ?', ['Le nord-est des États-Unis, de Boston à Washington', 'Le littoral japonais de Tokyo à Osaka', 'La vallée du Rhin', 'La Californie du Sud'], 'Les géographes ont ensuite étendu le terme au Japon et à l’Europe.'],
-    ['Quelle est l’agglomération la plus peuplée du monde ?', ['Tokyo', 'Delhi', 'Shanghai', 'Mexico'], 'Environ 37 millions d’habitants. Delhi la talonne et devrait la dépasser.'],
-    ['Dans quelle région du monde la croissance urbaine est-elle la plus rapide ?', ['L’Afrique subsaharienne', 'L’Europe', 'L’Amérique du Nord', 'L’Asie de l’Est'], 'Lagos ou Kinshasa gagnent plusieurs centaines de milliers d’habitants par an.'],
-    ['Que prévoit la loi SRU de 2000 ?', ['Un minimum de logements sociaux dans les communes urbaines', 'La création des métropoles', 'La fin des grands ensembles', 'La gratuité des transports'], 'Le seuil, fixé à 20 %, a été porté à 25 % dans la plupart des communes concernées en 2013.'],
-    ['Qu’est-ce qu’une edge city ?', ['Un pôle d’emplois et de commerces en périphérie d’une métropole', 'Un quartier historique réhabilité', 'Une ville frontalière', 'Un bidonville'], 'Le terme vient du journaliste Joel Garreau (1991), à partir du cas des États-Unis.'],
-    ['Quel phénomène la ville de Detroit illustre-t-elle ?', ['La décroissance urbaine', 'La gentrification', 'La métropolisation', 'La littoralisation'], 'On parle de shrinking city : Detroit a perdu plus de la moitié de ses habitants depuis 1950.'],
-    ['Que désigne un QPV en France ?', ['Un quartier prioritaire de la politique de la ville', 'Un quartier piéton végétalisé', 'Un quartier patrimonial à valoriser', 'Un périmètre de vidéoprotection'], 'Défini depuis 2014 par un critère unique : le faible revenu des habitants.'],
-    ['Comment appelle-t-on un quartier résidentiel fermé et surveillé ?', ['Une gated community', 'Une favela', 'Un CBD', 'Une ville nouvelle'], 'Ces quartiers fermés illustrent une ségrégation choisie par les plus aisés.']
-  ],
-  s:['Les villes face aux inégalités socio-spatiales', 'L’étalement urbain : dynamiques et enjeux'] },
-
-{ id:'g8', d:'g', p:'Géographie', t:'Géographie rurale', o:'Géographie rurale : populations, dynamiques, activités',
-  r:[
-    ['Espace rural', 'Pour l’Insee, depuis 2020 : l’ensemble des communes peu denses et très peu denses.'],
-    ['Exode rural', 'Départ durable des habitants des campagnes vers les villes.'],
-    ['Renaissance rurale', 'Retour de la croissance démographique dans une partie des campagnes (Bernard Kayser, 1990).'],
-    ['Agriculture productiviste', 'Agriculture qui recherche de forts rendements grâce aux machines, aux engrais et à la sélection.'],
-    ['Agriculture vivrière', 'Agriculture destinée d’abord à nourrir ceux qui la pratiquent.'],
-    ['Front pionnier', 'Espace en cours de peuplement et de mise en valeur, souvent aux dépens de la forêt.'],
-    ['Multifonctionnalité', 'Le fait qu’un espace rural soit à la fois productif, résidentiel, récréatif et de nature.']
-  ],
-  q:[
-    ['Qu’appelle-t-on la « révolution verte » ?', ['La hausse des rendements par les variétés sélectionnées, l’irrigation et les engrais', 'Le passage à l’agriculture biologique', 'Le reboisement des terres agricoles', 'L’interdiction des pesticides'], 'Lancée dans les années 1960, notamment en Inde et au Mexique, elle a fait reculer les famines.'],
-    ['Quel est le premier pays agricole de l’Union européenne par la valeur de sa production ?', ['La France', 'L’Allemagne', 'L’Espagne', 'La Pologne'], 'Elle devance l’Allemagne, l’Italie et l’Espagne.'],
-    ['Quelle part du territoire métropolitain la surface agricole utile occupe-t-elle ?', ['Environ la moitié', 'Environ un quart', 'Environ les trois quarts', 'Moins de 10 %'], 'Cette part recule lentement, au profit de la forêt et des espaces urbanisés.'],
-    ['Quelle part de l’emploi les agriculteurs exploitants représentent-ils en France ?', ['Moins de 2 %', 'Environ 8 %', 'Environ 15 %', 'Environ 25 %'], 'L’agriculture occupait encore environ un tiers des actifs au lendemain de la Seconde Guerre mondiale.'],
-    ['Que garantit une AOP ?', ['Un produit dont toutes les étapes sont réalisées dans une aire géographique donnée', 'Un produit issu de l’agriculture biologique', 'Un prix minimum payé au producteur', 'Un produit vendu en circuit court'], 'L’appellation d’origine protégée est un label européen.'],
-    ['Quelles productions font avancer le front pionnier amazonien ?', ['L’élevage bovin et le soja', 'Le riz et le thé', 'Le blé et la vigne', 'Le cacao et l’hévéa'], 'Pâturages et grandes cultures d’exportation remplacent la forêt.'],
-    ['Qu’est-ce qu’un bocage ?', ['Un paysage de parcelles encloses de haies', 'Un paysage de champs ouverts', 'Une forêt exploitée', 'Un vignoble en terrasses'], 'Typique de l’ouest de la France. Il s’oppose à l’openfield du Bassin parisien.'],
-    ['Que désigne l’accaparement des terres ?', ['L’achat ou la location de vastes surfaces agricoles par des investisseurs étrangers', 'Le partage des terres entre héritiers', 'La mise en jachère obligatoire', 'Le regroupement de parcelles par l’État'], 'En anglais land grabbing. Il concerne surtout l’Afrique, l’Asie du Sud-Est et l’Amérique latine.']
-  ],
-  s:['Les espaces ruraux : entre déprise et renouveau', 'Nourrir le monde : agricultures et territoires'] }
 ];
 
-/* ---------- les épreuves (note du jury, session 2027) ---------- */
+/* ---------- disciplines ---------- */
+const DISC = [['l', 'Lettres'], ['h', 'Histoire'], ['g', 'Géographie']];
+
+/* ---------- les épreuves (devenirenseignant.gouv.fr ; identiques au CAPLP public et au CAFEP) ---------- */
 const EPREUVES = [
-  { t:'Composition', s:'Écrit. Deux sujets au choix, dans la même discipline.', d:'5 h', c:'coef. 2,5' },
-  { t:'Analyse d’un corpus documentaire', s:'Écrit, dans l’autre discipline. Cartes, textes, images, statistiques.', d:'5 h', c:'coef. 2,5' },
-  { t:'Exposé disciplinaire', s:'Oral. 4 h de préparation, 20 min d’exposé, 40 min d’échange.', d:'1 h', c:'coef. 5' },
-  { t:'Entretien avec le jury', s:'Oral. Parcours et motivation, puis deux questions.', d:'35 min', c:'coef. 3' }
+  { t:'Épreuve de lettres', s:'Écrit. Un corpus de textes littéraires : présentation d’ensemble, question de langue, analyse d’un texte.', d:'5 h', c:'coef. 2,5' },
+  { t:'Dissertation d’histoire ou de géographie', s:'Écrit. Deux sujets au choix : un en histoire, un en géographie.', d:'5 h', c:'coef. 2,5' },
+  { t:'Oral disciplinaire', s:'3 h de préparation. Majeure : 20 min d’exposé, 20 min d’échange. Mineure : 10 min, puis 10 min.', d:'1 h', c:'coef. 5' },
+  { t:'Entretien avec le jury', s:'Oral. Parcours et motivation, valeurs de la République, mise en situation.', d:'35 min', c:'coef. 3' }
 ];
+/* ce que la majeure change à l’oral disciplinaire */
+const ORAL = {
+  l:  ['Majeure lettres', 'Partie principale, sur 13 points : un texte littéraire et une image. Tu expliques ce qui les relie, puis tu expliques le texte. Partie complémentaire, sur 7 points : un document d’histoire ou de géographie et une question.'],
+  hg: ['Majeure histoire-géographie', 'Partie principale, sur 13 points : le commentaire d’un ou deux documents, en histoire ou en géographie. Partie complémentaire, sur 7 points : un texte littéraire et une question.'],
+  b:  ['Majeure à choisir', 'À l’inscription, tu choisis ta majeure : lettres ou histoire-géographie. À l’oral, elle compte pour 13 points sur 20, la mineure pour 7.']
+};
 
-/* ---------- entretien : questions d’entraînement (rédigées pour l’app, sur les quatre thèmes cités par le jury) ---------- */
+/* ---------- entretien : questions d’entraînement (rédigées pour l’app, sur les thèmes de l’épreuve) ---------- */
 const JURY = [
   ['Question générale', 'Que signifie, pour vous, faire partager les valeurs de la République ?'],
   ['Question générale', 'La laïcité à l’école : une contrainte ou une liberté ?'],
-  ['Question générale', 'Comment l’histoire-géographie contribue-t-elle à former des citoyens ?'],
-  ['Question générale', 'Comment l’école peut-elle lutter contre les stéréotypes de genre ?'],
-  ['Question générale', 'Quel rôle pour l’enseignant dans l’éducation à la transition écologique ?'],
-  ['Question générale', 'Qu’est-ce qu’un élève épanoui à l’école ?'],
-  ['Question contextualisée', 'Un élève refuse d’étudier un document en cours d’histoire au nom de ses convictions. Qu’en pensez-vous ?'],
-  ['Question contextualisée', 'Pendant un travail de groupe, les garçons monopolisent la parole. Qu’en pensez-vous ?'],
-  ['Question contextualisée', 'Un élève conteste en classe la réalité du changement climatique. Qu’en pensez-vous ?'],
-  ['Question contextualisée', 'Vous remarquez qu’un élève s’isole et que ses résultats chutent. Qu’en pensez-vous ?'],
-  ['Question contextualisée', 'Un parent conteste le contenu d’un cours sur les faits religieux. Qu’en pensez-vous ?'],
-  ['Question contextualisée', 'Vous entendez des propos racistes dans le couloir, en dehors de votre cours. Qu’en pensez-vous ?']
+  ['Question générale', 'Pourquoi voulez-vous enseigner en lycée professionnel plutôt qu’ailleurs ?'],
+  ['Question générale', 'Enseigner à la fois les lettres et l’histoire-géographie : en quoi est-ce une force ?'],
+  ['Question générale', 'Comment l’école peut-elle lutter contre les stéréotypes, notamment dans les filières très masculines ou très féminines ?'],
+  ['Question générale', 'Quel rôle pour un professeur de lettres-histoire dans l’éducation à la transition écologique ?'],
+  ['Question générale', 'Vous vous destinez à l’enseignement privé sous contrat : comment y fait-on vivre la liberté de conscience des élèves ?'],
+  ['Mise en situation', 'Un élève de CAP vous affirme que le français ne lui servira à rien dans son métier. Qu’en pensez-vous ?'],
+  ['Mise en situation', 'Un élève refuse d’étudier un document en cours d’histoire au nom de ses convictions. Qu’en pensez-vous ?'],
+  ['Mise en situation', 'Pendant un travail de groupe, les garçons monopolisent la parole. Qu’en pensez-vous ?'],
+  ['Mise en situation', 'Un élève revient de sa période de formation en entreprise démotivé et ne rend plus rien. Qu’en pensez-vous ?'],
+  ['Mise en situation', 'Vous entendez des propos racistes dans l’atelier, en dehors de votre cours. Qu’en pensez-vous ?'],
+  ['Mise en situation', 'Un parent conteste le choix d’une œuvre que vous faites lire à la classe. Qu’en pensez-vous ?']
 ];
+
+/* ---------- lettres : questions de langue pour s’entraîner ---------- */
+const LANGUE = ['Les expansions du nom', 'Les propositions subordonnées relatives', 'Les valeurs de l’imparfait et du passé simple', 'Les marques de l’énonciation',
+  'Le discours rapporté', 'La négation', 'L’interrogation', 'Les compléments circonstanciels', 'Les valeurs du présent', 'Les pronoms personnels', 'La phrase complexe',
+  'L’expression de la cause et de la conséquence'];
 
 /* ---------- encouragements ---------- */
 const MSG = {
@@ -1332,7 +1345,7 @@ const MSG = {
 
 /* ---------- niveaux (points d’expérience) ---------- */
 const LEVELS = [
-  [0, 'Élève'], [100, 'Étudiant'], [300, 'Candidat'], [700, 'Admissible'], [1500, 'Admis'], [3000, 'Stagiaire'], [5000, 'Titulaire'], [8000, 'Inspecteur']
+  [0, 'Élève'], [100, 'Étudiant'], [300, 'Candidat'], [700, 'Admissible'], [1500, 'Admis'], [3000, 'Stagiaire'], [5000, 'Professeur'], [8000, 'Hors classe']
 ];
 
 /* ---------- constantes ---------- */
@@ -1362,7 +1375,7 @@ const TABS = [
 ];
 
 /* ---------- réglages d’interface ---------- */
-const DEFAULTS = { theme:'auto', glass:true, autoUpdate:true, tab:0, lastCheck:0, disc:'h' };
+const DEFAULTS = { theme:'auto', glass:true, autoUpdate:true, tab:0, lastCheck:0, disc:'l' };
 let S = Object.assign({}, DEFAULTS);
 try { Object.assign(S, JSON.parse(localStorage.getItem(SETTINGS_KEY) || localStorage.getItem(OLD_SETTINGS_KEY) || '{}')); } catch(e){}
 function save(){ try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(S)); } catch(e){} }
@@ -1415,14 +1428,15 @@ THEMES.forEach(th=>{
   th.q.forEach((q, ix)=>{ const it = { id:th.id + '.q' + ix, th, kind:'q', ix }; ALL.push(it); th.items.push(it); });
   th.r.forEach((r, ix)=>{ const it = { id:th.id + '.r' + ix, th, kind:'r', ix }; ALL.push(it); th.items.push(it); });
 });
-const SUJETS = []; THEMES.forEach(th=>th.s.forEach(s=>SUJETS.push([th, s])));
+const SUJETS = []; THEMES.forEach(th=>{ if (th.d !== 'l') th.s.forEach(s=>SUJETS.push([th, s])); });   // sujets de dissertation : histoire et géographie seulement
 
 /* ---------- données ---------- */
 function cleanName(v){ return typeof v === 'string' ? v.replace(/[<>\u0000-\u001f]/g, '').replace(/\s+/g, ' ').trim().slice(0, 24) : ''; }
 /* met le prénom dans un message ; sans prénom, la virgule et le prénom disparaissent */
 function say(msg){ return D.name ? msg.replace('{p}', D.name) : msg.replace(/,? ?\{p\}/, ''); }
 /* items : { id : { b: boîte 0-5, d: prochaine échéance, n: vues, k: réussites } }
-   days  : { 'AAAA-MM-JJ' : { n: réponses, ok: bonnes, xp, h, g, done } }
+   days  : { 'AAAA-MM-JJ' : { n: réponses, ok: bonnes, xp, l, h, g, done } }   (l, h, g : réponses par discipline)
+   prio  : la majeure choisie au concours, 'l' lettres, 'hg' histoire-géographie, 'b' pas encore choisie
    frozen : jours protégés par un joker */
 function defData(){
   return { v:1, since:now(), goal:10, exam:'', items:{}, days:{}, xp:0, jokers:1, frozen:[], best:0, badges:{}, sessions:0, perfect:0, name:'', prio:'b', onboarded:false };
@@ -1439,7 +1453,7 @@ function sanitize(raw){
   d.sessions = Math.round(num(raw.sessions, 0, 0, 1e7));
   d.perfect = Math.round(num(raw.perfect, 0, 0, 1e7));
   d.name = cleanName(raw.name);
-  d.prio = ['h', 'b', 'g'].indexOf(raw.prio) >= 0 ? raw.prio : 'b';
+  d.prio = raw.prio === 'l' || raw.prio === 'hg' ? raw.prio : (raw.prio === 'h' || raw.prio === 'g') ? 'hg' : 'b';   // 'h' et 'g' : anciennes priorités de la v0.2.0
   d.onboarded = !!raw.onboarded;
   if (raw.items && typeof raw.items === 'object') for (const id in raw.items){
     const s = raw.items[id]; if (!s || typeof s !== 'object') continue;
@@ -1448,7 +1462,7 @@ function sanitize(raw){
   if (raw.days && typeof raw.days === 'object') for (const k in raw.days){
     const s = raw.days[k]; if (!isDate(k) || !s || typeof s !== 'object') continue;
     d.days[k] = { n:Math.round(num(s.n, 0, 0, 1e5)), ok:Math.round(num(s.ok, 0, 0, 1e5)), xp:Math.round(num(s.xp, 0, 0, 1e7)),
-                  h:Math.round(num(s.h, 0, 0, 1e5)), g:Math.round(num(s.g, 0, 0, 1e5)), done:!!s.done };
+                  l:Math.round(num(s.l, 0, 0, 1e5)), h:Math.round(num(s.h, 0, 0, 1e5)), g:Math.round(num(s.g, 0, 0, 1e5)), done:!!s.done };
   }
   if (Array.isArray(raw.frozen)) d.frozen = raw.frozen.filter(isDate);
   if (raw.badges && typeof raw.badges === 'object') for (const id in raw.badges) d.badges[id] = num(raw.badges[id], 0, 0, 9e15);
@@ -1487,7 +1501,7 @@ function level(xp){
   const cur = LEVELS[i], nx = LEVELS[i + 1] || null;
   return { i, name:cur[1], next:nx ? nx[1] : '', left:nx ? nx[0] - xp : 0, pct:nx ? (xp - cur[0]) / (nx[0] - cur[0]) * 100 : 100 };
 }
-function today(){ const k = dayKey(now()); return D.days[k] || { n:0, ok:0, xp:0, h:0, g:0, done:false }; }
+function today(){ const k = dayKey(now()); return D.days[k] || { n:0, ok:0, xp:0, l:0, h:0, g:0, done:false }; }
 /* valide la journée si l’objectif est atteint ; renvoie true la première fois */
 function markDone(){
   const k = dayKey(now()), d = D.days[k];
@@ -1505,8 +1519,8 @@ function record(it, ok){
   if (ok) { st.k++; st.b = Math.min(5, st.b + 1); st.d = dayStart(t) + BOX_DAYS[st.b] * DAY; }
   else { st.b = 0; st.d = t + 10 * MIN; }
   D.items[it.id] = st;
-  const k = dayKey(t), day = D.days[k] || (D.days[k] = { n:0, ok:0, xp:0, h:0, g:0, done:false });
-  day.n++; if (ok) day.ok++; day[it.th.d]++;
+  const k = dayKey(t), day = D.days[k] || (D.days[k] = { n:0, ok:0, xp:0, l:0, h:0, g:0, done:false });
+  day.n++; if (ok) day.ok++; day[it.th.d] = (day[it.th.d] || 0) + 1;
   const xp = ok ? (it.kind === 'q' ? 10 : 6) : 2;
   day.xp += xp; D.xp += xp;
   const justDone = markDone();
@@ -1523,8 +1537,8 @@ const BADGES = [
   { id:'a100',    t:'Cent réponses',     s:'Donner 100 réponses',                    ok:()=>totals().n >= 100 },
   { id:'a500',    t:'Cinq cents',        s:'Donner 500 réponses',                    ok:()=>totals().n >= 500 },
   { id:'perfect', t:'Sans faute',        s:'Finir une séance sans erreur',           ok:()=>D.perfect >= 1 },
-  { id:'both',    t:'Bivalent',          s:'Histoire et géographie le même jour',    ok:()=>{ for (const k in D.days) if (D.days[k].h > 0 && D.days[k].g > 0) return true; return false; } },
-  { id:'all',     t:'Tour du programme', s:'Commencer les 16 thèmes',                ok:()=>THEMES.every(th=>seenCount(th.items) > 0) },
+  { id:'both',    t:'Bivalent',          s:'Lettres et histoire-géographie le même jour', ok:()=>{ for (const k in D.days){ const d = D.days[k]; if (d.l > 0 && d.h + d.g > 0) return true; } return false; } },
+  { id:'all',     t:'Tour du programme', s:'Commencer les ' + THEMES.length + ' thèmes',                ok:()=>THEMES.every(th=>seenCount(th.items) > 0) },
   { id:'master',  t:'Spécialiste',       s:'Maîtriser un thème à 80 %',              ok:()=>THEMES.some(th=>mastery(th.items) >= .8) }
 ];
 function checkBadges(){ const got = []; BADGES.forEach(b=>{ if (!D.badges[b.id] && b.ok()) { D.badges[b.id] = now(); got.push(b); } }); return got; }
@@ -1650,14 +1664,16 @@ function examInfo(){
 /* ---------- Réviser ---------- */
 const discSeg = $('discSeg');
 function renderStudy(){
+  if (!DISC.some(d=>d[0] === S.disc)) S.disc = 'l';
   for (const b of discSeg.querySelectorAll('button')) setOn(b, b.dataset.v === S.disc);
   let h = '';
   THEMES.filter(th=>th.d === S.disc).forEach(th=>{
     const m = Math.round(mastery(th.items) * 100);
-    h += '<button type="button" class="th d-' + th.d + '" data-id="' + th.id + '"><div class="th-l">' + (th.d === 'h' ? '<div class="th-p">' + esc(th.p) + '</div>' : '') + '<div class="th-t">' + esc(th.t) + '</div>' +
+    h += '<button type="button" class="th d-' + th.d + '" data-id="' + th.id + '"><div class="th-l">' + (th.d !== 'g' ? '<div class="th-p">' + esc(th.p) + '</div>' : '') + '<div class="th-t">' + esc(th.t) + '</div>' +
          '<div class="bar"><i style="width:' + m + '%"></i></div></div><div class="th-v num">' + m + ' %</div></button>';
   });
   setHTML($('themeList'), h);
+  setText($('studyNote'), S.disc === 'l' ? 'Les lettres n’ont pas de programme limitatif : ces thèmes couvrent ce que demande l’épreuve. Touche un thème pour ouvrir sa fiche.' : 'Les quatre questions ' + (S.disc === 'h' ? 'd’histoire' : 'de géographie') + ' du programme officiel. Touche un thème pour ouvrir sa fiche.');
 }
 discSeg.addEventListener('click', (e)=>{
   const b = e.target.closest('button'); if (!b || !discSeg.contains(b)) return;
@@ -1676,7 +1692,7 @@ function renderProgress(){
   setText($('stPct'), tt.n ? Math.round(tt.ok / tt.n * 100) + ' %' : '–');
   renderCal();
   let h = '';
-  [['h', 'Histoire'], ['g', 'Géographie']].forEach(d=>{
+  DISC.forEach(d=>{
     const items = ALL.filter(it=>it.th.d === d[0]), m = Math.round(mastery(items) * 100), seen = seenCount(items);
     h += '<div class="dbar d-' + d[0] + '"><div class="dbar-h"><b>' + d[1] + '</b><span>' + m + ' %</span></div><div class="bar thick"><i style="width:' + m + '%"></i></div><div class="sub">' + seen + ' sur ' + items.length + ' cartes déjà vues</div></div>';
   });
@@ -1712,7 +1728,7 @@ $('calPrev').addEventListener('click', ()=>{ calOff--; renderCal(); });
 $('calNext').addEventListener('click', ()=>{ if (calOff < 0) { calOff++; renderCal(); } });
 
 /* ---------- Concours ---------- */
-let juryIx = -1, sujIx = -1;
+let juryIx = -1, sujIx = -1, lanIx = -1;
 function renderExam(){
   const ex = examInfo();
   if (!ex){ setText($('jxN'), 'J-?'); setText($('jxS'), 'Indique la date de tes écrits pour lancer le compte à rebours.'); }
@@ -1721,15 +1737,21 @@ function renderExam(){
   else { setText($('jxN'), 'J+' + (-ex.j)); setText($('jxS'), 'Les écrits sont passés. Change la date pour préparer la suite.'); }
   const inp = $('examDate'); if (document.activeElement !== inp && inp.value !== D.exam) inp.value = D.exam;
   setHTML($('epList'), EPREUVES.map(e=>'<div class="row"><div class="row-l"><div class="row-t">' + esc(e.t) + '</div><div class="row-s">' + esc(e.s) + '</div></div><div class="ep-v"><b>' + e.d + '</b>' + e.c + '</div></div>').join(''));
+  const or = ORAL[D.prio] || ORAL.b;
+  setText($('oralTag'), or[0]); setText($('oralQ'), or[1]);
   const seed = Math.floor(dayStart(now()) / DAY);
   if (juryIx < 0) juryIx = seed % JURY.length;
   if (sujIx < 0) sujIx = (seed * 7) % SUJETS.length;
+  if (lanIx < 0) lanIx = (seed * 5) % LANGUE.length;
   setText($('juryTag'), JURY[juryIx][0]); setText($('juryQ'), JURY[juryIx][1]);
-  setText($('sujTag'), SUJETS[sujIx][0].d === 'h' ? SUJETS[sujIx][0].p : SUJETS[sujIx][0].t);
+  setText($('sujTag'), SUJETS[sujIx][0].d === 'h' ? 'Histoire, ' + SUJETS[sujIx][0].p.toLowerCase() : SUJETS[sujIx][0].t);
   setText($('sujQ'), SUJETS[sujIx][1]);
+  setText($('lanQ'), LANGUE[lanIx]);
 }
-$('btnJury').addEventListener('click', ()=>{ juryIx = (juryIx + 1 + Math.floor(Math.random() * (JURY.length - 1))) % JURY.length; renderExam(); });
-$('btnSuj').addEventListener('click', ()=>{ sujIx = (sujIx + 1 + Math.floor(Math.random() * (SUJETS.length - 1))) % SUJETS.length; renderExam(); });
+const other = (i, n)=>(i + 1 + Math.floor(Math.random() * (n - 1))) % n;
+$('btnJury').addEventListener('click', ()=>{ juryIx = other(juryIx, JURY.length); renderExam(); });
+$('btnSuj').addEventListener('click', ()=>{ sujIx = other(sujIx, SUJETS.length); renderExam(); });
+$('btnLan').addEventListener('click', ()=>{ lanIx = other(lanIx, LANGUE.length); renderExam(); });
 function setExam(v){ D.exam = isDate(v) ? v : ''; saveD(); render(); }
 $('examDate').addEventListener('change', (e)=>setExam(e.target.value));
 
@@ -1791,7 +1813,7 @@ function openFiche(id){
     '<p class="note" style="margin-top:8px">' + seen + ' sur ' + th.items.length + ' cartes déjà vues.</p>';
   $('ficheBody').innerHTML = '<h3 class="group-title">Repères à connaître</h3><div class="group d-' + th.d + '">' +
     th.r.map(r=>'<div class="rep"><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + '</span></div>').join('') + '</div>' +
-    '<h3 class="group-title">Sujets pour s’entraîner</h3><div class="group">' + th.s.map(s=>'<div class="suj">' + esc(s) + '</div>').join('') + '</div>';
+    '<h3 class="group-title">' + (th.d === 'l' ? 'Pour s’entraîner' : 'Sujets de dissertation') + '</h3><div class="group">' + th.s.map(s=>'<div class="suj">' + esc(s) + '</div>').join('') + '</div>';
   $('ficheScroll').scrollTop = 0;
   ficheSheet.set(true);
 }
@@ -1820,11 +1842,12 @@ function buildSession(mode, thId){
   /* nouvelles cartes : une par thème à tour de rôle, pour varier */
   const fresh = [], lists = shuffle(Object.keys(freshBy).map(k=>shuffle(freshBy[k])));
   for (let more = true; more;){ more = false; lists.forEach(l=>{ if (l.length){ fresh.push(l.pop()); more = true; } }); }
-  /* priorité choisie dans les objectifs : deux nouvelles cartes sur trois dans la discipline privilégiée */
-  if (mode !== 'theme' && mode !== 'review' && D.prio !== 'b'){
-    const a = fresh.filter(x=>x.th.d === D.prio), b = fresh.filter(x=>x.th.d !== D.prio);
+  /* lettres d’un côté, histoire-géographie de l’autre : à parts égales, ou deux nouvelles cartes sur trois dans la majeure */
+  if (mode !== 'theme' && mode !== 'review'){
+    const maj = D.prio === 'hg' ? 'hg' : 'l', inMaj = (x)=>(x.th.d === 'l') === (maj === 'l');
+    const a = fresh.filter(inMaj), b = fresh.filter(x=>!inMaj(x)), nA = D.prio === 'b' ? 1 : 2;
     fresh.length = 0;
-    while (a.length || b.length){ if (a.length) fresh.push(a.shift()); if (a.length) fresh.push(a.shift()); if (b.length) fresh.push(b.shift()); }
+    while (a.length || b.length){ for (let k = 0; k < nA; k++) if (a.length) fresh.push(a.shift()); if (b.length) fresh.push(b.shift()); }
   }
   const out = [], take = (arr, n)=>{ while (n-- > 0 && arr.length && out.length < N) out.push(arr.shift()); };
   take(due, mode === 'daily' ? Math.ceil(N * .6) : N);   // d’abord ce qui est à revoir
@@ -1861,7 +1884,7 @@ function showItem(){
          P.opts.map((o, k)=>'<button type="button" class="opt" data-k="' + k + '"><em>' + 'ABCD'[k] + '</em><span>' + esc(o.t) + '</span></button>').join('') + '</div><div id="fbBox"></div>';
     foot();
   } else {
-    h += '<div class="fc d-' + th.d + '"><div class="fc-k">' + (/^\D*\d{3,4}|^\d{1,2} |^Vers \d/.test(th.r[it.ix][0]) ? 'Que se passe-t-il ?' : 'Que signifie ?') + '</div><div class="fc-f">' + esc(th.r[it.ix][0]) + '</div><div id="fcBack"></div></div>';
+    h += '<div class="fc d-' + th.d + '"><div class="fc-k">' + esc(th.k || (/^\D*\d{3,4}|^\d{1,2} |^Vers \d/.test(th.r[it.ix][0]) ? 'Que se passe-t-il ?' : 'De quoi s’agit-il ?')) + '</div><div class="fc-f">' + esc(th.r[it.ix][0]) + '</div><div id="fcBack"></div></div>';
     foot('show');
   }
   stage.innerHTML = h; pop(stage, 'swap'); stage.scrollTop = 0;
@@ -1960,14 +1983,14 @@ function syncSettingsUI(){
   setChecked(swAuto, S.autoUpdate !== false);
   setText($('jokInfo'), D.jokers + ' / ' + MAX_JOKERS);
   const tt = totals();
-  setText($('dataInfo'), tt.n + ' ' + pl(tt.n, 'réponse', 'réponses') + ', ' + Object.keys(D.items).length + ' ' + pl(Object.keys(D.items).length, 'carte vue', 'cartes vues') + ', ' + D.sessions + ' ' + pl(D.sessions, 'séance', 'séances') + ', depuis le ' + fmtDay(D.since) + '.');
+  setText($('dataInfo'), tt.n + ' ' + pl(tt.n, 'réponse', 'réponses') + ', ' + seenCount(ALL) + ' ' + pl(seenCount(ALL), 'carte vue', 'cartes vues') + ', ' + D.sessions + ' ' + pl(D.sessions, 'séance', 'séances') + ', depuis le ' + fmtDay(D.since) + '.');
 }
 function setGoal(v){
   if ([10, 20, 30].indexOf(v) < 0) return;
   D.goal = v; markDone(); saveD(); syncSettingsUI(); render();
 }
 goalSeg.addEventListener('click', (e)=>{ const b = e.target.closest('button'); if (b && goalSeg.contains(b)) setGoal(+b.dataset.v); });
-function setPrio(v){ if (['h', 'b', 'g'].indexOf(v) < 0) return; D.prio = v; saveD(); syncSettingsUI(); }
+function setPrio(v){ if (['l', 'b', 'hg'].indexOf(v) < 0) return; D.prio = v; saveD(); syncSettingsUI(); render(); }
 function setName(v){ D.name = cleanName(v); saveD(); if (document.activeElement !== nameInp && nameInp.value !== D.name) nameInp.value = D.name; render(); }
 prioSeg.addEventListener('click', (e)=>{ const b = e.target.closest('button'); if (b && prioSeg.contains(b)) setPrio(b.dataset.v); });
 nameInp.addEventListener('input', ()=>setName(nameInp.value));
@@ -1988,7 +2011,8 @@ swAuto.addEventListener('change', ()=>{ S.autoUpdate = swAuto.checked; save(); s
 const obEl = $('ob'), obSteps = Array.from(obEl.querySelectorAll('.ob-step')), obDots = Array.from($('obDots').children);
 const obName = $('obName'), obDate = $('obDate');
 const OB = { i:0, name:'', exam:'', goal:10, prio:'b' };
-const PRIO_L = { h:'L’histoire d’abord', b:'Les deux à égalité', g:'La géographie d’abord' };
+const PRIO_L = { l:'Lettres', b:'Pas encore choisie', hg:'Histoire-géographie' };
+const EXAM_HINT = '2027-03-23';   // écrits annoncés les 23 et 24 mars 2027 : proposé dans le parcours, jamais imposé
 const obSheet = makeSheet(obEl, null, null, ()=>{
   setClass(document.documentElement, 'ob-on', false);
   if (!D.onboarded) { D.onboarded = true; saveD(); }
@@ -2014,6 +2038,7 @@ function syncOb(){
   setText($('obDateH'), OB.name ? OB.name + ', tes écrits, c’est pour quand ?' : 'Tes écrits, c’est pour quand ?');
   const j = obDays();
   setText($('obDateLive'), j === null ? '' : j > 0 ? 'J-' + j + ' : il te reste ' + (j >= 14 ? Math.floor(j / 7) + ' semaines' : j + ' ' + pl(j, 'jour', 'jours')) + '.' : j === 0 ? 'C’est aujourd’hui.' : 'Cette date est déjà passée.');
+  setHidden($('obHint'), !!OB.exam || daysBetween(dayKey(now()), EXAM_HINT) < 0);
   setRadio($('obGoal'), b=>+b.dataset.v === OB.goal);
   setRadio($('obPrio'), b=>b.dataset.v === OB.prio);
   /* estimation : une fois les révisions lancées, environ 4 réponses sur 10 portent sur des cartes nouvelles */
@@ -2023,7 +2048,7 @@ function syncOb(){
     setText($('obEndH'), OB.name ? 'C’est parti, ' + OB.name + '.' : 'C’est parti.');
     $('obSum').innerHTML = '<div><span>Chaque jour</span><b>' + OB.goal + ' réponses</b></div>' +
       '<div><span>Les écrits</span><b>' + (j === null ? 'Date à préciser' : j >= 0 ? fmtDay(keyTs(OB.exam), { day:'numeric', month:'long', year:'numeric' }) + ', J-' + j : 'Date à corriger') + '</b></div>' +
-      '<div><span>Priorité</span><b>' + PRIO_L[OB.prio] + '</b></div>';
+      '<div><span>Majeure</span><b>' + PRIO_L[OB.prio] + '</b></div>';
   }
 }
 function obCommit(){
@@ -2047,6 +2072,7 @@ obName.addEventListener('input', syncOb);
 obName.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') { e.preventDefault(); obGo(1); } });
 obDate.addEventListener('change', ()=>{ OB.exam = isDate(obDate.value) ? obDate.value : ''; syncOb(); });
 obDate.addEventListener('input', ()=>{ OB.exam = isDate(obDate.value) ? obDate.value : ''; syncOb(); });
+$('obHint').addEventListener('click', ()=>{ obDate.value = EXAM_HINT; OB.exam = EXAM_HINT; syncOb(); });
 $('obGoal').addEventListener('click', (e)=>{ const b = e.target.closest('.choice'); if (b) { OB.goal = +b.dataset.v; syncOb(); } });
 $('obPrio').addEventListener('click', (e)=>{ const b = e.target.closest('.choice'); if (b) { OB.prio = b.dataset.v; syncOb(); } });
 

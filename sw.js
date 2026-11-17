@@ -2,7 +2,7 @@
    Stratégie : réseau d'abord (on voit toujours la dernière version), cache en repli (hors ligne).
    Les requêtes de vérification de mise à jour (?_=…) ne sont jamais mises en cache.
    À CHAQUE NOUVELLE VERSION : changer VERSION ici ET APP_VERSION dans index.html. */
-const VERSION = '0.2.0';
+const VERSION = '0.3.0';
 const CACHE = 'reussite-' + VERSION;
 const FONTS = 'reussite-fonts';
 const PRECACHE = ['./', 'index.html', 'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',

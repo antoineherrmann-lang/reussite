@@ -1,7 +1,7 @@
 {
   "name": "Réussite",
   "short_name": "Réussite",
-  "description": "Réussite — préparer le CAPES d’histoire-géographie un peu chaque jour. AH Studio",
+  "description": "Réussite — préparer le CAPLP lettres-histoire et géographie un peu chaque jour. AH Studio",
   "lang": "fr",
   "start_url": "./",
   "scope": "./",
