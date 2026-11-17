@@ -491,6 +491,106 @@ html[data-dg] .pl-foot .btn{flex:1;min-width:0}
 .end-grid span{display:block;margin-top:2px;font-size:12.5px;color:var(--ink2)}
 .end-badge{margin-top:16px;padding:10px 16px;border-radius:18px;background:var(--sel);font-size:14.5px;font-weight:500;animation:burst .6s .3s cubic-bezier(.2,.9,.3,1.2) both}
 
+/* ---------- tuile large (Découvrir) ---------- */
+.tile.wide{flex-direction:row;align-items:center;gap:14px;width:100%;margin-top:10px;padding:14px 14px 14px 16px}
+.tile.wide svg{flex:none;margin:0;width:26px;height:26px}
+.tile.wide div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tile.wide svg.go{width:18px;height:18px;color:var(--ink3)}
+
+/* ---------- Découvrir : une carte par écran ---------- */
+.feed{position:fixed;inset:0;z-index:40;background:linear-gradient(180deg,var(--bg-a) 0%,var(--bg-b) 55%,var(--bg-c) 100%);
+  opacity:0;visibility:hidden;transform:translateY(14px);transition:opacity .3s,transform .35s cubic-bezier(.2,.85,.25,1),visibility 0s .35s}
+html[data-theme="dark"] .feed{background:radial-gradient(125% 85% at 100% 66%,#8a149a 0%,#521a63 44%,#2a1233 100%)}
+.feed.open{opacity:1;visibility:visible;transform:none;transition:opacity .3s,transform .35s cubic-bezier(.2,.85,.25,1)}
+.feed:focus{outline:none}
+.feed-list{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
+.feed-list::-webkit-scrollbar{display:none}
+.feed-top{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(var(--safe-t) + var(--top-x)) 14px 0;pointer-events:none}
+.feed-top>*{pointer-events:auto}
+.feed-chips{flex:1;min-width:0;flex-wrap:nowrap;justify-content:flex-end;gap:6px}
+.feed-chips .chip{height:36px;padding:0 12px;font-size:14px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6)}
+.feed-chips .chip.on{background:var(--accent)}
+.dv-card{position:relative;height:100%;display:flex;flex-direction:column;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.dv-img{position:relative;flex:0 0 46%;overflow:hidden;background:var(--grad-icon);
+  -webkit-mask-image:linear-gradient(180deg,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 78%,transparent 100%)}
+.dv-ph{position:absolute;inset:0;display:grid;place-items:center}
+.dv-ph .mark{width:120px;height:120px;opacity:.55}
+.dv-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 28%;opacity:0;transition:opacity .5s ease}
+.dv-card.ok .dv-img img{opacity:1}
+.dv-credit{position:absolute;right:12px;bottom:34px;padding:5px 9px;border-radius:10px;background:rgba(20,8,26,.5);color:rgba(255,255,255,.9);font-size:11.5px;font-weight:500;text-decoration:none;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.dv-card.txt .dv-img{display:none}
+.dv-deco{position:absolute;right:-70px;top:calc(var(--safe-t) + 70px);width:270px;height:270px;border-radius:50%;pointer-events:none;opacity:.9;
+  -webkit-mask-image:linear-gradient(200deg,#000,transparent 75%);mask-image:linear-gradient(200deg,#000,transparent 75%)}
+.dv-deco .mk{fill:color-mix(in srgb,var(--dc) 12%,transparent);stroke:color-mix(in srgb,var(--dc) 38%,transparent)}
+.dv-body{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;padding:6px 22px calc(var(--safe-b) + 18px)}
+.dv-card.txt .dv-body{padding-top:calc(var(--safe-t) + var(--top-x) + 64px);justify-content:center}
+.dv-body h3{margin:10px 0 0;font-size:30px;font-weight:600;letter-spacing:-.025em;line-height:1.12;color:var(--dc)}
+.dv-body h3.qst{font-size:23px;line-height:1.22;letter-spacing:-.015em;color:var(--ink)}
+.dv-card.txt .dv-body h3{font-size:34px}
+.dv-card.txt .dv-body h3.qst{font-size:26px}
+.dv-body p{margin:12px 0 0;font-size:17px;line-height:1.5;-webkit-user-select:text;user-select:text}
+.dv-rev{align-self:flex-start;margin-top:18px;height:46px;padding:0 20px;border:0;border-radius:23px;background:var(--accent);color:var(--on-accent);font:600 15.5px/1 var(--font);cursor:pointer}
+.dv-rev:active{transform:scale(.96)}
+.dv-ans{margin-top:16px;animation:riseIn .35s cubic-bezier(.2,.8,.2,1) both}
+.dv-ans b{display:block;font-size:22px;font-weight:600;letter-spacing:-.015em;line-height:1.2;color:var(--dc)}
+.dv-ans p{margin-top:8px;font-size:16px}
+.dv-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px}
+.dv-card.txt .dv-foot{margin-top:28px}
+.dv-keep{height:40px;padding:0 15px;border:0;border-radius:20px;background:var(--card-strong);box-shadow:inset 0 0 0 1px var(--glass-line);color:var(--ink);font:500 14px/1 var(--font);cursor:pointer;white-space:nowrap}
+.dv-keep.on{background:var(--sel);color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.dv-keep:active{transform:scale(.96)}
+.dv-hint{display:inline-flex;align-items:center;gap:2px;font-size:13.5px;font-weight:500;color:var(--ink2);animation:nudge 1.8s ease-in-out infinite}
+.dv-hint svg{width:16px;height:16px;transform:rotate(90deg)}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media (max-height:700px){.dv-img{flex-basis:40%}.dv-body h3{font-size:26px}.dv-body p{font-size:16px}}
+
+/* ---------- victoire : badge obtenu ---------- */
+.win{position:fixed;inset:0;z-index:58;display:flex;flex-direction:column;color:#fff;text-align:center;overflow:hidden;
+  padding:calc(var(--safe-t) + var(--top-x)) 24px calc(var(--safe-b) + 18px);background:var(--grad-icon);
+  opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+.win.open{opacity:1;visibility:visible;transition:opacity .3s}
+.win:focus{outline:none}
+.win-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.win-in{position:relative;z-index:1;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.win-k{font-size:14px;font-weight:600;letter-spacing:.01em;color:rgba(255,255,255,.78);opacity:0}
+.win-medal{position:relative;width:min(62vw,236px);height:min(62vw,236px);margin-top:18px}
+.win-rays{position:absolute;inset:-46%;border-radius:50%;opacity:0;
+  background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.2) 0deg 7deg,rgba(255,255,255,0) 7deg 20deg);
+  -webkit-mask-image:radial-gradient(circle,#000 22%,transparent 68%);mask-image:radial-gradient(circle,#000 22%,transparent 68%)}
+.win-halo{position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(255,224,246,.6),rgba(255,224,246,0) 66%);opacity:0;filter:blur(8px)}
+.wl{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:0}
+.wl use{stroke-width:1.2;stroke:rgba(255,255,255,.75)}
+.w1 use{fill:rgba(255,255,255,.2)} .w2 use{fill:rgba(255,255,255,.26)} .w3 use{fill:rgba(255,255,255,.34)} .w4 use{fill:rgba(255,255,255,.94);stroke:#fff}
+.w4{filter:drop-shadow(0 6px 18px rgba(255,214,246,.6))}
+.win-g{position:absolute;left:0;right:0;top:50%;transform:translateY(-54%);font-size:34px;font-weight:600;letter-spacing:-.03em;line-height:1;color:#4a1458;opacity:0}
+.win-g.long{font-size:21px;letter-spacing:-.02em}
+.win h2{margin:30px 0 0;font-size:34px;font-weight:600;letter-spacing:-.03em;line-height:1.1;opacity:0}
+.win p{margin:12px auto 0;max-width:310px;font-size:17px;line-height:1.45;color:rgba(255,255,255,.86);opacity:0}
+.win-foot{position:relative;z-index:3;flex:none;max-width:520px;width:100%;margin:0 auto;opacity:0}
+/* l'enchaînement : les couches tombent en place une à une, le cœur s'allume, les rayons tournent, puis le texte */
+.win.go .win-k{animation:riseIn .5s .05s both}
+.win.go .w1{animation:layerIn .7s .12s cubic-bezier(.2,.9,.25,1.25) both}
+.win.go .w2{animation:layerIn .7s .26s cubic-bezier(.2,.9,.25,1.25) both}
+.win.go .w3{animation:layerIn .7s .4s cubic-bezier(.2,.9,.25,1.25) both}
+.win.go .w4{animation:coreIn .75s .56s cubic-bezier(.2,.9,.25,1.4) both}
+.win.go .win-g{animation:fadeIn .4s .95s both}
+.win.go .win-halo{animation:haloIn 1.1s .6s ease-out both,haloBeat 3.2s 1.7s ease-in-out infinite}
+.win.go .win-rays{animation:raysIn .9s .62s ease-out both,raysTurn 26s .62s linear infinite}
+.win.go .win-medal{animation:medalFloat 4.5s 1.4s ease-in-out infinite}
+.win.go h2{animation:riseIn .6s .95s cubic-bezier(.2,.8,.2,1) both}
+.win.go p{animation:riseIn .6s 1.1s cubic-bezier(.2,.8,.2,1) both}
+.win.go .win-foot{animation:riseIn .6s 1.35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes layerIn{0%{opacity:0;transform:scale(1.9) rotate(-70deg)}60%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes coreIn{0%{opacity:0;transform:scale(0)}70%{opacity:1;transform:scale(1.18)}100%{opacity:1;transform:none}}
+@keyframes haloIn{0%{opacity:0;transform:scale(.4)}40%{opacity:1}100%{opacity:.75;transform:scale(1)}}
+@keyframes haloBeat{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:.9;transform:scale(1.07)}}
+@keyframes raysIn{from{opacity:0}to{opacity:1}}
+@keyframes raysTurn{to{transform:rotate(360deg)}}
+@keyframes medalFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.badge.got{cursor:pointer}
+.badge.got:active{background:var(--fill)}
+
 /* ---------- parcours d'accueil (toujours dans les couleurs de l'icône) ---------- */
 .ob{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;color:#fff;
   padding:calc(var(--safe-t) + var(--top-x)) 22px calc(var(--safe-b) + 18px);background:var(--grad-icon);
@@ -548,7 +648,8 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .page{animation:none}
-  .sheet,.sheet-back,.toast,.play,.ob{transition:none!important}
+  .sheet,.sheet-back,.toast,.play,.ob,.feed,.win{transition:none!important}
+  .win .wl,.win .win-g,.win h2,.win p,.win-foot,.win-k,.win-halo{opacity:1!important}.win-rays{display:none}
 }
 </style>
 </head>
@@ -599,6 +700,11 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
     </div>
 
     <div class="cta"><button class="btn primary big" id="btnDaily">Lancer la séance du jour</button></div>
+    <button type="button" class="tile wide" id="btnFeed">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="8" width="15" height="12" rx="2.8"/><path d="M7 4.6h10"/><path d="m8 16.5 2.4-2.8 2 2 1.6-1.6 2 2.4"/></svg>
+      <div><b>Découvrir</b><span id="feedSub">Des cartes à faire défiler, avec des photos</span></div>
+      <svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>
+    </button>
     <div class="duo">
       <button type="button" class="tile" id="btnFlash">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10.5 21 19 10h-6.2L13 3Z"/></svg>
@@ -732,6 +838,33 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 <!-- toast -->
 <div class="toast" id="toast" role="status" aria-live="polite"><p id="toastT"></p><button class="btn" id="toastBtn" hidden>Annuler</button></div>
 
+<!-- Découvrir : cartes à faire défiler -->
+<section class="feed" id="feed" tabindex="-1" role="dialog" aria-modal="true" aria-label="Découvrir" aria-hidden="true">
+  <div class="feed-list" id="feedList"></div>
+  <div class="feed-top">
+    <button class="btn ib" id="feedClose" data-glass-icon aria-label="Fermer Découvrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="chips feed-chips" id="feedChips" role="group" aria-label="Discipline">
+      <button type="button" class="chip" data-v="a">Tout</button><button type="button" class="chip" data-v="l">Lettres</button><button type="button" class="chip" data-v="h">Histoire</button><button type="button" class="chip" data-v="g">Géo</button>
+    </div>
+  </div>
+</section>
+
+<!-- victoire : badge obtenu -->
+<section class="win" id="win" tabindex="-1" role="dialog" aria-modal="true" aria-label="Badge obtenu" aria-hidden="true">
+  <canvas class="win-fx" id="winFx" aria-hidden="true"></canvas>
+  <div class="win-in">
+    <div class="win-k">Nouveau badge</div>
+    <div class="win-medal">
+      <div class="win-rays"></div><div class="win-halo"></div>
+      <svg class="wl w1" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" transform="scale(1)"/></svg><svg class="wl w2" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" transform="rotate(-20) scale(.79)"/></svg><svg class="wl w3" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" transform="rotate(13) scale(.6)"/></svg><svg class="wl w4" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentB" transform="rotate(-8) scale(.43)"/></svg>
+      <div class="win-g num" id="winG"></div>
+    </div>
+    <h2 id="winT"></h2>
+    <p id="winC"></p>
+  </div>
+  <div class="win-foot"><button type="button" class="ob-btn" id="winOk">Continuer</button></div>
+</section>
+
 <!-- séance -->
 <section class="play" id="play" tabindex="-1" role="dialog" aria-modal="true" aria-label="Séance de révision" aria-hidden="true">
   <div class="pl-top">
@@ -845,6 +978,16 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
       </div>
     </div>
 
+    <h3 class="group-title">Découvrir</h3>
+    <div class="group">
+      <div class="row">
+        <div class="row-l"><div class="row-t">Photos</div><div class="row-s">Cherchées sur Wikipédia en arrière-plan, puis gardées sur le téléphone</div></div>
+        <span class="sw"><input type="checkbox" id="swPhotos" aria-label="Photos dans Découvrir"><i></i></span>
+      </div>
+      <div class="row"><div class="row-l"><div class="row-s" id="phInfo"></div></div><span class="spin" id="phSpin" hidden></span></div>
+      <div class="row actions"><button class="btn" id="btnPhotos">Relancer la recherche</button></div>
+    </div>
+
     <h3 class="group-title">Toi et tes objectifs</h3>
     <div class="group">
       <div class="row">
@@ -910,12 +1053,19 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 (function(){
 'use strict';
 
-const APP_VERSION = '0.3.0';          // ← à changer à chaque version (et VERSION dans sw.js)
+const APP_VERSION = '0.4.0';          // ← à changer à chaque version (et VERSION dans sw.js)
 const SETTINGS_KEY = 'reussite.settings', DATA_KEY = 'reussite.data';
 const OLD_SETTINGS_KEY = 'revision.settings', OLD_DATA_KEY = 'revision.data';   // nom provisoire de la v0.1.0 : relu une fois, jamais réécrit
 
 /* ---------- nouveautés (la plus récente en premier) ---------- */
 const CHANGELOG = [
+  { v:'0.4.0', date:'17 novembre 2026', items:[
+    'Découvrir : des cartes de révision à faire défiler, une par écran, avec un filtre par discipline.',
+    'Des photos sur les cartes : elles sont cherchées sur Wikipédia en arrière-plan, puis gardées sur le téléphone.',
+    'Une carte te plaît ? « Garder pour mes séances » la fait passer en tête de tes prochaines séances.',
+    'Victoire : chaque badge obtenu a maintenant son animation et son mot d’encouragement. Touche un badge obtenu pour la revoir.',
+    'Nouveau badge « Curieux », pour 50 cartes découvertes.'
+  ] },
   { v:'0.3.0', date:'17 novembre 2026', items:[
     'L’app prépare maintenant le CAFEP-CAPLP externe, section lettres-histoire et géographie.',
     'Les lettres arrivent : mouvements littéraires, genres, analyse de texte et d’image, grammaire pour la question de langue, auteurs et œuvres.',
@@ -1348,6 +1498,33 @@ const LEVELS = [
   [0, 'Élève'], [100, 'Étudiant'], [300, 'Candidat'], [700, 'Admissible'], [1500, 'Admis'], [3000, 'Stagiaire'], [5000, 'Professeur'], [8000, 'Hors classe']
 ];
 
+/* ---------- photos de « Découvrir » : mots-clés envoyés à la recherche de Wikipédia, par carte ----------
+   Les cartes absentes de cette table (grammaire, notions abstraites, sujets sensibles) restent sans photo. */
+const PHOTOS = {
+  'l1.r0':'Michel de Montaigne', 'l1.r1':'Pierre de Ronsard', 'l1.r2':'Molière', 'l1.r3':'Voltaire', 'l1.r4':'Victor Hugo', 'l1.r5':'Honoré de Balzac', 'l1.r6':'Émile Zola', 'l1.r7':'André Breton',
+  'l1.q0':'Joachim du Bellay', 'l1.q1':'Cromwell (Hugo)', 'l1.q2':'Émile Zola', 'l1.q3':'Manifeste du surréalisme', 'l1.q4':'Samuel Beckett', 'l1.q5':'Jean Racine', 'l1.q6':'Alain Robbe-Grillet', 'l1.q7':'Stéphane Mallarmé', 'l1.q8':'Bataille d’Hernani',
+  'l2.r0':'Phèdre (Racine)', 'l2.r1':'Comédie-Française', 'l2.r2':'Hernani', 'l2.r5':'Jean de La Fontaine', 'l2.r6':'Jean-Jacques Rousseau', 'l2.r7':'Les Liaisons dangereuses', 'l2.q2':'Aristote',
+  'l3.r7':'Plongée (prise de vues)',
+  'l6.r0':'Essais (Montaigne)', 'l6.r1':'Le Cid (Corneille)', 'l6.r2':'Fables de La Fontaine', 'l6.r3':'Candide', 'l6.r4':'Madame Bovary', 'l6.r5':'Les Fleurs du mal', 'l6.r6':'Les Misérables', 'l6.r7':'Germinal (roman)', 'l6.r8':'Albert Camus',
+  'l6.q0':'Le Père Goriot', 'l6.q1':'Phèdre (Racine)', 'l6.q2':'Le Mariage de Figaro', 'l6.q3':'Les Liaisons dangereuses', 'l6.q4':'Le Rouge et le Noir', 'l6.q5':'Bel-Ami', 'l6.q6':'Guillaume Apollinaire', 'l6.q7':'Gargantua', 'l6.q8':'Les Confessions (Rousseau)', 'l6.q9':'Jean Anouilh',
+  'h5.r0':'Johannes Gutenberg', 'h5.r1':'Chute de Constantinople', 'h5.r2':'Christophe Colomb', 'h5.r3':'Traité de Tordesillas', 'h5.r4':'Martin Luther', 'h5.r5':'Fernand de Magellan', 'h5.r6':'Concile de Trente', 'h5.r7':'Édit de Nantes',
+  'h5.q0':'Vasco de Gama', 'h5.q1':'Hernán Cortés', 'h5.q2':'Bartolomé de las Casas', 'h5.q3':'Érasme', 'h5.q4':'Jean Calvin', 'h5.q5':'Massacre de la Saint-Barthélemy', 'h5.q6':'Paix d’Augsbourg', 'h5.q7':'Potosí',
+  'h6.r0':'Encyclopédie ou Dictionnaire raisonné des sciences, des arts et des métiers', 'h6.r1':'Déclaration des droits de l’homme et du citoyen de 1789', 'h6.r2':'Journée du 10 août 1792', 'h6.r3':'Maximilien de Robespierre', 'h6.r4':'Coup d’État du 18 Brumaire', 'h6.r5':'Sacre de Napoléon Ier', 'h6.r6':'Bataille de Waterloo', 'h6.r7':'Siècle des Lumières',
+  'h6.q0':'Montesquieu', 'h6.q1':'Nuit du 4 août 1789', 'h6.q2':'Constitution civile du clergé', 'h6.q3':'Exécution de Louis XVI', 'h6.q4':'Décret d’abolition de l’esclavage du 4 février 1794', 'h6.q5':'Concordat de 1801', 'h6.q6':'Bataille d’Austerlitz', 'h6.q7':'Frédéric II (roi de Prusse)',
+  'h7.r0':'Trois Glorieuses', 'h7.r1':'Victor Schœlcher', 'h7.r2':'Coup d’État du 2 décembre 1851', 'h7.r3':'Proclamation de la République du 4 septembre 1870', 'h7.r4':'Commune de Paris (1871)', 'h7.r5':'Jules Ferry', 'h7.r6':'Pierre Waldeck-Rousseau', 'h7.r7':'Loi de séparation des Églises et de l’État',
+  'h7.q0':'François Guizot', 'h7.q1':'Émile Ollivier', 'h7.q2':'J’accuse…!', 'h7.q3':'Napoléon III', 'h7.q5':'Georges Eugène Haussmann', 'h7.q6':'Traité du Bardo',
+  'h8.r0':'Armistice de 1918', 'h8.r1':'Révolution russe', 'h8.r4':'Plan Marshall', 'h8.r5':'Traité de Rome (1957)', 'h8.r6':'Accords d’Évian', 'h8.r7':'Mur de Berlin',
+  'h8.q0':'Bataille de Verdun', 'h8.q2':'Hannah Arendt', 'h8.q3':'Crise des missiles de Cuba', 'h8.q4':'Conférence de Bandung', 'h8.q5':'Robert Schuman', 'h8.q6':'Bataille de Diên Biên Phu', 'h8.q7':'Traité sur l’Union européenne',
+  'g2.r0':'Mondialisation', 'g2.r1':'Conteneur', 'g2.r3':'Port de Rotterdam', 'g2.r4':'Port de Singapour', 'g2.r5':'Zone économique exclusive', 'g2.r6':'New York',
+  'g2.q0':'Porte-conteneurs', 'g2.q1':'Convention des Nations unies sur le droit de la mer', 'g2.q2':'Détroit de Malacca', 'g2.q3':'Port de Shanghai', 'g2.q4':'Canal de Suez', 'g2.q5':'Organisation mondiale du commerce', 'g2.q6':'Câble sous-marin',
+  'g3.r0':'Risque naturel', 'g3.r1':'Séisme', 'g3.r3':'Anthropocène', 'g3.r6':'Stress hydrique',
+  'g3.q0':'Accord de Paris sur le climat', 'g3.q1':'Groupe d’experts intergouvernemental sur l’évolution du climat', 'g3.q2':'Gro Harlem Brundtland', 'g3.q3':'Sommet de la Terre de Rio 1992', 'g3.q4':'Accident nucléaire de Fukushima', 'g3.q5':'Mer d’Aral', 'g3.q6':'Plan de prévention des risques', 'g3.q7':'Forêt amazonienne',
+  'g4.r0':'La Défense', 'g4.r1':'Diagonale du vide', 'g4.r2':'Périurbanisation', 'g4.r3':'France d’outre-mer', 'g4.r4':'Zone économique exclusive de la France', 'g4.r6':'Région française',
+  'g4.q1':'Mayotte', 'g4.q2':'Aéroport de Paris-Charles-de-Gaulle', 'g4.q3':'Loi littoral', 'g4.q4':'Lyon', 'g4.q5':'Loire (fleuve)', 'g4.q6':'Guyane', 'g4.q7':'Métropole (intercommunalité française)',
+  'g5.r0':'Union européenne', 'g5.r1':'Espace Schengen', 'g5.r2':'Politique agricole commune', 'g5.r3':'Fonds européen de développement régional', 'g5.r4':'Banane bleue', 'g5.r5':'Élargissement de l’Union européenne', 'g5.r6':'Critères de Copenhague',
+  'g5.q1':'Croatie', 'g5.q2':'Parlement européen', 'g5.q3':'Banque centrale européenne', 'g5.q4':'Traité de Lisbonne', 'g5.q5':'Frontex', 'g5.q6':'Région ultrapériphérique', 'g5.q7':'Roger Brunet'
+};
+
 /* ---------- constantes ---------- */
 const MIN = 60000, DAY = 86400000;
 const BOX_DAYS = [0, 1, 3, 7, 14, 30];   // répétition espacée : délai avant de revoir une carte, selon sa boîte
@@ -1375,7 +1552,7 @@ const TABS = [
 ];
 
 /* ---------- réglages d’interface ---------- */
-const DEFAULTS = { theme:'auto', glass:true, autoUpdate:true, tab:0, lastCheck:0, disc:'l' };
+const DEFAULTS = { theme:'auto', glass:true, autoUpdate:true, tab:0, lastCheck:0, disc:'l', photos:true };
 let S = Object.assign({}, DEFAULTS);
 try { Object.assign(S, JSON.parse(localStorage.getItem(SETTINGS_KEY) || localStorage.getItem(OLD_SETTINGS_KEY) || '{}')); } catch(e){}
 function save(){ try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(S)); } catch(e){} }
@@ -1439,7 +1616,7 @@ function say(msg){ return D.name ? msg.replace('{p}', D.name) : msg.replace(/,? 
    prio  : la majeure choisie au concours, 'l' lettres, 'hg' histoire-géographie, 'b' pas encore choisie
    frozen : jours protégés par un joker */
 function defData(){
-  return { v:1, since:now(), goal:10, exam:'', items:{}, days:{}, xp:0, jokers:1, frozen:[], best:0, badges:{}, sessions:0, perfect:0, name:'', prio:'b', onboarded:false };
+  return { v:1, since:now(), goal:10, exam:'', items:{}, days:{}, xp:0, jokers:1, frozen:[], best:0, badges:{}, sessions:0, perfect:0, name:'', prio:'b', onboarded:false, disc:{} };
 }
 function sanitize(raw){
   const d = defData(); if (!raw || typeof raw !== 'object') return d;
@@ -1455,6 +1632,7 @@ function sanitize(raw){
   d.name = cleanName(raw.name);
   d.prio = raw.prio === 'l' || raw.prio === 'hg' ? raw.prio : (raw.prio === 'h' || raw.prio === 'g') ? 'hg' : 'b';   // 'h' et 'g' : anciennes priorités de la v0.2.0
   d.onboarded = !!raw.onboarded;
+  if (raw.disc && typeof raw.disc === 'object') for (const id in raw.disc) if (/^[a-z]\d+\.[qr]\d+$/.test(id)) d.disc[id] = 1;   // cartes vues dans Découvrir
   if (raw.items && typeof raw.items === 'object') for (const id in raw.items){
     const s = raw.items[id]; if (!s || typeof s !== 'object') continue;
     d.items[id] = { b:Math.round(num(s.b, 0, 0, 5)), d:num(s.d, 0, 0, 9e15), n:Math.round(num(s.n, 0, 0, 1e6)), k:Math.round(num(s.k, 0, 0, 1e6)) };
@@ -1529,17 +1707,19 @@ function record(it, ok){
 }
 
 /* ---------- badges ---------- */
+/* g : ce qui s’affiche au cœur de la médaille   c : l’encouragement de la victoire ({p} = prénom) */
 const BADGES = [
-  { id:'first',   t:'Premier pas',       s:'Terminer une séance',                    ok:()=>D.sessions >= 1 },
-  { id:'s3',      t:'Trois jours',       s:'Tenir une série de 3 jours',             ok:()=>D.best >= 3 },
-  { id:'s7',      t:'Une semaine',       s:'Tenir une série de 7 jours',             ok:()=>D.best >= 7 },
-  { id:'s30',     t:'Un mois',           s:'Tenir une série de 30 jours',            ok:()=>D.best >= 30 },
-  { id:'a100',    t:'Cent réponses',     s:'Donner 100 réponses',                    ok:()=>totals().n >= 100 },
-  { id:'a500',    t:'Cinq cents',        s:'Donner 500 réponses',                    ok:()=>totals().n >= 500 },
-  { id:'perfect', t:'Sans faute',        s:'Finir une séance sans erreur',           ok:()=>D.perfect >= 1 },
-  { id:'both',    t:'Bivalent',          s:'Lettres et histoire-géographie le même jour', ok:()=>{ for (const k in D.days){ const d = D.days[k]; if (d.l > 0 && d.h + d.g > 0) return true; } return false; } },
-  { id:'all',     t:'Tour du programme', s:'Commencer les ' + THEMES.length + ' thèmes',                ok:()=>THEMES.every(th=>seenCount(th.items) > 0) },
-  { id:'master',  t:'Spécialiste',       s:'Maîtriser un thème à 80 %',              ok:()=>THEMES.some(th=>mastery(th.items) >= .8) }
+  { id:'first',   t:'Premier pas',       s:'Terminer une séance',                         g:'1',     c:'Le plus dur, c’est de commencer, {p}. C’est fait.',                         ok:()=>D.sessions >= 1 },
+  { id:'s3',      t:'Trois jours',       s:'Tenir une série de 3 jours',                  g:'3',     c:'Trois jours de suite, {p}. L’habitude est en train de prendre.',            ok:()=>D.best >= 3 },
+  { id:'s7',      t:'Une semaine',       s:'Tenir une série de 7 jours',                  g:'7',     c:'Une semaine entière sans lâcher, {p}. C’est ça, préparer un concours.',     ok:()=>D.best >= 7 },
+  { id:'s30',     t:'Un mois',           s:'Tenir une série de 30 jours',                 g:'30',    c:'Trente jours, {p}. Très peu de candidats tiennent ce rythme.',              ok:()=>D.best >= 30 },
+  { id:'a100',    t:'Cent réponses',     s:'Donner 100 réponses',                         g:'100',   c:'Cent réponses, {p}. Chacune a laissé une trace.',                           ok:()=>totals().n >= 100 },
+  { id:'a500',    t:'Cinq cents',        s:'Donner 500 réponses',                         g:'500',   c:'Cinq cents réponses, {p}. Tu connais ton programme mieux que tu ne le crois.', ok:()=>totals().n >= 500 },
+  { id:'perfect', t:'Sans faute',        s:'Finir une séance sans erreur',                g:'10/10', c:'Pas une erreur, {p}. Garde cette séance en tête le jour des écrits.',       ok:()=>D.perfect >= 1 },
+  { id:'both',    t:'Bivalent',          s:'Lettres et histoire-géographie le même jour', g:'L+HG',  c:'Lettres et histoire-géographie le même jour, {p}. C’est tout l’esprit du CAPLP.', ok:()=>{ for (const k in D.days){ const d = D.days[k]; if (d.l > 0 && d.h + d.g > 0) return true; } return false; } },
+  { id:'curious', t:'Curieux',           s:'Découvrir 50 cartes',                         g:'50',    c:'Cinquante cartes parcourues, {p}. La curiosité fait la moitié du travail.',  ok:()=>Object.keys(D.disc).length >= 50 },
+  { id:'all',     t:'Tour du programme', s:'Commencer les ' + THEMES.length + ' thèmes',  g:String(THEMES.length), c:'Tu as mis un pied dans chaque thème, {p}. Plus rien ne te sera inconnu.', ok:()=>THEMES.every(th=>seenCount(th.items) > 0) },
+  { id:'master',  t:'Spécialiste',       s:'Maîtriser un thème à 80 %',                   g:'80 %',  c:'Un thème maîtrisé, {p}. Tu sais maintenant comment faire pour les autres.',  ok:()=>THEMES.some(th=>mastery(th.items) >= .8) }
 ];
 function checkBadges(){ const got = []; BADGES.forEach(b=>{ if (!D.badges[b.id] && b.ok()) { D.badges[b.id] = now(); got.push(b); } }); return got; }
 
@@ -1640,6 +1820,8 @@ function renderToday(){
   setHidden(jok, D.jokers < 1);
   setHTML(jok, ICONS.ice + '<span>' + D.jokers + ' ' + pl(D.jokers, 'joker en réserve', 'jokers en réserve') + '</span>');
   setText($('btnDaily'), td.done ? 'Continuer à réviser' : td.n > 0 ? 'Reprendre la séance du jour' : 'Lancer la séance du jour');
+  const nd = Object.keys(D.disc).length;
+  setText($('feedSub'), nd ? nd + ' ' + pl(nd, 'carte découverte', 'cartes découvertes') + ' sur ' + ALL.length : 'Des cartes à faire défiler, avec des photos');
   /* erreurs à revoir */
   const rv2 = toReview().length;
   setHidden($('reviewCard'), rv2 === 0);
@@ -1699,8 +1881,8 @@ function renderProgress(){
   setHTML($('mastery'), h);
   setHTML($('badges'), BADGES.map(b=>{
     const got = D.badges[b.id];
-    return '<div class="badge' + (got ? ' got' : '') + '"><div class="badge-i">' + (got ? ICONS.check : ICONS.star) + '</div><div class="row-l"><div class="row-t">' + b.t + '</div><div class="row-s">' +
-           (got ? 'Obtenu le ' + fmtDay(got) : b.s) + '</div></div></div>';
+    return '<div class="badge' + (got ? ' got' : '') + '" data-id="' + b.id + '"><div class="badge-i">' + (got ? ICONS.check : ICONS.star) + '</div><div class="row-l"><div class="row-t">' + b.t + '</div><div class="row-s">' +
+           (got ? 'Obtenu le ' + fmtDay(got) + '. Touche pour revoir.' : b.s) + '</div></div></div>';
   }).join(''));
 }
 function renderCal(){
@@ -1857,10 +2039,12 @@ function buildSession(mode, thId){
 
 const MARK_SVG = '<svg class="mark p4" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg>';
 const playEl = $('play'), stage = $('plStage');
-const playSheet = makeSheet(playEl, null, null, ()=>{ P = null; render(); });
+const playSheet = makeSheet(playEl, null, null, ()=>{ P = null; render(); flushWin(); });
 const PL = { show:$('plShow'), no:$('plNo'), yes:$('plYes'), next:$('plNext'), again:$('plAgain'), done:$('plDone') };
 function foot(){ const on = Array.prototype.slice.call(arguments); for (const k in PL) setHidden(PL[k], on.indexOf(k) < 0); }
-let P = null;
+let P = null, pendingWin = [];
+/* les badges gagnés pendant la séance sont fêtés après le bilan, ou dès qu’on le quitte */
+function flushWin(){ if (!pendingWin.length) return; const g = pendingWin; pendingWin = []; celebrate(g); }
 function startSession(mode, thId){
   let items = buildSession(mode, thId);
   if (!items.length && mode === 'review') { mode = 'daily'; items = buildSession(mode); }
@@ -1945,6 +2129,7 @@ function showEnd(){
     got.map(b=>'<div class="end-badge">Nouveau badge : ' + b.t + '</div>').join('') + '</div>';
   pop(stage, 'swap'); stage.scrollTop = 0;
   foot('again', 'done');
+  pendingWin = got; setTimeout(flushWin, 900);   // le bilan d’abord, la victoire ensuite
 }
 stage.addEventListener('click', (e)=>{ const b = e.target.closest('.opt'); if (b && stage.contains(b)) answer(+b.dataset.k); });
 PL.show.addEventListener('click', reveal);
@@ -1952,7 +2137,7 @@ PL.no.addEventListener('click', ()=>grade(false));
 PL.yes.addEventListener('click', ()=>grade(true));
 PL.next.addEventListener('click', next);
 PL.done.addEventListener('click', ()=>playSheet.set(false));
-PL.again.addEventListener('click', ()=>{ const m = P ? P.mode : 'daily', id = P ? P.thId : ''; startSession(m, id); });
+PL.again.addEventListener('click', ()=>{ const m = P ? P.mode : 'daily', id = P ? P.thId : ''; startSession(m, id); flushWin(); });
 $('plClose').addEventListener('click', ()=>playSheet.set(false));
 $('btnDaily').addEventListener('click', ()=>startSession('daily'));
 $('btnFlash').addEventListener('click', ()=>startSession('flash'));
@@ -1960,12 +2145,229 @@ $('btnReps').addEventListener('click', ()=>startSession('reps'));
 $('btnReview').addEventListener('click', ()=>startSession('review'));
 
 /* ============================================================
+   Victoire : l’animation d’un badge obtenu
+   La médaille se monte couche par couche, comme l’icône ; des confettis, puis l’encouragement.
+   ============================================================ */
+const reducedMotion = ()=>!!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const winEl = $('win'), winFx = $('winFx');
+const WIN = { queue:[], raf:0, t:0 };
+const winSheet = makeSheet(winEl, null, null, ()=>{
+  cancelAnimationFrame(WIN.raf); WIN.raf = 0; winEl.classList.remove('go');
+  if (WIN.queue.length) setTimeout(winNext, 260);
+});
+function celebrate(list){
+  if (!list || !list.length) return;
+  list.forEach(b=>WIN.queue.push(b));
+  if (!winSheet.open) winNext();
+}
+function winNext(){
+  const b = WIN.queue.shift(); if (!b) return;
+  setText($('winG'), b.g || '');
+  setClass($('winG'), 'long', (b.g || '').length > 3);
+  setText($('winT'), b.t);
+  setText($('winC'), say(b.c || ''));
+  setText($('winOk'), WIN.queue.length ? 'Suivant' : 'Continuer');
+  winSheet.set(true);
+  winEl.classList.remove('go'); void winEl.offsetWidth; winEl.classList.add('go');
+  haptic();
+  clearTimeout(WIN.t); WIN.t = setTimeout(confetti, 520);
+}
+$('winOk').addEventListener('click', ()=>winSheet.set(false));
+function confetti(){
+  if (reducedMotion() || !winSheet.open) return;
+  const c = winFx.getContext('2d'); if (!c) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1), w = winEl.clientWidth, h = winEl.clientHeight;
+  winFx.width = w * dpr; winFx.height = h * dpr; c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cols = ['#ffffff', '#f3c9f6', '#d58fdc', '#ffd98a', '#ffb4dc', '#c9c8ff'], ps = [], r = (a, b)=>a + Math.random() * (b - a);
+  const ox = w / 2, oy = h * .34;
+  for (let i = 0; i < 130; i++){
+    const ang = r(-Math.PI, 0), sp = r(4, 15);
+    ps.push({ x:ox + r(-30, 30), y:oy + r(-20, 20), vx:Math.cos(ang) * sp * r(.5, 1), vy:Math.sin(ang) * sp - r(1, 5), s:r(5, 10), a:r(0, 6.28), va:r(-.28, .28), col:cols[i % cols.length], k:i % 3, tw:r(0, 6.28) });
+  }
+  const t0 = performance.now(), LIFE = 3400;
+  cancelAnimationFrame(WIN.raf);
+  (function frame(t){
+    const el = t - t0; c.clearRect(0, 0, w, h);
+    if (el > LIFE || !winSheet.open) { WIN.raf = 0; return; }
+    c.globalAlpha = el > LIFE - 700 ? (LIFE - el) / 700 : 1;
+    for (const p of ps){
+      p.vy += .3; p.vx *= .988; p.vy *= .988; p.x += p.vx; p.y += p.vy; p.a += p.va; p.tw += .2;
+      c.save(); c.translate(p.x, p.y); c.rotate(p.a); c.scale(1, .35 + .65 * Math.abs(Math.cos(p.tw))); c.fillStyle = p.col;
+      if (p.k === 0) c.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * .66);
+      else if (p.k === 1) { c.beginPath(); c.arc(0, 0, p.s / 2.4, 0, 6.29); c.fill(); }
+      else { c.beginPath(); for (let j = 0; j < 5; j++){ const q = -Math.PI / 2 + j * 1.2566; c.lineTo(Math.cos(q) * p.s / 1.8, Math.sin(q) * p.s / 1.8); } c.closePath(); c.fill(); }
+      c.restore();
+    }
+    WIN.raf = requestAnimationFrame(frame);
+  })(t0);
+}
+/* un badge déjà obtenu se rejoue en le touchant dans l’onglet Progrès */
+$('badges').addEventListener('click', (e)=>{
+  const el = e.target.closest('.badge.got'); if (!el) return;
+  const b = BADGES.find(x=>x.id === el.dataset.id); if (b) celebrate([b]);
+});
+
+/* ============================================================
+   Photos : un moteur de recherche qui travaille en fond
+   Pour chaque carte illustrable, PHOTOS donne des mots-clés. Le moteur interroge la recherche de Wikipédia,
+   retient l’adresse de l’image libre de la page trouvée, et garde le résultat sur le téléphone.
+   PC : { 'mots-clés' : [adresse de l’image ('' si rien), adresse de la page, date] }
+   ============================================================ */
+const PHOTO_KEY = 'reussite.photos', PH_API = 'https://fr.wikipedia.org/w/api.php';
+const PH_RETRY = 14 * DAY;                      // une recherche sans image est retentée au bout de deux semaines
+let PC = {};
+try { const raw = JSON.parse(localStorage.getItem(PHOTO_KEY) || '{}'); if (raw && typeof raw === 'object') for (const k in raw){ const v = raw[k]; if (Array.isArray(v) && typeof v[0] === 'string') PC[k] = [v[0], String(v[1] || ''), +v[2] || 0]; } } catch(e){}
+let phSaveT = null;
+function phSave(){ clearTimeout(phSaveT); phSaveT = setTimeout(()=>{ try { localStorage.setItem(PHOTO_KEY, JSON.stringify(PC)); } catch(e){} }, 600); }
+const PH_ALL = Array.from(new Set(Object.keys(PHOTOS).map(id=>PHOTOS[id])));
+const PH = { q:[], busy:0, state:'idle', timer:null, slow:true };
+const photosOn = ()=>S.photos !== false;
+const phKnown = (q)=>{ const c = PC[q]; return !!c && (c[0] !== '' || Date.now() - c[2] < PH_RETRY); };
+function phStats(){ let ok = 0, miss = 0; PH_ALL.forEach(q=>{ const c = PC[q]; if (c && c[0]) ok++; else if (c) miss++; }); return { ok, miss, todo:PH_ALL.length - ok - miss, total:PH_ALL.length }; }
+/* met des recherches en file ; front = à traiter tout de suite (la carte arrive à l’écran) */
+function phQueue(list, front){
+  if (!photosOn()) return;
+  list.forEach(q=>{ if (!q || phKnown(q)) return; const i = PH.q.indexOf(q); if (i >= 0) { if (!front) return; PH.q.splice(i, 1); } if (front) PH.q.unshift(q); else PH.q.push(q); });
+  if (front) PH.slow = false;
+  phPump();
+}
+function phPump(){
+  if (!photosOn() || PH.busy >= 2 || !PH.q.length || PH.timer) return;
+  if (navigator.onLine === false) { PH.state = 'offline'; phInfo(); return; }
+  const q = PH.q.shift(); PH.busy++; PH.state = 'run'; phInfo();
+  phFetch(q).then(()=>{ PH.busy--; phAfter(); }, ()=>{ PH.busy--; PH.q.unshift(q); PH.state = 'offline'; phInfo(); });
+  if (PH.busy < 2 && !PH.slow) phPump();
+}
+function phAfter(){
+  if (!PH.q.length) { if (!PH.busy) { PH.state = 'idle'; PH.slow = true; } phInfo(); return; }
+  PH.timer = setTimeout(()=>{ PH.timer = null; phPump(); }, PH.slow ? 350 : 60);   // en fond : sans se presser
+  phInfo();
+}
+async function phFetch(q){
+  const u = PH_API + '?action=query&format=json&formatversion=2&origin=*&generator=search&gsrnamespace=0&gsrlimit=1&gsrsearch=' + encodeURIComponent(q) +
+            '&prop=pageimages%7Cinfo&piprop=thumbnail&pithumbsize=640&pilicense=free&inprop=url';
+  const r = await fetch(u); if (!r.ok) throw new Error('http ' + r.status);
+  const j = await r.json(), pg = j && j.query && j.query.pages && j.query.pages[0];
+  const src = pg && pg.thumbnail && typeof pg.thumbnail.source === 'string' && /^https:\/\/upload\.wikimedia\.org\//.test(pg.thumbnail.source) ? pg.thumbnail.source : '';
+  PC[q] = [src, pg && typeof pg.fullurl === 'string' && /^https:\/\/fr\.wikipedia\.org\//.test(pg.fullurl) ? pg.fullurl : '', Date.now()];
+  phSave(); feedPhoto(q);
+}
+function phInfo(){
+  const el = $('phInfo'); if (!el) return;
+  const st = phStats();
+  let t = st.ok + ' ' + pl(st.ok, 'photo trouvée', 'photos trouvées') + ' sur ' + st.total + ' recherches';
+  if (!photosOn()) t = 'Photos coupées. ' + t + '.';
+  else if (PH.state === 'run' || PH.q.length) t = 'Recherche en cours… ' + t + '.';
+  else if (PH.state === 'offline' && st.todo) t = 'Hors ligne : la recherche reprendra. ' + t + '.';
+  else t = cap(t) + (st.miss ? ', ' + st.miss + ' sans image.' : '.');
+  setText(el, t);
+  setHidden($('phSpin'), !(photosOn() && (PH.state === 'run' || PH.q.length > 0) && PH.state !== 'offline'));
+}
+window.addEventListener('online', ()=>{ if (PH.q.length) { PH.state = 'idle'; phPump(); } else phQueue(PH_ALL); });
+
+/* ============================================================
+   Découvrir : des cartes à faire défiler, une par écran
+   ============================================================ */
+const feedEl = $('feed'), feedList = $('feedList'), feedChips = $('feedChips');
+const FD = { filter:'a', pool:[], n:0, io:null };
+const feedSheet = makeSheet(feedEl, null, null, ()=>{
+  if (FD.io) { FD.io.disconnect(); FD.io = null; }
+  feedList.innerHTML = ''; saveD(); render();
+});
+function feedOrder(){
+  const by = {}; ALL.forEach(x=>{ if (FD.filter === 'a' || x.th.d === FD.filter) (by[x.th.id] || (by[x.th.id] = [])).push(x); });
+  const lists = shuffle(Object.keys(by).map(k=>shuffle(by[k]))), out = [];
+  for (let more = true; more;){ more = false; lists.forEach(l=>{ if (l.length){ out.push(l.pop()); more = true; } }); }
+  return out;
+}
+function keepLabel(it){ const s = D.items[it.id]; return !s ? 'Garder pour mes séances' : s.n > 0 ? 'Déjà dans tes séances' : 'Gardée pour tes séances'; }
+function feedCard(it, first){
+  const th = it.th, q = photosOn() ? (PHOTOS[it.id] || '') : '', el = document.createElement('article');
+  el.className = 'dv-card d-' + th.d + (q ? '' : ' txt'); el.dataset.id = it.id; if (q) el.dataset.q = q;
+  let h = '';
+  if (q) h += '<div class="dv-img"><div class="dv-ph">' + MARK_SVG + '</div><img alt="" crossorigin="anonymous" decoding="async"><a class="dv-credit" target="_blank" rel="noopener" hidden>Photo : Wikipédia</a></div>';
+  else h += '<div class="dv-deco">' + MARK_SVG + '</div>';
+  h += '<div class="dv-body"><div class="pl-tag d-' + th.d + '"><i></i>' + esc(th.t) + '</div>';
+  if (it.kind === 'r') h += '<h3>' + esc(th.r[it.ix][0]) + '</h3><p>' + esc(th.r[it.ix][1]) + '</p>';
+  else h += '<h3 class="qst">' + esc(th.q[it.ix][0]) + '</h3><button type="button" class="dv-rev">Voir la réponse</button><div class="dv-ans" hidden><b>' + esc(th.q[it.ix][1][0]) + '</b><p>' + esc(th.q[it.ix][2]) + '</p></div>';
+  h += '<div class="dv-foot"><button type="button" class="dv-keep' + (D.items[it.id] ? ' on' : '') + '">' + keepLabel(it) + '</button>' +
+       (first ? '<span class="dv-hint">Fais défiler' + ICONS.chev + '</span>' : '') + '</div></div>';
+  el.innerHTML = h;
+  return el;
+}
+function feedMore(n){
+  for (let k = 0; k < n; k++){
+    if (FD.n >= FD.pool.length) FD.pool = FD.pool.concat(feedOrder());
+    if (FD.n >= FD.pool.length) return;
+    const el = feedCard(FD.pool[FD.n], FD.n === 0); FD.n++;
+    feedList.appendChild(el); if (FD.io) FD.io.observe(el);
+  }
+}
+function feedStart(){
+  if (FD.io) FD.io.disconnect();
+  feedList.innerHTML = ''; feedList.scrollTop = 0; FD.pool = []; FD.n = 0;
+  FD.io = 'IntersectionObserver' in window ? new IntersectionObserver(feedSeen, { root:feedList, threshold:.6 }) : null;
+  for (const b of feedChips.children) setOn(b, b.dataset.v === FD.filter);
+  feedMore(8);
+  if (!FD.io) Array.from(feedList.children).forEach(feedWant);
+}
+function openFeed(filter){
+  if (filter) FD.filter = filter;
+  feedSheet.set(true); feedStart();
+}
+/* la carte arrive à l’écran : on la compte, on prépare ses photos et celles des deux suivantes */
+function feedSeen(entries){
+  entries.forEach(en=>{
+    if (!en.isIntersecting) return;
+    const el = en.target, id = el.dataset.id;
+    for (let e = el, k = 0; e && k < 3; e = e.nextElementSibling, k++) feedWant(e);
+    if (!D.disc[id]) { D.disc[id] = 1; const got = checkBadges(); if (got.length) { saveD(); celebrate(got); } }
+    let after = 0; for (let e = el.nextElementSibling; e; e = e.nextElementSibling) after++;
+    if (after < 4) feedMore(8);
+  });
+}
+function feedWant(el){
+  const q = el.dataset.q; if (!q || el._want) return; el._want = true;
+  const c = PC[q];
+  if (c && c[0]) feedImg(el, c); else if (phKnown(q)) feedNoImg(el); else phQueue([q], true);
+}
+function feedNoImg(el){ setClass(el, 'txt', true); setClass(el, 'gone', true); }
+function feedImg(el, c){
+  const img = el.querySelector('img'); if (!img || img.getAttribute('src')) return;
+  img.onload = ()=>{ el.classList.add('ok'); const a = el.querySelector('.dv-credit'); if (a && c[1]) { a.href = c[1]; a.hidden = false; } };
+  img.onerror = ()=>feedNoImg(el);
+  img.src = c[0];
+}
+/* le moteur a trouvé (ou non) une photo : les cartes déjà demandées se mettent à jour */
+function feedPhoto(q){
+  if (!feedSheet.open) return;
+  const c = PC[q];
+  Array.from(feedList.children).forEach(el=>{ if (el.dataset.q === q && el._want) { if (c && c[0]) feedImg(el, c); else feedNoImg(el); } });
+}
+feedList.addEventListener('click', (e)=>{
+  const card = e.target.closest('.dv-card'); if (!card) return;
+  const it = ALL.find(x=>x.id === card.dataset.id); if (!it) return;
+  if (e.target.closest('.dv-rev')){ e.target.closest('.dv-rev').hidden = true; card.querySelector('.dv-ans').hidden = false; return; }
+  const kb = e.target.closest('.dv-keep');
+  if (kb){
+    const s = D.items[it.id];
+    if (!s) D.items[it.id] = { b:0, d:0, n:0, k:0 };            // carte gardée : elle passera en tête des prochaines séances
+    else if (s.n === 0) delete D.items[it.id];
+    else return;
+    saveD(); setOn(kb, !!D.items[it.id]); setText(kb, keepLabel(it)); haptic();
+  }
+});
+feedChips.addEventListener('click', (e)=>{ const b = e.target.closest('.chip'); if (!b || b.dataset.v === FD.filter) return; FD.filter = b.dataset.v; feedStart(); });
+$('feedClose').addEventListener('click', ()=>feedSheet.set(false));
+$('btnFeed').addEventListener('click', ()=>openFeed());
+
+/* ============================================================
    Réglages
    ============================================================ */
 const settingsSheet = makeSheet($('settings'), $('sheetBack'), $('sheetBar'));
 const themeSeg = $('themeSeg'), themeBtns = Array.from(themeSeg.querySelectorAll('button'));
 const goalSeg = $('goalSeg'), prioSeg = $('prioSeg'), nameInp = $('nameInp');
-const swGlass = $('swGlass'), swAuto = $('swAuto');
+const swGlass = $('swGlass'), swAuto = $('swAuto'), swPhotos = $('swPhotos');
 function openSettings(){ syncSettingsUI(); renderUpdate(); $('sheetScroll').scrollTop = 0; settingsSheet.set(true); }
 $('btnSettings').addEventListener('click', openSettings);
 $('btnClose').addEventListener('click', ()=>settingsSheet.set(false));
@@ -1981,6 +2383,7 @@ function syncSettingsUI(){
   if (document.activeElement !== nameInp && nameInp.value !== D.name) nameInp.value = D.name;
   setChecked(swGlass, S.glass !== false);
   setChecked(swAuto, S.autoUpdate !== false);
+  setChecked(swPhotos, photosOn()); phInfo();
   setText($('jokInfo'), D.jokers + ' / ' + MAX_JOKERS);
   const tt = totals();
   setText($('dataInfo'), tt.n + ' ' + pl(tt.n, 'réponse', 'réponses') + ', ' + seenCount(ALL) + ' ' + pl(seenCount(ALL), 'carte vue', 'cartes vues') + ', ' + D.sessions + ' ' + pl(D.sessions, 'séance', 'séances') + ', depuis le ' + fmtDay(D.since) + '.');
@@ -2003,6 +2406,13 @@ themeSeg.addEventListener('click', (e)=>{
 });
 swGlass.addEventListener('change', ()=>{ S.glass = swGlass.checked; save(); if (window.GlassKitLoader) window.GlassKitLoader.sync(); });
 swAuto.addEventListener('change', ()=>{ S.autoUpdate = swAuto.checked; save(); scheduleAuto(); });
+swPhotos.addEventListener('change', ()=>{ S.photos = swPhotos.checked; save(); if (S.photos) phQueue(PH_ALL); else { PH.q.length = 0; PH.state = 'idle'; } phInfo(); });
+$('btnPhotos').addEventListener('click', ()=>{
+  if (!photosOn()) { toast('Active d’abord les photos.'); return; }
+  for (const q in PC) if (!PC[q][0]) delete PC[q];        // on retente ce qui n’avait rien donné
+  phSave(); PH.state = 'idle'; phQueue(PH_ALL); phInfo();
+  toast(navigator.onLine === false ? 'Pas de connexion : la recherche reprendra plus tard.' : 'Recherche des photos relancée.');
+});
 
 /* ============================================================
    Parcours d’accueil : prénom et objectifs
@@ -2160,7 +2570,7 @@ async function installUpdate(){
   if (U.state !== 'available') return;
   U.state = 'installing'; renderUpdate();
   try { if ('serviceWorker' in navigator) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r=>r.update().catch(()=>{}))); } } catch(e){}
-  try { if (window.caches) { const keys = await caches.keys(); await Promise.all(keys.filter(k=>(k.indexOf('reussite-') === 0 && k !== 'reussite-fonts') || k.indexOf('revision-') === 0).map(k=>caches.delete(k))); } } catch(e){}
+  try { if (window.caches) { const keys = await caches.keys(); await Promise.all(keys.filter(k=>(k.indexOf('reussite-') === 0 && k !== 'reussite-fonts' && k !== 'reussite-img') || k.indexOf('revision-') === 0).map(k=>caches.delete(k))); } } catch(e){}
   location.reload();
 }
 $('btnCheck').addEventListener('click', ()=>checkUpdate({ manual:true }));
@@ -2203,6 +2613,7 @@ showTab(S.tab, false);
 renderUpdate();
 scheduleAuto();
 if (!D.onboarded) openOnboarding();
+setTimeout(()=>phQueue(PH_ALL), 4000);                               // les photos se cherchent en fond, sans gêner le démarrage
 setInterval(()=>{ if (!document.hidden && !P) render(); }, 60000);   // changement de jour, compte à rebours
 setTimeout(()=>{ if (S.autoUpdate !== false) checkUpdate({ auto:true }); }, 2500);
 
@@ -2224,7 +2635,8 @@ window.GLASS_KIT_VERSION = '4';
 window.GLASS_KIT_ENABLED = ()=>S.glass !== false;
 
 /* accès pour les tests / le débogage */
-window.Reussite = { version:APP_VERSION, data:()=>D, settings:()=>S, themes:()=>THEMES, all:()=>ALL, streak, totals, level, reconcile, showTab, render, checkUpdate, state:()=>U.state,
+window.Reussite = { openFeed, closeFeed:()=>feedSheet.set(false), feed:()=>FD, photos:()=>PC, phStats, phState:()=>PH.state, phQueue, celebrate, badges:()=>BADGES, closeWin:()=>{ WIN.queue.length = 0; pendingWin = []; winSheet.set(false); }, winQueue:()=>WIN.queue.length,
+  version:APP_VERSION, data:()=>D, settings:()=>S, themes:()=>THEMES, all:()=>ALL, streak, totals, level, reconcile, showTab, render, checkUpdate, state:()=>U.state,
   openSettings, closeSettings:()=>settingsSheet.set(false), openFiche, start:startSession, session:()=>P, answer, reveal, grade, next, build:buildSession, setGoal, setExam, setName, setPrio, openOnboarding, ob:()=>OB, obGo,
   closeSession:()=>playSheet.set(false), shift:(days)=>{ NOW_OFF += days * DAY; render(); },
   load:(d)=>{ D = sanitize(d); saveD(); lastDay = ''; syncSettingsUI(); render(); } };

@@ -2,9 +2,11 @@
    Stratégie : réseau d'abord (on voit toujours la dernière version), cache en repli (hors ligne).
    Les requêtes de vérification de mise à jour (?_=…) ne sont jamais mises en cache.
    À CHAQUE NOUVELLE VERSION : changer VERSION ici ET APP_VERSION dans index.html. */
-const VERSION = '0.3.0';
+const VERSION = '0.4.0';
 const CACHE = 'reussite-' + VERSION;
 const FONTS = 'reussite-fonts';
+const IMG = 'reussite-img';      // photos de Découvrir (Wikimedia), gardées d'une version à l'autre
+const IMG_MAX = 220;
 const PRECACHE = ['./', 'index.html', 'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'icon-maskable-512.png', 'glass-kit.js', 'glass-kit-loader.js'];
 
@@ -16,7 +18,7 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => (k.indexOf('reussite-') === 0 && k !== CACHE && k !== FONTS) || k.indexOf('revision-') === 0).map(k => caches.delete(k))))
+    .then(keys => Promise.all(keys.filter(k => (k.indexOf('reussite-') === 0 && k !== CACHE && k !== FONTS && k !== IMG) || k.indexOf('revision-') === 0).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 
@@ -33,6 +35,20 @@ self.addEventListener('fetch', e => {
       const hit = await c.match(req);
       const net = fetch(req).then(r => { if (r && (r.ok || r.type === 'opaque')) c.put(req, r.clone()); return r; }).catch(() => hit);
       return hit || net;
+    }));
+    return;
+  }
+  /* photos de Découvrir : cache d'abord (elles ne changent pas), avec un plafond */
+  if (url.hostname === 'upload.wikimedia.org') {
+    e.respondWith(caches.open(IMG).then(async c => {
+      const hit = await c.match(req.url);
+      if (hit) return hit;
+      const r = await fetch(req);
+      if (r && r.ok) {
+        c.put(req.url, r.clone());
+        c.keys().then(keys => { for (let i = 0; i < keys.length - IMG_MAX; i++) c.delete(keys[i]); });
+      }
+      return r;
     }));
     return;
   }
