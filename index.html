@@ -1,0 +1,2210 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>Réussite</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#e7d5ed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Réussite">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="icon" type="image/png" href="icon-192.png?v=2">
+
+<!-- Thème posé AVANT le premier rendu (évite le flash clair → sombre) -->
+<script>
+(function(){
+  var d='light';
+  try{
+    var s=JSON.parse(localStorage.getItem('reussite.settings')||localStorage.getItem('revision.settings')||'{}'), m=s.theme||'auto';
+    d=(m==='dark'||(m==='auto'&&window.matchMedia('(prefers-color-scheme: dark)').matches))?'dark':'light';
+  }catch(e){}
+  document.documentElement.setAttribute('data-theme',d);
+  /* iOS 27 en mode app : la vue web peut être plus courte que l’écran ; la bande du bas n’est pas dessinable par la page.
+     Quand c’est le cas, on colle la barre d’onglets au bas visible (sans marge d’indicateur d’accueil) ; la bande prend la couleur du fond. */
+  function fit(){
+    var r=document.documentElement, app=navigator.standalone===true||!!(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+    var land=innerWidth>innerHeight, sw=screen.width||0, sh=screen.height||0, scr=land?Math.min(sw,sh):Math.max(sw,sh);
+    var cut=app&&scr-innerHeight>20;
+    if(r.classList.contains('cut')!==cut) r.classList.toggle('cut',cut);
+    r.style.setProperty('--gap',(cut?scr-innerHeight:0)+'px');
+  }
+  fit(); window.__fit=fit;
+  addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,300); });
+  var t=document.querySelector('meta[name=theme-color]'); if(t) t.setAttribute('content',d==='dark'?'#2a1233':'#e7d5ed');
+})();
+</script>
+
+<!-- Google Sans : chargée sans bloquer le premier affichage -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400..700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400..700&display=swap"></noscript>
+
+<style>
+/* ============================================================
+   Réussite — styles
+   Identité : l'icône. Aubergine → violet → orchidée, et des couches de verre emboîtées.
+   Clair : lilas pâle. Sombre : le dégradé de l'icône.
+   Rose pour l'histoire, indigo pour la géographie.
+   ============================================================ */
+:root{
+  --font:"Google Sans","Google Sans Text",-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+  /* palette de l'icône */
+  --plum:#44204c; --violet:#870b91; --orchid:#cf9fd3; --lilac:#e7d6e8;
+  --grad-icon:linear-gradient(168deg,#44204c 0%,#5c1869 34%,#870b91 68%,#b866c0 100%);
+  --grad-flame:linear-gradient(160deg,#dba6e2,#a53bb3 55%,#7a1186);
+  --grad-h:linear-gradient(90deg,#870b91,#d08ad8);
+  --on-grad:#fff;
+  --hist:#bd2c7c; --geo:#5650c8; --spec:#5b7fe0;
+  --accent:#870b91; --danger:#cf3f4a; --ok:#1f8f63; --on-accent:#fff;
+  --bg-a:#e7d5ed; --bg-b:#f1e6f3; --bg-c:#f7eef5;
+  --ink:#2a1233; --ink2:rgba(42,18,51,.64); --ink3:rgba(42,18,51,.4);
+  --card:rgba(255,255,255,.54); --card-strong:rgba(255,255,255,.82); --hair:rgba(42,18,51,.1);
+  --glass:rgba(255,255,255,.6); --glass-line:rgba(255,255,255,.82); --fill:rgba(110,70,125,.13); --sel:rgba(135,11,145,.12);
+  --sheet-bg:#f4edf5; --shadow:0 10px 30px rgba(68,32,76,.1);
+  --good-bg:rgba(31,143,99,.14); --bad-bg:rgba(207,63,74,.12);
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+  --top-x:16px;   /* marge sous la barre d’état : évite le flou système d’iOS 27 */
+  color-scheme:light;
+}
+html[data-theme="dark"]{
+  --grad-h:linear-gradient(90deg,#c574d0,#f1c6f5);
+  --hist:#ff9fd0; --geo:#aeacff; --spec:#9db8ff;
+  --accent:#e4a9ec; --danger:#ff8a94; --ok:#6fdcae; --on-accent:#2a1233;
+  --bg-a:#2a1233; --bg-b:#2a1233; --bg-c:#2a1233;
+  --ink:#f8f0f9; --ink2:rgba(248,240,249,.66); --ink3:rgba(248,240,249,.38);
+  --card:rgba(255,255,255,.08); --card-strong:rgba(255,255,255,.15); --hair:rgba(255,255,255,.1);
+  --glass:rgba(70,30,82,.6); --glass-line:rgba(255,255,255,.14); --fill:rgba(255,255,255,.11); --sel:rgba(228,169,236,.2);
+  --sheet-bg:#2c1637; --shadow:0 10px 30px rgba(20,6,26,.4);
+  --good-bg:rgba(111,220,174,.16); --bad-bg:rgba(255,138,148,.16);
+  color-scheme:dark;
+}
+/* fond : lilas en clair ; en sombre, le dégradé de l'icône qui se fond dans l'aubergine */
+.bg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,var(--bg-a) 0%,var(--bg-b) 55%,var(--bg-c) 100%)}
+html[data-theme="dark"] .bg{background:linear-gradient(180deg,rgba(42,18,51,0) 68%,#2a1233 100%),radial-gradient(125% 85% at 100% 66%,#8a149a 0%,#521a63 44%,#2a1233 100%)}
+.bg::after{content:"";position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+html[data-theme="dark"] .bg::after{opacity:.09}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0;min-height:100%;background:var(--bg-c);color:var(--ink);font-family:var(--font);font-size:16px;
+  -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;overscroll-behavior:none;touch-action:manipulation}
+html[data-theme="dark"],html[data-theme="dark"] body{background:var(--bg-c)}
+body{position:relative;overflow-x:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* défilement bloqué sous les feuilles et écrans plein écran */
+html.noscroll,html.noscroll body{overflow:hidden}
+.sheet-back{touch-action:none}
+.sheet-scroll{overscroll-behavior:contain}
+button,input{font-family:inherit;color:inherit}
+input{-webkit-user-select:text;user-select:text}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* ---------- barre du haut ---------- */
+.top{position:fixed;top:0;left:0;right:0;z-index:15;height:calc(var(--safe-t) + var(--top-x) + 56px);padding:calc(var(--safe-t) + var(--top-x)) 16px 0;
+  display:flex;align-items:center;justify-content:flex-end;background:transparent;transition:background .25s,backdrop-filter .25s,box-shadow .25s}
+.top.scrolled{background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(1.8);backdrop-filter:blur(22px) saturate(1.8);box-shadow:0 .5px 0 var(--hair)}
+.top-title{position:absolute;left:0;right:0;top:calc(var(--safe-t) + var(--top-x));height:56px;display:flex;align-items:center;justify-content:center;
+  font-weight:600;font-size:17px;opacity:0;transition:opacity .2s;pointer-events:none}
+.top.scrolled .top-title{opacity:1}
+
+/* ---------- contenu ---------- */
+#scroll{position:relative;z-index:5;min-height:100vh;overflow-x:clip;
+  padding:calc(var(--safe-t) + var(--top-x) + 46px) 18px calc(var(--safe-b) + 128px)}
+.page{max-width:620px;margin:0 auto;animation:pageIn .28s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.kicker{margin:6px 2px 0;font-size:15px;color:var(--ink2)}
+h1.large{font-size:34px;line-height:1.1;font-weight:600;letter-spacing:-.025em;margin:2px 2px 16px}
+h2.sec{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:30px 4px 10px}
+.sec-sub{margin:-4px 4px 10px;font-size:14px;line-height:1.4;color:var(--ink2)}
+.card{position:relative;margin-top:12px;padding:18px 20px;border-radius:26px;background:var(--card);
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);backdrop-filter:blur(24px) saturate(1.5);
+  box-shadow:inset 0 0 0 1px var(--glass-line),var(--shadow)}
+.muted{color:var(--ink2)}
+.group{position:relative}
+.card::after,.group::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;
+  background:linear-gradient(155deg,rgba(255,255,255,.95),rgba(255,255,255,.18) 28%,rgba(255,255,255,0) 55%,rgba(255,255,255,.35) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+html[data-theme="dark"] .card::after,html[data-theme="dark"] .group::after{
+  background:linear-gradient(155deg,rgba(255,255,255,.34),rgba(255,255,255,.07) 30%,rgba(255,255,255,0) 55%,rgba(255,255,255,.12) 100%)}
+.card,.group{background-image:linear-gradient(170deg,rgba(255,255,255,.22),rgba(255,255,255,0) 42%)}
+html[data-theme="dark"] .card,html[data-theme="dark"] .group{background-image:linear-gradient(170deg,rgba(255,255,255,.06),rgba(255,255,255,0) 45%)}
+.sheet .group{background-image:none}
+.note{margin:10px 6px 0;font-size:12.5px;line-height:1.45;color:var(--ink3)}
+.num{font-variant-numeric:tabular-nums}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cal-title{font-size:18px;font-weight:600}
+.cal-dow,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{margin-top:14px;font-size:12px;color:var(--ink3);text-align:center}
+.cal-grid{margin-top:8px}
+.cal-d{position:relative;aspect-ratio:1;border:0;border-radius:12px;padding:0;background:var(--fill);font:500 13.5px/1 var(--font);color:var(--ink3);
+  display:grid;place-items:center;cursor:pointer;font-variant-numeric:tabular-nums;transition:transform .12s}
+.cal-d.on{color:var(--on-grad);animation:dotPop .4s cubic-bezier(.2,.9,.3,1.2) both}
+.cal-d.on:active{transform:scale(.9)}
+.cal-d.on.deep{color:#fff}
+.cal-d.fut{background:none;box-shadow:inset 0 0 0 1px var(--hair);cursor:default}
+.cal-d.pre{background:none;cursor:default;opacity:.45}
+.cal-d.today{box-shadow:0 0 0 2px var(--bg-b),0 0 0 4px var(--ink)}
+html[data-theme="dark"] .cal-d.today{box-shadow:0 0 0 2px #3a1a47,0 0 0 4px #f8f0f9}
+.cal-d .sp{position:absolute;right:4px;top:4px;width:6px;height:6px;border-radius:50%;background:var(--spec);box-shadow:0 0 0 1.5px rgba(255,255,255,.75)}
+.bar{height:6px;border-radius:3px;background:var(--fill);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:inherit;background:var(--grad-h);min-width:6px}
+.bar i{transition:width .8s cubic-bezier(.2,.8,.2,1)}
+/* ---------- groupes / lignes ---------- */
+.group{border-radius:24px;background:var(--card);-webkit-backdrop-filter:blur(24px) saturate(1.5);backdrop-filter:blur(24px) saturate(1.5);
+  box-shadow:inset 0 0 0 1px var(--glass-line),var(--shadow);overflow:hidden}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:58px;padding:10px 18px}
+.row+.row{box-shadow:0 -.5px 0 var(--hair)}
+.row-l{min-width:0;flex:1}
+.row-t{font-size:16px;font-weight:500}
+.row-s{margin-top:2px;font-size:13px;line-height:1.35;color:var(--ink2)}
+.row-v{font-size:17px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.row.stack{flex-direction:column;align-items:stretch;justify-content:center;gap:10px;padding:14px 18px}
+.row.stack .seg{display:flex;width:100%}
+.row.stack .seg button{flex:1}
+.row.actions{justify-content:flex-start;flex-wrap:wrap;gap:10px;padding-top:12px;padding-bottom:14px}
+.row.empty-row{justify-content:center;text-align:center;color:var(--ink2);font-size:15px;line-height:1.4;padding:20px 24px}
+.time{width:52px;flex:none;font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:15px}
+.tag .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+.tag .dot.win{background:var(--ok)}
+.x{flex:none;width:32px;height:32px;border:0;border-radius:50%;background:var(--fill);color:var(--ink2);display:grid;place-items:center;cursor:pointer;padding:0}
+.x svg{width:14px;height:14px}
+.x:active{transform:scale(.92)}
+.inp{height:42px;border:0;border-radius:14px;background:var(--fill);padding:0 14px;font:500 16px var(--font);color:var(--ink);outline:none;min-width:0}
+.inp:focus{box-shadow:inset 0 0 0 2px var(--accent)}
+.add .inp{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips.pad{padding:4px 2px 0;margin-top:12px}
+.chip{height:40px;padding:0 16px;border:0;border-radius:20px;background:var(--card-strong);box-shadow:inset 0 0 0 1px var(--glass-line);
+  font:500 15px var(--font);color:var(--ink);cursor:pointer;white-space:nowrap}
+.chip:active{transform:scale(.96)}
+.chip.on{background:var(--accent);color:var(--on-accent);box-shadow:none}
+a.btn{text-decoration:none}
+.badge{display:flex;align-items:center;gap:14px;padding:12px 18px;min-height:62px}
+.badge+.badge{box-shadow:0 -.5px 0 var(--hair)}
+.badge-i{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--fill);color:var(--ink3)}
+.badge-i svg{width:19px;height:19px}
+.badge.got .badge-i{background:var(--grad-flame);color:var(--on-grad)}
+.badge:not(.got) .row-t{color:var(--ink2)}
+/* ---------- toast ---------- */
+.toast{position:fixed;left:16px;right:16px;bottom:calc(var(--safe-b) + 86px);z-index:50;max-width:520px;margin:0 auto;
+  display:flex;align-items:center;gap:12px;padding:10px 10px 10px 18px;min-height:56px;border-radius:24px;
+  background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);
+  box-shadow:inset 0 0 0 1px var(--glass-line),0 12px 34px rgba(0,0,0,.18);
+  opacity:0;transform:translateY(16px) scale(.96);visibility:hidden;transition:opacity .25s,transform .3s cubic-bezier(.2,.85,.25,1),visibility 0s .3s}
+.toast.show{opacity:1;transform:none;visibility:visible;transition:opacity .25s,transform .3s cubic-bezier(.2,.85,.25,1)}
+.toast p{flex:1;margin:0;font-size:15px;line-height:1.35}
+.toast .btn{height:38px;padding:0 14px;font-size:14px}
+/* ---------- barre d'onglets ---------- */
+/* comme Sport : posée plus bas, au ras de l’indicateur d’accueil */
+.tabbar-wrap{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 16px max(8px, calc(var(--safe-b) - 6px));pointer-events:none}
+.tab-row{display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto;pointer-events:auto}
+.tab-row>.seg.tabbar,.tab-row>.dg-host{flex:1;min-width:0}
+
+/* ---------- composants d'origine (repli sans glass-kit.js) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border:0;border-radius:22px;
+  background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);
+  box-shadow:inset 0 0 0 1px var(--glass-line);color:var(--ink);font:600 15px/1 var(--font);cursor:pointer;white-space:nowrap}
+.btn.ib{width:44px;padding:0}
+.btn svg{width:22px;height:22px}
+.btn.primary{background:var(--accent);color:var(--on-accent);box-shadow:none}
+.btn.danger{color:var(--danger)}
+.btn:active{transform:scale(.96)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+
+.seg{display:inline-flex;padding:3px;border-radius:14px;background:var(--fill)}
+.seg button{border:0;background:none;padding:9px 14px;border-radius:11px;font:600 14px/1 var(--font);color:var(--ink)}
+.seg button.on{background:#fff;color:#000;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+html[data-theme="dark"] .seg button.on{background:rgba(255,255,255,.2);color:#fff;box-shadow:none}
+
+.seg.tabbar{display:flex;width:100%;gap:2px;padding:5px;border-radius:31px;background:var(--glass);
+  -webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);
+  box-shadow:inset 0 0 0 1px var(--glass-line),0 10px 32px rgba(0,0,0,.14)}
+.seg.tabbar button span{display:none}
+.seg.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:52px;padding:0 2px;border-radius:26px;
+  font:500 11px/1 var(--font);color:var(--ink2);background:none;box-shadow:none}
+.seg.tabbar button svg{width:27px;height:27px}
+.seg.tabbar button.on{color:var(--accent);background:var(--sel)}
+
+.sw{position:relative;display:inline-block;width:51px;height:31px;flex:none}
+.sw input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;z-index:2;cursor:pointer}
+.sw i{position:absolute;inset:0;border-radius:20px;background:rgba(120,128,142,.38);transition:background .2s}
+.sw i::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25);transition:transform .2s}
+.sw input:checked+i{background:var(--accent)}
+.sw input:checked+i::after{transform:translateX(20px)}
+
+/* ---------- feuilles ---------- */
+.sheet-back{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.32);opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
+.sheet-back.open{opacity:1;visibility:visible;transition:opacity .35s}
+.sheet{position:fixed;left:0;right:0;bottom:0;top:calc(var(--safe-t) + var(--top-x) + 10px);z-index:31;border-radius:30px 30px 0 0;max-width:680px;margin:0 auto;
+  background:var(--sheet-bg);box-shadow:0 -10px 40px rgba(0,0,0,.18);display:flex;flex-direction:column;
+  transform:translateY(104%);visibility:hidden;transition:transform .42s cubic-bezier(.2,.85,.25,1),visibility 0s .42s}
+.sheet.mini{top:auto;max-height:calc(100% - var(--safe-t) - var(--top-x) - 20px)}
+.sheet.open{transform:none;visibility:visible;transition:transform .42s cubic-bezier(.2,.85,.25,1)}
+.sheet:focus{outline:none}
+.sheet.drag{transition:none}
+.sheet-bar{flex:none;position:relative;display:flex;align-items:center;justify-content:flex-end;height:64px;padding:0 16px;touch-action:none}
+.sheet-bar::before{content:"";position:absolute;top:7px;left:50%;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:var(--hair)}
+.sheet-title{position:absolute;left:0;right:0;text-align:center;font-weight:600;font-size:17px;pointer-events:none}
+.sheet-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:4px 16px calc(var(--safe-b) + 36px)}
+.sheet.mini .sheet-scroll{padding-bottom:calc(var(--safe-b) + 22px)}
+.group-title{margin:22px 14px 8px;font-size:14px;font-weight:600;color:var(--ink2)}
+.group-title:first-child{margin-top:6px}
+.spin{width:20px;height:20px;border-radius:50%;border:2.5px solid var(--hair);border-top-color:var(--accent);animation:spin .8s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cl{display:block;padding:14px 18px}
+.cl-h{display:flex;align-items:baseline;gap:10px}
+.cl-h b{font-size:16px;font-weight:600}.cl-h span{font-size:13px;color:var(--ink2)}
+.cl ul{margin:8px 0 0;padding-left:18px;font-size:14.5px;line-height:1.45;color:var(--ink2)}
+.credit{margin:26px 0 4px;text-align:center;font-size:13px;color:var(--ink2)}
+.banner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 12px 18px;margin:8px auto 6px;max-width:620px;border-radius:24px;
+  background:var(--card);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);box-shadow:inset 0 0 0 1px var(--glass-line)}
+.banner b{display:block;font-size:15px;font-weight:600}
+.banner span{font-size:13px;color:var(--ink2)}
+
+/* mode app iOS : on recolle sur le bas réel de l’écran (--H mesurée au démarrage) */
+/* bande iOS : plus de marge d’indicateur quand la vue web est raccourcie */
+html{overflow-x:hidden}
+html.cut{--safe-b:0px;min-height:calc(100% + var(--gap,0px))}
+
+/* ============================================================
+   Habillage Liquid Glass Kit
+   ============================================================ */
+html[data-dg] .dg-orig{display:none!important}
+.dg-host{display:inline-flex;align-items:center;vertical-align:middle;max-width:100%}
+.dg-host.dg-sw{flex:none}
+.dg-host.dg-range{display:block;flex:1;min-width:0;width:100%}
+.dg-host.dg-seg{min-width:0}
+.dg-host.dg-seg.dg-full{display:flex;width:100%}
+.dg-host.dg-seg.dg-full>.lg-track{width:100%}
+.dg-host.dg-icons .lg-nav__label{display:none}
+.dg-svg{display:inline-grid;place-items:center}
+.dg-svg svg{width:19px;height:19px;flex:none}
+html[data-dg] .lg-button{font-size:var(--dg-fs,16px);font-weight:var(--dg-fw,500);letter-spacing:0}
+html[data-dg] .lg-button:not([data-icon-only]){padding-inline:var(--dg-pad,18px)}
+.lg-button[disabled]{opacity:.5}
+html[data-theme="dark"]{--lg-rim-opacity:.3;--lg-glow:rgb(255 255 255 / .06);--lg-lens-ring:rgb(255 255 255 / .14);--lg-lens-edge:rgb(255 255 255 / .06);--lg-selection-lens-edge:rgb(255 255 255 / .13);--lg-edge:rgb(255 255 255 / .05)}
+.tabbar-wrap .dg-seg .lg-track{--lg-item-h:52px;--lg-pad:5px;--lg-item-w:0px;letter-spacing:0}
+.tabbar-wrap .dg-seg .lg-track__item{padding:0 2px}
+.tabbar-wrap .dg-seg .lg-nav__icon{display:grid;place-items:center;width:28px;height:28px}
+.tabbar-wrap .dg-seg .dg-svg,.tabbar-wrap .dg-seg .dg-svg svg{width:27px;height:27px}
+.tabbar-wrap .dg-seg [aria-selected="true"] .dg-svg{color:var(--accent)}
+.tabbar-wrap .dg-host,.seg.tabbar{position:relative}
+.tabbar-wrap .dg-host::after,.seg.tabbar::after{content:"";position:absolute;inset:0;border-radius:999px;padding:1px;pointer-events:none;z-index:3;
+  background:linear-gradient(165deg,rgba(255,255,255,.95),rgba(255,255,255,.2) 26%,rgba(255,255,255,0) 52%,rgba(255,255,255,.12) 78%,rgba(255,255,255,.55));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+html[data-theme="dark"] .tabbar-wrap .dg-host::after,html[data-theme="dark"] .seg.tabbar::after{
+  background:linear-gradient(165deg,rgba(255,255,255,.5),rgba(255,255,255,.1) 26%,rgba(255,255,255,0) 52%,rgba(255,255,255,.05) 78%,rgba(255,255,255,.26))}
+
+/* ============================================================
+   Réussite — composants propres à l'app
+   ============================================================ */
+@keyframes dotPop{0%{transform:scale(.4)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes tick{0%{transform:scale(.82);opacity:.4}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes riseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes flick{0%,100%{transform:scale(1) rotate(0)}35%{transform:scale(1.06,1.1) rotate(-2deg)}70%{transform:scale(.97,1.03) rotate(2deg)}}
+@keyframes burst{0%{transform:scale(.3);opacity:0}45%{transform:scale(1.18);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes shakeX{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+
+/* ---------- la marque : les couches de verre de l'icône ---------- */
+.mark{display:block;width:100%;height:100%;overflow:visible}
+.mk{fill:rgba(255,255,255,.07);stroke:rgba(255,255,255,.34);stroke-width:1.2;transition:fill .7s ease,stroke .7s ease}
+.mark.p1 .m1,.mark.p2 .m1,.mark.p3 .m1,.mark.p4 .m1{fill:rgba(255,255,255,.2);stroke:rgba(255,255,255,.6)}
+.mark.p2 .m2,.mark.p3 .m2,.mark.p4 .m2{fill:rgba(255,255,255,.24);stroke:rgba(255,255,255,.7)}
+.mark.p3 .m3,.mark.p4 .m3{fill:rgba(255,255,255,.3);stroke:rgba(255,255,255,.8)}
+.mark.p4 .m4{fill:rgba(255,255,255,.86);stroke:#fff}
+
+/* ---------- Aujourd'hui : la série ---------- */
+.hero-card{overflow:hidden;padding:18px 18px 16px;color:#fff;background:var(--grad-icon);background-image:var(--grad-icon);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 14px 34px rgba(92,24,105,.28)}
+html[data-theme="dark"] .hero-card{background-image:linear-gradient(168deg,rgba(255,255,255,.1),rgba(255,255,255,.03) 60%,rgba(255,255,255,.12));box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 14px 34px rgba(20,6,26,.4)}
+.hero-card::after{background:linear-gradient(155deg,rgba(255,255,255,.55),rgba(255,255,255,.08) 30%,rgba(255,255,255,0) 55%,rgba(255,255,255,.3) 100%)}
+.hero-top{position:relative;display:flex;align-items:center;gap:16px}
+.mark-box{position:relative;flex:none;width:132px;height:132px;margin:-4px 0 -4px -6px}
+.mark-n{position:absolute;left:0;right:0;top:50%;transform:translateY(-52%);text-align:center;font-size:42px;font-weight:500;line-height:1;letter-spacing:-.04em;color:#fff;transition:color .5s}
+.mark-box.full .mark-n{color:#4a1458}
+.mark-n.small{font-size:30px}
+.mark-n.tick{animation:tickC .7s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes tickC{0%{transform:translateY(-52%) scale(.8);opacity:.4}60%{transform:translateY(-52%) scale(1.1);opacity:1}100%{transform:translateY(-52%) scale(1)}}
+.hero-r{flex:1;min-width:0}
+.streak-l{font-size:19px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.hero-g{margin-top:6px;font-size:14px;color:rgba(255,255,255,.74)}
+.hero-bar{margin-top:9px;height:7px;border-radius:4px;background:rgba(255,255,255,.18)}
+.hero-bar i{background:#fff;min-width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+/* la semaine en frise chronologique */
+.frise{position:relative;display:grid;grid-template-columns:repeat(7,1fr);margin-top:16px}
+.fd{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;font-weight:500;color:rgba(255,255,255,.5)}
+.fd+.fd::before{content:"";position:absolute;top:11px;height:2px;border-radius:1px;right:calc(50% + 15px);left:calc(-50% + 15px);background:rgba(255,255,255,.22)}
+.fd i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.fd i svg{width:13px;height:13px}
+.fd.done i{background:#fff;box-shadow:none;color:#7a1186}
+.fd.ice i{background:var(--spec);box-shadow:none;color:#fff}
+.fd.fut i{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.24)}
+.fd.today{color:#fff}
+.fd.today i{box-shadow:inset 0 0 0 2px #fff,0 0 0 3px rgba(255,255,255,.22)}
+.fd.today.done i{box-shadow:0 0 0 3px rgba(255,255,255,.3)}
+.cheer{position:relative;margin:14px 2px 0;font-size:15.5px;line-height:1.4}
+.cheer b{font-weight:600}
+.cta{margin-top:14px}
+.btn.big{height:54px;border-radius:27px;font-size:16.5px;width:100%}
+html[data-dg] .btn.big{width:100%}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0;padding:14px 16px;border:0;border-radius:22px;text-align:left;cursor:pointer;
+  background:var(--card);-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);
+  box-shadow:inset 0 0 0 1px var(--glass-line),var(--shadow);transition:transform .15s}
+.tile:active{transform:scale(.97)}
+.tile svg{width:24px;height:24px;margin-bottom:8px;color:var(--accent)}
+.tile b{font-size:16px;font-weight:600}
+.tile span{font-size:13px;line-height:1.3;color:var(--ink2)}
+.line{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.line .btn{flex:none}
+.big-n{font-size:34px;font-weight:500;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.sub{margin-top:4px;font-size:14px;line-height:1.35;color:var(--ink2)}
+.lvl-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.lvl-h b{font-size:17px;font-weight:600}
+.lvl-h span{font-size:13px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.bar.thick{height:8px;border-radius:4px}
+.jok{display:inline-flex;align-items:center;gap:6px;margin-top:11px;padding:5px 10px 5px 8px;border-radius:13px;background:rgba(255,255,255,.14);font-size:12.5px;color:rgba(255,255,255,.86)}
+.jok svg{width:14px;height:14px}
+
+/* ---------- Réviser : le programme ---------- */
+.seg-wrap{display:flex;margin-bottom:4px}
+.seg-wrap .seg{flex:1}
+.seg-wrap .seg button{flex:1}
+.th{display:flex;align-items:center;gap:14px;width:100%;min-height:74px;padding:12px 14px 12px 18px;border:0;background:none;text-align:left;cursor:pointer;font-family:var(--font);color:var(--ink)}
+.th+.th{box-shadow:0 -.5px 0 var(--hair)}
+.th:active{background:var(--fill)}
+.th-l{flex:1;min-width:0}
+.th-p{font-size:12.5px;font-weight:600;color:var(--dc)}
+.th-t{margin-top:1px;font-size:16px;font-weight:500;line-height:1.25}
+.th .bar{margin-top:9px}
+.th .bar i{background:var(--dc);min-width:0}
+.th-v{flex:none;width:44px;text-align:right;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink2)}
+.d-h{--dc:var(--hist)} .d-g{--dc:var(--geo)}
+.fiche-h{margin:2px 4px 0}
+.fiche-h .th-p{font-size:13.5px}
+.fiche-h h2{margin:2px 0 0;font-size:25px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.fiche-h p{margin:8px 0 0;font-size:14px;line-height:1.45;color:var(--ink2)}
+.fiche-m{display:flex;align-items:center;gap:12px;margin:16px 4px 0}
+.fiche-m .bar{flex:1}
+.fiche-m .bar i{background:var(--dc);min-width:0}
+.fiche-m span{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.rep{padding:13px 18px}
+.rep+.rep{box-shadow:0 -.5px 0 var(--hair)}
+.rep b{display:block;font-size:15.5px;font-weight:600;color:var(--dc)}
+.rep span{display:block;margin-top:3px;font-size:14.5px;line-height:1.45;-webkit-user-select:text;user-select:text}
+.suj{padding:14px 18px;font-size:15.5px;line-height:1.4}
+.suj+.suj{box-shadow:0 -.5px 0 var(--hair)}
+
+/* ---------- Progrès ---------- */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{margin-top:0;padding:14px 16px 15px}
+.stat .big-n{font-size:30px}
+.stat .sub{font-size:13.5px}
+.cal-d{cursor:default}
+.cal-d.part{box-shadow:inset 0 0 0 1.5px var(--accent);color:var(--ink)}
+.cal-d.on{background:var(--accent);color:var(--on-accent)}
+.cal-d.on.l1{background:color-mix(in srgb,var(--accent) 38%,transparent);color:var(--ink)}
+.cal-d.on.l2{background:color-mix(in srgb,var(--accent) 68%,transparent)}
+.cal-d.ice{background:var(--spec);color:#fff}
+.cal-key{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-size:12.5px;color:var(--ink2)}
+.cal-key span{display:inline-flex;align-items:center;gap:6px}
+.cal-key i{width:11px;height:11px;border-radius:4px;background:var(--accent)}
+.cal-key i.k-ice{background:var(--spec)}
+.cal-key i.k-part{background:none;box-shadow:inset 0 0 0 1.5px var(--accent)}
+.dbar{padding:4px 0}
+.dbar+.dbar{margin-top:14px}
+.dbar-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:15px}
+.dbar-h b{font-weight:600;color:var(--dc)}
+.dbar-h span{font-weight:600;font-variant-numeric:tabular-nums}
+.dbar .sub{font-size:13.5px;margin-top:7px}
+.dbar .bar i{background:var(--dc);min-width:0}
+
+/* ---------- Concours ---------- */
+.jx{display:flex;align-items:baseline;gap:10px}
+.jx .big-n{font-size:52px;letter-spacing:-.04em}
+.ep-v{flex:none;text-align:right;font-size:13px;line-height:1.35;color:var(--ink2);white-space:nowrap}
+.ep-v b{display:block;font-size:15px;font-weight:600;color:var(--ink)}
+.quote{margin:0;font-size:17px;line-height:1.4;font-weight:500;-webkit-user-select:text;user-select:text}
+.q-tag{margin-bottom:8px;font-size:13px;font-weight:600;color:var(--accent)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.inp.date{width:160px}
+
+/* ---------- séance (plein écran) ---------- */
+.play{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;
+  padding:calc(var(--safe-t) + var(--top-x)) 18px calc(var(--safe-b) + 16px);
+  background:linear-gradient(180deg,var(--bg-a) 0%,var(--bg-b) 55%,var(--bg-c) 100%);
+  opacity:0;visibility:hidden;transform:translateY(14px);transition:opacity .3s,transform .35s cubic-bezier(.2,.85,.25,1),visibility 0s .35s}
+html[data-theme="dark"] .play{background:radial-gradient(125% 85% at 100% 66%,#8a149a 0%,#521a63 44%,#2a1233 100%)}
+.play.open{opacity:1;visibility:visible;transform:none;transition:opacity .3s,transform .35s cubic-bezier(.2,.85,.25,1)}
+.play:focus{outline:none}
+.pl-top{flex:none;display:flex;align-items:center;gap:14px;height:48px;max-width:560px;width:100%;margin:0 auto}
+.pl-top .bar{flex:1;height:8px;border-radius:4px}
+.pl-top .bar i{min-width:0;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.pl-c{flex:none;min-width:38px;text-align:right;font-size:14px;font-weight:600;color:var(--ink2);font-variant-numeric:tabular-nums}
+.pl-stage{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;max-width:560px;width:100%;margin:0 auto;padding:10px 0 12px}
+.pl-stage.swap>*{animation:riseIn .35s cubic-bezier(.2,.8,.2,1) both}
+.pl-tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--dc)}
+.pl-tag i{width:8px;height:8px;border-radius:50%;background:var(--dc)}
+.pl-q{margin:10px 0 0;font-size:22px;font-weight:600;letter-spacing:-.015em;line-height:1.25}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 16px;border:0;border-radius:20px;text-align:left;cursor:pointer;
+  font:500 16px/1.3 var(--font);color:var(--ink);background:var(--card);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  box-shadow:inset 0 0 0 1px var(--glass-line),0 6px 18px rgba(68,32,76,.07);transition:transform .12s,background .2s,box-shadow .2s,opacity .2s}
+.opt:active{transform:scale(.98)}
+.opt em{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:600 13px/1 var(--font);font-style:normal;color:var(--ink2);box-shadow:inset 0 0 0 1.5px var(--ink3)}
+.opt em svg{width:15px;height:15px}
+.opts.locked .opt{cursor:default;pointer-events:none}
+.opts.locked .opt:not(.good):not(.bad){opacity:.5}
+.opt.good{background:var(--good-bg);box-shadow:inset 0 0 0 2px var(--ok)}
+.opt.good em{background:var(--ok);color:#fff;box-shadow:none;animation:dotPop .4s cubic-bezier(.2,.9,.3,1.3)}
+.opt.bad{background:var(--bad-bg);box-shadow:inset 0 0 0 2px var(--danger);animation:shakeX .4s}
+.opt.bad em{background:var(--danger);color:#fff;box-shadow:none}
+.fb{margin-top:16px;padding:14px 16px;border-radius:20px;font-size:15px;line-height:1.45;animation:riseIn .35s cubic-bezier(.2,.8,.2,1) both}
+.fb.good{background:var(--good-bg)} .fb.bad{background:var(--bad-bg)}
+.fb b{display:block;margin-bottom:3px;font-size:16px;font-weight:600}
+.fb.good b{color:var(--ok)} .fb.bad b{color:var(--danger)}
+/* carte repère */
+.fc{margin-top:16px;padding:22px 20px;border-radius:26px;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:var(--card);-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);box-shadow:inset 0 0 0 1px var(--glass-line),var(--shadow)}
+.fc-k{font-size:13px;font-weight:600;color:var(--ink2)}
+.fc-f{margin-top:8px;font-size:27px;font-weight:600;letter-spacing:-.02em;line-height:1.2;color:var(--dc)}
+.fc-b{margin-top:16px;padding-top:16px;box-shadow:0 -.5px 0 var(--hair);font-size:16.5px;line-height:1.45;animation:riseIn .35s cubic-bezier(.2,.8,.2,1) both}
+.pl-foot{flex:none;display:flex;gap:10px;max-width:560px;width:100%;margin:0 auto;padding-top:8px}
+.pl-foot .btn{flex:1;min-width:0;height:54px;border-radius:27px;font-size:16.5px}
+html[data-dg] .pl-foot .btn{flex:1;min-width:0}
+/* fin de séance */
+.end{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:5vh}
+.end-mark{width:132px;height:132px;padding:14px;border-radius:40px;background:var(--grad-icon);box-shadow:0 16px 36px rgba(92,24,105,.3);animation:burst .7s cubic-bezier(.2,.9,.3,1.2)}
+.end h2{margin:18px 0 0;font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.end p{margin:10px auto 0;max-width:320px;font-size:16px;line-height:1.45;color:var(--ink2)}
+.end-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:24px}
+.end-grid div{padding:14px 6px;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 1px var(--glass-line)}
+.end-grid b{display:block;font-size:24px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.end-grid span{display:block;margin-top:2px;font-size:12.5px;color:var(--ink2)}
+.end-badge{margin-top:16px;padding:10px 16px;border-radius:18px;background:var(--sel);font-size:14.5px;font-weight:500;animation:burst .6s .3s cubic-bezier(.2,.9,.3,1.2) both}
+
+/* ---------- parcours d'accueil (toujours dans les couleurs de l'icône) ---------- */
+.ob{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;color:#fff;
+  padding:calc(var(--safe-t) + var(--top-x)) 22px calc(var(--safe-b) + 18px);background:var(--grad-icon);
+  --ink:#fff;--ink2:rgba(255,255,255,.76);--ink3:rgba(255,255,255,.5);--accent:#fff;--on-accent:#4a1458;--hair:rgba(255,255,255,.2);
+  opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
+.ob.open{opacity:1;visibility:visible;transition:opacity .35s}
+.ob:focus{outline:none}
+html.ob-on #scroll,html.ob-on .top,html.ob-on .tabbar-wrap{visibility:hidden}
+html.ob-on,html.ob-on body{background:#b866c0!important}
+.ob-top{flex:none;display:flex;align-items:center;justify-content:space-between;height:48px;max-width:520px;width:100%;margin:0 auto}
+.ob-dots{display:flex;gap:6px}
+.ob-dots i{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.34);transition:width .35s cubic-bezier(.2,.8,.2,1),background .35s}
+.ob-dots i.on{width:22px;background:#fff}
+.ob-sp{width:44px}
+.ob-stage{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;max-width:520px;width:100%;margin:0 auto;padding:6px 0 10px}
+.ob-step{display:flex;flex-direction:column;animation:riseIn .4s cubic-bezier(.2,.8,.2,1) both}
+.ob-step.mid{min-height:100%;align-items:center;justify-content:center;text-align:center}
+.ob-mark{width:min(56vw,216px);height:min(56vw,216px);filter:drop-shadow(0 20px 40px rgba(40,10,50,.35))}
+.ob-mark.sm{width:112px;height:112px}
+.ob h2{margin:20px 0 0;font-size:30px;font-weight:600;letter-spacing:-.025em;line-height:1.12}
+.ob-step.mid h2{margin-top:26px}
+.ob h2.brand{font-size:40px;letter-spacing:-.03em}
+.ob p{margin:10px 0 0;font-size:16.5px;line-height:1.45;color:var(--ink2)}
+.ob-step.mid p{max-width:300px}
+.ob-inp{display:block;width:100%;height:60px;margin-top:26px;padding:0 20px;border:0;border-radius:22px;outline:none;-webkit-appearance:none;appearance:none;
+  background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3);color:#fff;font:500 22px var(--font);text-align:left;color-scheme:dark}
+.ob-inp::placeholder{color:rgba(255,255,255,.45)}
+.ob-inp:focus{box-shadow:inset 0 0 0 2px #fff}
+.ob-live{margin-top:14px;min-height:22px;font-size:15.5px;font-weight:500;color:#fff}
+.choices{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.choice{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;border:0;border-radius:22px;text-align:left;cursor:pointer;font-family:var(--font);color:#fff;
+  background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26);transition:background .25s,box-shadow .25s,transform .15s,color .25s}
+.choice:active{transform:scale(.98)}
+.choice em{flex:none;min-width:44px;font:500 28px/1 var(--font);font-style:normal;letter-spacing:-.03em;text-align:center}
+.choice div{flex:1;min-width:0}
+.choice b{display:block;font-size:17px;font-weight:600}
+.choice span{display:block;margin-top:2px;font-size:13.5px;line-height:1.35;color:rgba(255,255,255,.72)}
+.choice.on{background:#fff;color:#4a1458;box-shadow:0 10px 26px rgba(40,10,50,.25)}
+.choice.on span{color:rgba(74,20,88,.7)}
+.sum{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:24px;text-align:left}
+.sum div{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:14px 18px;border-radius:20px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);font-size:15px}
+.sum span{color:rgba(255,255,255,.72)}
+.sum b{font-weight:600;text-align:right}
+.ob-foot{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;max-width:520px;width:100%;margin:0 auto}
+.ob-btn{width:100%;height:56px;border:0;border-radius:28px;background:#fff;color:#4a1458;font:600 17px/1 var(--font);cursor:pointer;box-shadow:0 12px 28px rgba(40,10,50,.28);transition:transform .12s}
+.ob-btn:active{transform:scale(.97)}
+.ob-lnk{border:0;background:none;color:rgba(255,255,255,.8);font:500 15px var(--font);padding:12px 10px;cursor:pointer;min-height:44px}
+.ob-back{width:44px;height:44px;border:0;border-radius:22px;padding:0;background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26);color:#fff;display:grid;place-items:center;cursor:pointer}
+.ob-back svg{width:22px;height:22px}
+.inp.name{width:150px;text-align:right}
+@media (max-height:700px){.ob h2{font-size:26px}.ob-mark{width:150px;height:150px}.choice{padding:11px 14px}}
+
+@media (max-height:700px){.pl-q{font-size:20px}.opt{min-height:50px}.fc{min-height:170px}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .page{animation:none}
+  .sheet,.sheet-back,.toast,.play,.ob{transition:none!important}
+}
+</style>
+</head>
+<body>
+<!-- dégradés et formes partagés -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="pentA" vector-effect="non-scaling-stroke" d="M-32.3 -76.5Q0 -100 32.3 -76.5L62.8 -54.4Q95.1 -30.9 82.8 7.1L71.1 42.9Q58.8 80.9 18.8 80.9L-18.8 80.9Q-58.8 80.9 -71.1 42.9L-82.8 7.1Q-95.1 -30.9 -62.8 -54.4Z"/>
+    <path id="pentB" vector-effect="non-scaling-stroke" d="M-47.6 -65.5Q0 -100 47.6 -65.5L47.6 -65.5Q95.1 -30.9 76.9 25L76.9 25Q58.8 80.9 0 80.9L0 80.9Q-58.8 80.9 -76.9 25L-76.9 25Q-95.1 -30.9 -47.6 -65.5Z"/>
+  </defs>
+</svg>
+
+<div class="bg" aria-hidden="true"></div>
+
+<header class="top" id="top">
+  <div class="top-title" id="topTitle"></div>
+  <button class="btn ib" id="btnSettings" data-glass-icon aria-label="Réglages">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g transform="translate(12 12) scale(1.22) translate(-12 -10.5)" stroke-width="1.5"><path d="M10.4 3.4a1.6 1.6 0 0 1 3.2 0l.2 1.2a7.6 7.6 0 0 1 1.9 1.1l1.1-.4a1.6 1.6 0 0 1 2 .7 1.6 1.6 0 0 1-.4 2.1l-.9.8a7.6 7.6 0 0 1 0 2.2l.9.8a1.6 1.6 0 0 1 .4 2.1 1.6 1.6 0 0 1-2 .7l-1.1-.4a7.6 7.6 0 0 1-1.9 1.1l-.2 1.2a1.6 1.6 0 0 1-3.2 0l-.2-1.2a7.6 7.6 0 0 1-1.9-1.1l-1.1.4a1.6 1.6 0 0 1-2-.7 1.6 1.6 0 0 1 .4-2.1l.9-.8a7.6 7.6 0 0 1 0-2.2l-.9-.8a1.6 1.6 0 0 1-.4-2.1 1.6 1.6 0 0 1 2-.7l1.1.4a7.6 7.6 0 0 1 1.9-1.1Z"/><circle cx="12" cy="10.5" r="2.6"/></g></svg>
+  </button>
+</header>
+
+<main id="scroll">
+  <div class="banner" id="banner" hidden>
+    <div><b>Mise à jour disponible</b><span id="bannerSub"></span></div>
+    <button class="btn primary" id="btnBanner">Installer</button>
+  </div>
+
+  <!-- ======================= Aujourd'hui ======================= -->
+  <section class="page" id="page-today" role="tabpanel" aria-label="Aujourd’hui" hidden>
+    <p class="kicker" id="todayDate"></p>
+    <h1 class="large" id="hello">Aujourd’hui</h1>
+
+    <div class="card hero-card" id="hero">
+      <div class="hero-top">
+        <div class="mark-box" id="markBox">
+          <svg class="mark p0" id="mark" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg>
+          <div class="mark-n num" id="streakN">0</div>
+        </div>
+        <div class="hero-r">
+          <div class="streak-l" id="streakL">jour de série</div>
+          <div class="hero-g" id="goalN"></div>
+          <div class="bar hero-bar" role="img" aria-label="Objectif du jour"><i id="goalBar" style="width:0%"></i></div>
+          <div class="jok" id="jok" hidden></div>
+        </div>
+      </div>
+      <div class="frise" id="frise" aria-label="Ta semaine"></div>
+      <p class="cheer" id="cheer"></p>
+    </div>
+
+    <div class="cta"><button class="btn primary big" id="btnDaily">Lancer la séance du jour</button></div>
+    <div class="duo">
+      <button type="button" class="tile" id="btnFlash">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10.5 21 19 10h-6.2L13 3Z"/></svg>
+        <b>Éclair</b><span>5 questions</span>
+      </button>
+      <button type="button" class="tile" id="btnReps">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6.5" width="13" height="13" rx="2.5"/><path d="M7.5 6.5V6A2.5 2.5 0 0 1 10 3.5h8A2.5 2.5 0 0 1 20.5 6v8a2.5 2.5 0 0 1-2.5 2.5h-1.5"/></svg>
+        <b>Repères</b><span>Dates et notions</span>
+      </button>
+    </div>
+
+    <div class="card" id="reviewCard" hidden>
+      <div class="line">
+        <div><div class="big-n num" id="reviewN">0</div><div class="sub" id="reviewL">à revoir</div></div>
+        <button class="btn" id="btnReview">Revoir mes erreurs</button>
+      </div>
+    </div>
+
+    <div class="card" id="examCard" hidden>
+      <div class="big-n num" id="examJ"></div>
+      <div class="sub" id="examS"></div>
+    </div>
+
+    <div class="card" id="lvlCard">
+      <div class="lvl-h"><b id="lvlName"></b><span id="lvlXp"></span></div>
+      <div class="bar thick"><i id="lvlBar" style="width:0%"></i></div>
+      <div class="sub" id="lvlNext"></div>
+    </div>
+  </section>
+
+  <!-- ======================= Réviser ======================= -->
+  <section class="page" id="page-study" role="tabpanel" aria-label="Réviser" hidden>
+    <p class="kicker">Le programme du concours</p>
+    <h1 class="large">Réviser</h1>
+    <div class="seg-wrap">
+      <div class="seg" id="discSeg" data-glass-full aria-label="Discipline"><button data-v="h">Histoire</button><button data-v="g">Géographie</button></div>
+    </div>
+    <div class="group" id="themeList" style="margin-top:12px"></div>
+    <p class="note">Touche un thème pour ouvrir sa fiche : repères à connaître, sujets d’entraînement et séance ciblée.</p>
+  </section>
+
+  <!-- ======================= Progrès ======================= -->
+  <section class="page" id="page-progress" role="tabpanel" aria-label="Progrès" hidden>
+    <p class="kicker" id="progKicker"></p>
+    <h1 class="large">Progrès</h1>
+    <div class="stats">
+      <div class="card stat"><div class="big-n num" id="stStreak">0</div><div class="sub">série en cours</div></div>
+      <div class="card stat"><div class="big-n num" id="stBest">0</div><div class="sub">meilleure série</div></div>
+      <div class="card stat"><div class="big-n num" id="stN">0</div><div class="sub">réponses données</div></div>
+      <div class="card stat"><div class="big-n num" id="stPct">0 %</div><div class="sub">de bonnes réponses</div></div>
+    </div>
+
+    <h2 class="sec">Régularité</h2>
+    <div class="card" style="margin-top:0">
+      <div class="cal-head">
+        <button class="btn ib" id="calPrev" data-glass-icon aria-label="Mois précédent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg></button>
+        <div class="cal-title" id="calTitle"></div>
+        <button class="btn ib" id="calNext" data-glass-icon aria-label="Mois suivant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+      </div>
+      <div class="cal-dow"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-key"><span><i></i>Objectif atteint</span><span><i class="k-part"></i>Commencé</span><span><i class="k-ice"></i>Joker</span></div>
+    </div>
+
+    <h2 class="sec">Maîtrise du programme</h2>
+    <div class="card" style="margin-top:0" id="mastery"></div>
+
+    <h2 class="sec">Badges</h2>
+    <div class="group" id="badges"></div>
+  </section>
+
+  <!-- ======================= Concours ======================= -->
+  <section class="page" id="page-exam" role="tabpanel" aria-label="Concours" hidden>
+    <p class="kicker">CAPES externe d’histoire-géographie</p>
+    <h1 class="large">Concours</h1>
+
+    <div class="card" style="margin-top:0">
+      <div class="jx"><div class="big-n num" id="jxN"></div></div>
+      <div class="sub" id="jxS"></div>
+    </div>
+    <div class="group" style="margin-top:12px">
+      <div class="row">
+        <div class="row-l"><div class="row-t">Date des écrits</div><div class="row-s">Pour le compte à rebours</div></div>
+        <input type="date" class="inp date" id="examDate" aria-label="Date des écrits">
+      </div>
+    </div>
+
+    <h2 class="sec">Les épreuves</h2>
+    <div class="group" id="epList"></div>
+    <p class="note">Programme et note du jury de la session 2027, concours externe au niveau licence (bac+3). Une note inférieure ou égale à 5 à un écrit est éliminatoire. Vérifie les dates et les textes officiels sur devenirenseignant.gouv.fr.</p>
+
+    <h2 class="sec">Entretien avec le jury</h2>
+    <div class="card" style="margin-top:0">
+      <div class="q-tag" id="juryTag"></div>
+      <p class="quote" id="juryQ"></p>
+      <div class="sub">Réponds à voix haute pendant deux minutes : les valeurs en jeu, ce que cela implique pour l’école, ta position d’enseignant.</div>
+      <div class="acts"><button class="btn" id="btnJury">Autre question</button></div>
+    </div>
+
+    <h2 class="sec">Sujet d’entraînement</h2>
+    <div class="card" style="margin-top:0">
+      <div class="q-tag" id="sujTag"></div>
+      <p class="quote" id="sujQ"></p>
+      <div class="sub">Dix minutes au brouillon : les bornes, une problématique, un plan en trois parties.</div>
+      <div class="acts"><button class="btn" id="btnSuj">Autre sujet</button></div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabbar-wrap" id="tabwrap" aria-label="Navigation principale">
+  <div class="tab-row">
+    <div class="seg tabbar" id="tabbar" data-glass-full aria-label="Sections"></div>
+  </div>
+</nav>
+
+<!-- toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"><p id="toastT"></p><button class="btn" id="toastBtn" hidden>Annuler</button></div>
+
+<!-- séance -->
+<section class="play" id="play" tabindex="-1" role="dialog" aria-modal="true" aria-label="Séance de révision" aria-hidden="true">
+  <div class="pl-top">
+    <button class="btn ib" id="plClose" data-glass-icon aria-label="Quitter la séance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="bar"><i id="plBar" style="width:0%"></i></div>
+    <div class="pl-c num" id="plCount"></div>
+  </div>
+  <div class="pl-stage" id="plStage"></div>
+  <div class="pl-foot">
+    <button class="btn primary" id="plShow" hidden>Voir la réponse</button>
+    <button class="btn" id="plNo" hidden>À revoir</button>
+    <button class="btn primary" id="plYes" hidden>Je le savais</button>
+    <button class="btn primary" id="plNext" hidden>Continuer</button>
+    <button class="btn" id="plAgain" hidden>Encore une</button>
+    <button class="btn primary" id="plDone" hidden>Terminer</button>
+  </div>
+</section>
+
+<!-- feuille : fiche d'un thème -->
+<div class="sheet-back" id="ficheBack"></div>
+<section class="sheet" id="fiche" tabindex="-1" role="dialog" aria-modal="true" aria-label="Fiche du thème" aria-hidden="true">
+  <div class="sheet-bar" id="ficheBar">
+    <div class="sheet-title">Fiche</div>
+    <button class="btn" id="btnFicheClose">Fermer</button>
+  </div>
+  <div class="sheet-scroll" id="ficheScroll">
+    <div id="ficheHead"></div>
+    <div class="cta"><button class="btn primary big" id="btnTheme">Réviser ce thème</button></div>
+    <div id="ficheBody"></div>
+  </div>
+</section>
+
+<!-- parcours d'accueil : prénom et objectifs -->
+<section class="ob" id="ob" tabindex="-1" role="dialog" aria-modal="true" aria-label="Bienvenue dans Réussite" aria-hidden="true">
+  <div class="ob-top">
+    <button type="button" class="ob-back" id="obBack" aria-label="Étape précédente" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg></button>
+    <span class="ob-sp" id="obSp"></span>
+    <div class="ob-dots" id="obDots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <span class="ob-sp"></span>
+  </div>
+  <div class="ob-stage" id="obStage">
+    <div class="ob-step mid" data-step="0">
+      <div class="ob-mark"><svg class="mark p4" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg></div>
+      <h2 class="brand">Réussite</h2>
+      <p>Le CAPES d’histoire-géographie, un peu chaque jour. Quelques réglages et on commence.</p>
+    </div>
+    <div class="ob-step" data-step="1" hidden>
+      <h2>Comment tu t’appelles ?</h2>
+      <p>Pour t’encourager par ton prénom.</p>
+      <input class="ob-inp" id="obName" type="text" maxlength="24" autocomplete="given-name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="Ton prénom" aria-label="Ton prénom">
+    </div>
+    <div class="ob-step" data-step="2" hidden>
+      <h2 id="obDateH">Tes écrits, c’est pour quand ?</h2>
+      <p>La date lance le compte à rebours. Si tu ne la connais pas encore, passe cette étape.</p>
+      <input class="ob-inp" id="obDate" type="date" aria-label="Date des écrits">
+      <div class="ob-live" id="obDateLive"></div>
+    </div>
+    <div class="ob-step" data-step="3" hidden>
+      <h2>Ton objectif par jour</h2>
+      <p>Le nombre de réponses qui valide ta journée et fait avancer ta série.</p>
+      <div class="choices" id="obGoal" role="radiogroup" aria-label="Objectif par jour">
+        <button type="button" class="choice" data-v="10" role="radio"><em>10</em><div><b>Régulier</b><span>Environ 5 minutes par jour</span></div></button>
+        <button type="button" class="choice" data-v="20" role="radio"><em>20</em><div><b>Soutenu</b><span>Environ 10 minutes par jour</span></div></button>
+        <button type="button" class="choice" data-v="30" role="radio"><em>30</em><div><b>Intensif</b><span>Environ 15 minutes par jour</span></div></button>
+      </div>
+      <div class="ob-live" id="obGoalLive"></div>
+    </div>
+    <div class="ob-step" data-step="4" hidden>
+      <h2>Sur quoi veux-tu insister ?</h2>
+      <p>Les nouvelles cartes de tes séances suivront cette priorité. Les révisions, elles, couvrent tout.</p>
+      <div class="choices" id="obPrio" role="radiogroup" aria-label="Priorité">
+        <button type="button" class="choice" data-v="h" role="radio"><div><b>L’histoire</b><span>Deux nouvelles cartes sur trois en histoire</span></div></button>
+        <button type="button" class="choice" data-v="b" role="radio"><div><b>Les deux, à parts égales</b><span>Autant d’histoire que de géographie</span></div></button>
+        <button type="button" class="choice" data-v="g" role="radio"><div><b>La géographie</b><span>Deux nouvelles cartes sur trois en géographie</span></div></button>
+      </div>
+    </div>
+    <div class="ob-step mid" data-step="5" hidden>
+      <div class="ob-mark sm"><svg class="mark p4" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg></div>
+      <h2 id="obEndH">C’est parti.</h2>
+      <p>Ta série commence dès ta première séance.</p>
+      <div class="sum" id="obSum"></div>
+    </div>
+  </div>
+  <div class="ob-foot">
+    <button type="button" class="ob-btn" id="obNext">Commencer</button>
+    <button type="button" class="ob-lnk" id="obLater" hidden>Plus tard</button>
+  </div>
+</section>
+
+<!-- feuille : réglages -->
+<div class="sheet-back" id="sheetBack"></div>
+<section class="sheet" id="settings" tabindex="-1" role="dialog" aria-modal="true" aria-label="Réglages" aria-hidden="true">
+  <div class="sheet-bar" id="sheetBar">
+    <div class="sheet-title">Réglages</div>
+    <button class="btn primary" id="btnClose">Terminé</button>
+  </div>
+  <div class="sheet-scroll" id="sheetScroll">
+
+    <h3 class="group-title">Apparence</h3>
+    <div class="group">
+      <div class="row stack">
+        <div class="row-t">Thème</div>
+        <div class="seg" id="themeSeg" data-glass-full aria-label="Thème">
+          <button data-v="auto">Auto</button><button data-v="light">Clair</button><button data-v="dark">Sombre</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-l"><div class="row-t">Verre liquide</div><div class="row-s">Effet de verre sur les boutons, sélecteurs et interrupteurs</div></div>
+        <span class="sw"><input type="checkbox" id="swGlass" aria-label="Verre liquide"><i></i></span>
+      </div>
+    </div>
+
+    <h3 class="group-title">Toi et tes objectifs</h3>
+    <div class="group">
+      <div class="row">
+        <div class="row-l"><div class="row-t">Prénom</div></div>
+        <input type="text" class="inp name" id="nameInp" maxlength="24" autocomplete="given-name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Ton prénom" aria-label="Prénom">
+      </div>
+      <div class="row stack">
+        <div class="row-l"><div class="row-t">Priorité</div><div class="row-s">La discipline qui fournit le plus de nouvelles cartes</div></div>
+        <div class="seg" id="prioSeg" data-glass-full aria-label="Priorité"><button data-v="h">Histoire</button><button data-v="b">Équilibré</button><button data-v="g">Géographie</button></div>
+      </div>
+      <div class="row stack">
+        <div class="row-l"><div class="row-t">Objectif par jour</div><div class="row-s">Le nombre de réponses qui valide la journée et fait avancer la série</div></div>
+        <div class="seg" id="goalSeg" data-glass-full aria-label="Objectif par jour"><button data-v="10">10</button><button data-v="20">20</button><button data-v="30">30</button></div>
+      </div>
+      <div class="row"><div class="row-l"><div class="row-t">Jokers</div><div class="row-s">Un joker protège la série si tu manques un jour. Tu en gagnes un tous les 7 jours de série, deux au maximum.</div></div><div class="row-v" id="jokInfo"></div></div>
+    </div>
+
+    <h3 class="group-title">Tes données</h3>
+    <div class="group">
+      <div class="row"><div class="row-l"><div class="row-t">Sur cet appareil</div><div class="row-s" id="dataInfo"></div></div></div>
+      <div class="row actions">
+        <button class="btn" id="btnExport">Exporter</button>
+        <button class="btn" id="btnImport">Importer</button>
+        <button class="btn danger" id="btnReset">Tout effacer</button>
+        <input type="file" id="fileImport" accept="application/json,.json" hidden>
+      </div>
+    </div>
+
+    <h3 class="group-title">Mises à jour</h3>
+    <div class="group">
+      <div class="row"><div class="row-l"><div class="row-t">Version installée</div></div><div class="row-v" id="verNow"></div></div>
+      <div class="row">
+        <div class="row-l"><div class="row-t" id="updTitle">Mises à jour</div><div class="row-s" id="updSub"></div></div>
+        <span class="spin" id="updSpin" hidden></span>
+      </div>
+      <div class="row actions">
+        <button class="btn" id="btnCheck">Rechercher une mise à jour</button>
+        <button class="btn primary" id="btnInstall" hidden>Installer</button>
+      </div>
+      <div class="row">
+        <div class="row-l"><div class="row-t">Recherche automatique</div><div class="row-s">Au lancement, au retour dans l’app, puis toutes les 30 minutes</div></div>
+        <span class="sw"><input type="checkbox" id="swAuto" aria-label="Recherche automatique"><i></i></span>
+      </div>
+    </div>
+
+    <h3 class="group-title">Nouveautés</h3>
+    <div class="group" id="changelog"></div>
+
+    <h3 class="group-title">À propos</h3>
+    <div class="group">
+      <div class="row"><div class="row-l"><div class="row-t">Réussite</div><div class="row-s">Contenu rédigé à partir du programme officiel de la session 2027. Il ne remplace ni tes cours ni les manuels. Tes données restent sur ton téléphone.</div><div class="row-s" id="scrLine" style="margin-top:6px;opacity:.7"></div></div><div class="row-v" id="verAbout"></div></div>
+    </div>
+    <div class="group" style="margin-top:12px"><div class="row actions"><button class="btn" id="btnIntro">Refaire le parcours d’accueil</button></div></div>
+    <p class="credit">App développée avec Claude - AH Studio - 2026</p>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   Réussite — logique
+   Application en un seul fichier, sans framework. Données dans localStorage.
+   ============================================================ */
+(function(){
+'use strict';
+
+const APP_VERSION = '0.2.0';          // ← à changer à chaque version (et VERSION dans sw.js)
+const SETTINGS_KEY = 'reussite.settings', DATA_KEY = 'reussite.data';
+const OLD_SETTINGS_KEY = 'revision.settings', OLD_DATA_KEY = 'revision.data';   // nom provisoire de la v0.1.0 : relu une fois, jamais réécrit
+
+/* ---------- nouveautés (la plus récente en premier) ---------- */
+const CHANGELOG = [
+  { v:'0.2.0', date:'17 novembre 2026', items:[
+    'L’app s’appelle maintenant Réussite, avec sa nouvelle icône.',
+    'Nouvelle identité tirée de l’icône : violets, orchidée, et des couches de verre qui s’allument à mesure que la journée avance.',
+    'Parcours d’accueil : prénom, date des écrits, objectif par jour et discipline à privilégier.',
+    'L’app t’appelle par ton prénom : accueil, encouragements, bilan de séance.',
+    'Réglages : prénom, priorité, et un bouton pour refaire le parcours d’accueil.',
+    'Les données de la version 0.1.0 sont reprises automatiquement.'
+  ] },
+  { v:'0.1.0', date:'17 novembre 2026', items:[
+    'Première version, sous le nom provisoire « Révision ».',
+    'Les 16 thèmes du programme du CAPES externe d’histoire-géographie (session 2027) : 129 questions et 120 repères.',
+    'Séance du jour, mode Éclair, cartes de repères et révision des erreurs, avec répétition espacée.',
+    'Série quotidienne, jokers, niveaux, badges et calendrier de régularité.',
+    'Onglet Concours : compte à rebours, épreuves, questions d’entretien et sujets d’entraînement.',
+    'Verre liquide, thème clair ou sombre, mise à jour depuis GitHub.'
+  ] }
+];
+
+/* ============================================================
+   Contenu — programme du CAPES externe d’histoire-géographie (bac+3), session 2027
+   Source des intitulés : devenirenseignant.gouv.fr (programme publié en juillet 2026).
+   r : repères [recto, verso]   q : QCM [question, [bonne réponse, 3 leurres], explication]   s : sujets d’entraînement
+   Dans les QCM, la bonne réponse est TOUJOURS la première : l’app mélange à l’affichage.
+   ============================================================ */
+const THEMES = [
+/* ----------------------------- HISTOIRE ----------------------------- */
+{ id:'h1', d:'h', p:'Histoire ancienne', t:'La Grèce classique', o:'La Grèce classique',
+  r:[
+    ['508-507 av. J.-C.', 'Réformes de Clisthène à Athènes : dix tribus, isonomie (égalité devant la loi). Les bases de la démocratie.'],
+    ['490 av. J.-C.', 'Marathon : les hoplites athéniens repoussent les Perses (première guerre médique).'],
+    ['480 av. J.-C.', 'Salamine : victoire navale des Grecs sur la flotte de Xerxès (seconde guerre médique).'],
+    ['478-477 av. J.-C.', 'Fondation de la ligue de Délos, alliance maritime dirigée par Athènes, qui devient un empire.'],
+    ['431-404 av. J.-C.', 'Guerre du Péloponnèse entre Athènes et Sparte. Elle s’achève par la défaite d’Athènes.'],
+    ['338 av. J.-C.', 'Chéronée : Philippe II de Macédoine bat Athènes et Thèbes. Fin de l’indépendance des cités.'],
+    ['Ecclésia', 'Assemblée des citoyens athéniens. Elle se réunit sur la Pnyx, vote les lois, la guerre et la paix.'],
+    ['Métèque', 'Étranger libre résidant dans la cité. Il paie une taxe et sert dans l’armée, sans droits politiques.']
+  ],
+  q:[
+    ['Qui est l’auteur des réformes de 508-507 av. J.-C. qui fondent la démocratie athénienne ?', ['Clisthène', 'Solon', 'Périclès', 'Pisistrate'], 'Clisthène répartit les citoyens en dix tribus et instaure l’isonomie. Solon, au début du VIe siècle, avait aboli l’esclavage pour dettes.'],
+    ['À Athènes, qu’est-ce que le misthos ?', ['Une indemnité versée aux citoyens qui exercent une fonction publique', 'Un impôt payé par les métèques', 'Le tribut versé par les alliés', 'Une fête en l’honneur d’Athéna'], 'Instauré au temps de Périclès, le misthos permet aux citoyens modestes de siéger, d’abord comme jurés à l’Héliée.'],
+    ['Que décide une procédure d’ostracisme ?', ['L’exil d’un citoyen pour dix ans', 'La confiscation de ses biens', 'Sa condamnation à mort', 'La perte définitive de sa citoyenneté'], 'L’assemblée vote sur des tessons (ostraka) l’éloignement d’un citoyen jugé dangereux pour la cité. Il garde ses biens.'],
+    ['Quel historien athénien a raconté la guerre du Péloponnèse ?', ['Thucydide', 'Hérodote', 'Plutarque', 'Polybe'], 'Thucydide, lui-même stratège, cherche les causes profondes du conflit. Hérodote a raconté les guerres médiques.'],
+    ['Que prévoit la loi de Périclès de 451 av. J.-C. sur la citoyenneté ?', ['Être né d’un père et d’une mère athéniens', 'Être né d’un père athénien seulement', 'Posséder une terre en Attique', 'Avoir servi deux ans comme hoplite'], 'La loi resserre le corps civique : la double ascendance athénienne devient obligatoire.'],
+    ['Quelle bataille terrestre met fin à la seconde guerre médique en 479 av. J.-C. ?', ['Platées', 'Marathon', 'Les Thermopyles', 'Leuctres'], 'À Platées, les Grecs coalisés, menés par Sparte, battent l’armée perse restée en Grèce après Salamine.'],
+    ['Quel philosophe est condamné à mort par un tribunal athénien en 399 av. J.-C. ?', ['Socrate', 'Platon', 'Aristote', 'Protagoras'], 'Socrate est accusé d’impiété et de corruption de la jeunesse. Son procès est connu par Platon et Xénophon.'],
+    ['Quel est le rôle de la Boulè ?', ['Conseil de 500 citoyens tirés au sort, qui prépare les décrets', 'Tribunal populaire', 'Collège des dix stratèges', 'Conseil des anciens magistrats'], 'La Boulè prépare le travail de l’ecclésia. Le tribunal populaire est l’Héliée ; le conseil des anciens archontes est l’Aréopage.']
+  ],
+  s:['Être citoyen à Athènes aux Ve et IVe siècles av. J.-C.', 'Athènes et la mer à l’époque classique'] },
+
+{ id:'h2', d:'h', p:'Histoire ancienne', t:'Rome : République et Empire', o:'Rome : République et Empire',
+  r:[
+    ['509 av. J.-C.', 'Date traditionnelle de la fondation de la République, après l’expulsion du dernier roi.'],
+    ['264-146 av. J.-C.', 'Guerres puniques contre Carthage, détruite en 146. Rome domine la Méditerranée occidentale.'],
+    ['44 av. J.-C.', 'Assassinat de César aux ides de mars.'],
+    ['27 av. J.-C.', 'Octavien reçoit le titre d’Auguste : début du principat.'],
+    ['212', 'Édit de Caracalla : la citoyenneté romaine est accordée à tous les hommes libres de l’Empire.'],
+    ['313', 'Constantin et Licinius accordent la liberté de culte aux chrétiens (« édit de Milan »).'],
+    ['476', 'Déposition de Romulus Augustule : fin de l’Empire romain d’Occident.'],
+    ['Cursus honorum', 'Carrière des magistratures : questure, édilité, préture, puis consulat.']
+  ],
+  q:[
+    ['Quelle bataille, en 31 av. J.-C., donne à Octavien la maîtrise du monde romain ?', ['Actium', 'Pharsale', 'Philippes', 'Zama'], 'À Actium, Octavien bat Antoine et Cléopâtre. Pharsale (48) est la victoire de César sur Pompée.'],
+    ['Quel est le pouvoir principal des tribuns de la plèbe ?', ['S’opposer aux décisions des magistrats (droit de veto)', 'Commander les légions', 'Rendre la justice civile', 'Recenser les citoyens'], 'Créés au Ve siècle av. J.-C., les tribuns défendent les plébéiens grâce à l’intercessio. Le recensement revient aux censeurs.'],
+    ['Qu’appelle-t-on le limes ?', ['La zone frontière fortifiée de l’Empire', 'Le forum d’une colonie', 'L’impôt foncier des provinces', 'La garde personnelle de l’empereur'], 'Le limes est jalonné de camps, de routes et parfois de murs, comme le mur d’Hadrien en Bretagne.'],
+    ['Quel empereur fait du christianisme la religion officielle de l’Empire en 380 ?', ['Théodose', 'Constantin', 'Dioclétien', 'Julien'], 'L’édit de Thessalonique impose le christianisme nicéen. Constantin l’avait autorisé, pas imposé.'],
+    ['Qui met en place la tétrarchie à la fin du IIIe siècle ?', ['Dioclétien', 'Aurélien', 'Septime Sévère', 'Marc Aurèle'], 'Dioclétien partage le pouvoir entre deux Augustes et deux Césars pour mieux défendre l’Empire.'],
+    ['Qui franchit le Rubicon en 49 av. J.-C., déclenchant une guerre civile ?', ['César', 'Pompée', 'Sylla', 'Marius'], 'En passant ce fleuve avec son armée, César entre en Italie en armes, ce que la loi interdisait.'],
+    ['Que se passe-t-il à Rome en 410 ?', ['Le sac de la ville par les Wisigoths d’Alaric', 'La fondation de Constantinople', 'L’incendie sous Néron', 'Le partage définitif de l’Empire'], 'Le sac de 410 frappe les esprits : Augustin y répond dans La Cité de Dieu. Le partage de l’Empire date de 395.'],
+    ['Que désigne la « romanisation » ?', ['L’adoption progressive des modes de vie romains par les provinciaux', 'L’installation de colons italiens dans chaque province', 'L’interdiction des cultes locaux', 'Le déplacement forcé des populations conquises'], 'Elle passe par les villes, le latin, le droit et la citoyenneté, sans effacer les cultures locales.']
+  ],
+  s:['Gouverner et intégrer : Rome et son empire (Ier-IIIe siècles)', 'La citoyenneté romaine, de la République à l’édit de Caracalla'] },
+
+{ id:'h3', d:'h', p:'Histoire médiévale', t:'Contacts et conflits en Méditerranée', o:'Contacts et conflits en Méditerranée, VIe-XIIIe siècles',
+  r:[
+    ['622', 'Hégire : Muhammad quitte La Mecque pour Médine. An 1 du calendrier musulman.'],
+    ['711', 'Début de la conquête de la péninsule Ibérique par les troupes de Tariq ibn Ziyad.'],
+    ['1054', 'Rupture entre les Églises de Rome et de Constantinople (schisme d’Orient).'],
+    ['1095', 'Appel du pape Urbain II à Clermont, qui lance la première croisade.'],
+    ['1099', 'Prise de Jérusalem par les croisés, naissance des États latins d’Orient.'],
+    ['1187', 'Saladin bat les Francs à Hattin et reprend Jérusalem.'],
+    ['1204', 'La quatrième croisade est détournée : sac de Constantinople par les Latins.'],
+    ['Dhimmi', 'En terre d’Islam, statut des juifs et des chrétiens : protégés, mais soumis à un impôt spécifique.']
+  ],
+  q:[
+    ['Quel empereur byzantin tente de reconstituer l’Empire romain au VIe siècle ?', ['Justinien', 'Héraclius', 'Basile II', 'Alexis Comnène'], 'Justinien (527-565) reconquiert l’Italie et l’Afrique du Nord, et fait bâtir Sainte-Sophie.'],
+    ['Quelle est la capitale du califat omeyyade (661-750) ?', ['Damas', 'Bagdad', 'Le Caire', 'Cordoue'], 'Les Omeyyades gouvernent depuis Damas. Les Abbassides, qui les renversent, fondent Bagdad en 762.'],
+    ['Quelle île, conquise par les Normands au XIe siècle, devient un carrefour des cultures latine, grecque et arabe ?', ['La Sicile', 'Chypre', 'La Crète', 'Malte'], 'À Palerme, la cour de Roger II illustre ces échanges : le géographe al-Idrisi y travaille.'],
+    ['Qu’est-ce qu’un fondouk ?', ['Un entrepôt-auberge pour les marchands étrangers', 'Un navire de commerce', 'Une taxe sur les épices', 'Un quartier juif'], 'Les marchands de Venise, Gênes ou Pise disposent de fondouks dans les ports musulmans.'],
+    ['Quelle bataille de 1212 marque un tournant de la Reconquista ?', ['Las Navas de Tolosa', 'Poitiers', 'Hattin', 'Manzikert'], 'Les royaumes chrétiens coalisés y battent les Almohades. Manzikert (1071) est une défaite byzantine face aux Turcs.'],
+    ['Quel événement, en 1291, met fin aux États latins d’Orient ?', ['La chute d’Acre', 'La prise d’Antioche', 'La bataille de Mansourah', 'Le siège de Damiette'], 'Acre, dernière grande place franque, est prise par les Mamelouks.'],
+    ['Dans quelle ville les traductions de l’arabe vers le latin se développent-elles au XIIe siècle ?', ['Tolède', 'Grenade', 'Venise', 'Marseille'], 'Reprise en 1085, Tolède devient un centre de traduction des savoirs grecs et arabes.'],
+    ['Quelles cités italiennes dominent le commerce méditerranéen aux XIIe-XIIIe siècles ?', ['Venise et Gênes', 'Florence et Milan', 'Rome et Naples', 'Bologne et Sienne'], 'Leurs flottes relient l’Occident à Byzance et au monde musulman. Elles profitent aussi des croisades.']
+  ],
+  s:['La Méditerranée, espace d’échanges (Xe-XIIIe siècles)', 'Les croisades : affrontements et contacts'] },
+
+{ id:'h4', d:'h', p:'Histoire médiévale', t:'Société, Église et pouvoir en Occident', o:'Société, Église et pouvoir politique dans l’Occident médiéval, XIe-XVe siècles',
+  r:[
+    ['1122', 'Concordat de Worms : compromis qui clôt la querelle des Investitures entre le pape et l’empereur.'],
+    ['1214', 'Bouvines : Philippe Auguste bat l’empereur Otton IV et ses alliés.'],
+    ['1215', 'Concile de Latran IV : confession et communion annuelles obligatoires pour tous les fidèles.'],
+    ['1337-1453', 'Guerre de Cent Ans entre les rois de France et d’Angleterre.'],
+    ['1347-1352', 'Peste noire : elle tue entre un tiers et la moitié de la population européenne.'],
+    ['1378-1417', 'Grand Schisme d’Occident : deux, puis trois papes rivaux.'],
+    ['Réforme grégorienne', 'Mouvement du XIe siècle qui veut libérer l’Église de l’emprise des laïcs et discipliner le clergé.'],
+    ['Hommage', 'Cérémonie par laquelle un vassal devient l’homme d’un seigneur, en échange d’un fief.']
+  ],
+  q:[
+    ['Que se passe-t-il à Canossa en 1077 ?', ['L’empereur Henri IV fait pénitence devant le pape Grégoire VII', 'Le pape couronne Charlemagne', 'Les croisés prêtent serment', 'Un concile condamne les cathares'], 'Excommunié, Henri IV vient demander son pardon : épisode clé de la querelle des Investitures.'],
+    ['Quel ordre monastique naît à Cîteaux en 1098 ?', ['Les cisterciens', 'Les clunisiens', 'Les chartreux', 'Les franciscains'], 'Les cisterciens veulent revenir à la règle de saint Benoît. Bernard de Clairvaux en est la grande figure.'],
+    ['Quels ordres mendiants apparaissent au début du XIIIe siècle ?', ['Franciscains et dominicains', 'Templiers et hospitaliers', 'Cisterciens et chartreux', 'Bénédictins et augustins'], 'Installés en ville, ils prêchent et vivent de l’aumône. Les dominicains sont en première ligne contre l’hérésie.'],
+    ['Quel roi de France, mort devant Tunis en 1270, est canonisé en 1297 ?', ['Louis IX', 'Philippe Auguste', 'Louis VII', 'Philippe le Bel'], 'Saint Louis incarne le roi justicier et chrétien. Il meurt lors de la huitième croisade.'],
+    ['Quel conflit oppose Philippe le Bel au pape Boniface VIII ?', ['La suprématie du pape sur les rois', 'La succession de Bourgogne', 'Le contrôle de la Sicile', 'La croisade contre les Albigeois'], 'La bulle Unam Sanctam (1302) affirme la supériorité du pape. Le conflit culmine avec l’attentat d’Anagni en 1303.'],
+    ['Où la papauté s’installe-t-elle de 1309 à 1377 ?', ['Avignon', 'Lyon', 'Florence', 'Constance'], 'Sept papes résident à Avignon avant le retour à Rome, suivi de près par le Grand Schisme.'],
+    ['Quelle ville Jeanne d’Arc contribue-t-elle à délivrer en 1429 ?', ['Orléans', 'Reims', 'Rouen', 'Paris'], 'Après Orléans, Charles VII est sacré à Reims. Jeanne est brûlée à Rouen en 1431.'],
+    ['Selon Adalbéron de Laon, quels sont les trois ordres de la société ?', ['Ceux qui prient, ceux qui combattent, ceux qui travaillent', 'Les nobles, les bourgeois, les paysans', 'Les clercs, les marchands, les artisans', 'Le roi, les seigneurs, les serfs'], 'Formulé vers 1030, ce schéma des oratores, bellatores et laboratores justifie l’ordre social.']
+  ],
+  s:['L’Église et les pouvoirs laïcs en Occident (XIe-XIIIe siècles)', 'L’affirmation de l’État royal en France (XIIIe-XVe siècles)'] },
+
+{ id:'h5', d:'h', p:'Histoire moderne', t:'Première mondialisation, Renaissance et réformes', o:'Première mondialisation, Renaissance, humanisme et réformes, XVe-XVIIe siècles',
+  r:[
+    ['Vers 1450', 'Gutenberg met au point l’imprimerie à caractères mobiles, à Mayence.'],
+    ['1453', 'Prise de Constantinople par les Ottomans de Mehmed II.'],
+    ['1492', 'Colomb atteint les Antilles. La même année, prise de Grenade par les Rois catholiques.'],
+    ['1494', 'Traité de Tordesillas : Espagne et Portugal se partagent les terres à découvrir.'],
+    ['1517', 'Luther publie ses 95 thèses contre les indulgences.'],
+    ['1519-1522', 'Expédition de Magellan, achevée par Elcano : premier tour du monde.'],
+    ['1545-1563', 'Concile de Trente : l’Église catholique répond à la Réforme et se réorganise.'],
+    ['1598', 'Édit de Nantes : Henri IV met fin aux guerres de Religion en France.']
+  ],
+  q:[
+    ['Quel navigateur portugais atteint l’Inde par le cap de Bonne-Espérance en 1498 ?', ['Vasco de Gama', 'Bartolomeu Dias', 'Magellan', 'Cabral'], 'Dias avait franchi le cap en 1488. Vasco de Gama ouvre la route maritime des épices.'],
+    ['Quel empire Hernán Cortés conquiert-il entre 1519 et 1521 ?', ['L’Empire aztèque', 'L’Empire inca', 'L’Empire maya', 'L’Empire songhaï'], 'Tenochtitlan tombe en 1521. L’Empire inca est conquis par Pizarro à partir de 1532.'],
+    ['Sur quoi porte la controverse de Valladolid (1550-1551) ?', ['Le traitement des Indiens d’Amérique', 'Le partage du Nouveau Monde', 'La traduction de la Bible', 'Le calendrier grégorien'], 'Las Casas y défend les Indiens contre Sepúlveda, qui justifie leur soumission par la force.'],
+    ['Quel humaniste publie l’Éloge de la folie en 1511 ?', ['Érasme', 'Thomas More', 'Pic de la Mirandole', 'Rabelais'], 'Érasme de Rotterdam, « prince des humanistes », y critique les travers de son temps, clergé compris.'],
+    ['Dans quelle ville Calvin organise-t-il son Église réformée ?', ['Genève', 'Wittenberg', 'Zurich', 'Strasbourg'], 'Calvin fait de Genève la « Rome protestante ». Wittenberg est la ville de Luther.'],
+    ['Que se passe-t-il le 24 août 1572 ?', ['Le massacre de la Saint-Barthélemy', 'L’assassinat d’Henri IV', 'La signature de l’édit de Nantes', 'Le sacre d’Henri III'], 'Des milliers de protestants sont tués à Paris, puis en province.'],
+    ['Quel principe la paix d’Augsbourg (1555) établit-elle dans le Saint-Empire ?', ['Chaque prince choisit la religion de ses sujets', 'La liberté de culte pour chaque individu', 'L’interdiction du luthéranisme', 'L’élection de l’empereur par le pape'], 'Résumé par la formule cujus regio, ejus religio. Le calvinisme n’y est pas reconnu.'],
+    ['Quelle ville des Andes devient au XVIe siècle le premier centre mondial d’extraction de l’argent ?', ['Potosí', 'Cuzco', 'Lima', 'Carthagène'], 'L’argent de Potosí alimente l’Europe et, par le galion de Manille, l’Asie : un rouage de la première mondialisation.']
+  ],
+  s:['Les Européens et le monde (XVe-XVIe siècles)', 'Réformes et divisions religieuses dans l’Europe du XVIe siècle'] },
+
+{ id:'h6', d:'h', p:'Histoire moderne', t:'L’Europe du XVIIIe siècle, Révolution et Empire', o:'L’Europe du XVIIIe siècle, Révolution française et Empire',
+  r:[
+    ['1751-1772', 'Publication de l’Encyclopédie, dirigée par Diderot et d’Alembert.'],
+    ['26 août 1789', 'Déclaration des droits de l’homme et du citoyen.'],
+    ['10 août 1792', 'Prise des Tuileries : chute de la monarchie. La République est proclamée en septembre.'],
+    ['27 juillet 1794', '9 thermidor an II : chute de Robespierre.'],
+    ['9 novembre 1799', '18 brumaire an VIII : coup d’État de Bonaparte, début du Consulat.'],
+    ['1804', 'Code civil (mars) et sacre de Napoléon Ier (décembre).'],
+    ['1815', 'Waterloo, seconde abdication de Napoléon. Le congrès de Vienne réorganise l’Europe.'],
+    ['Lumières', 'Mouvement intellectuel du XVIIIe siècle qui fait de la raison l’outil de la critique et du progrès.']
+  ],
+  q:[
+    ['Qui théorise la séparation des pouvoirs dans De l’esprit des lois (1748) ?', ['Montesquieu', 'Rousseau', 'Voltaire', 'Diderot'], 'Montesquieu distingue les pouvoirs législatif, exécutif et judiciaire. Rousseau publie Du contrat social en 1762.'],
+    ['Que décide l’Assemblée dans la nuit du 4 août 1789 ?', ['L’abolition des privilèges', 'La mort du roi', 'La nationalisation des biens du clergé', 'La création des départements'], 'La société d’ordres disparaît en droit. Les biens du clergé sont nationalisés en novembre 1789.'],
+    ['En quelle année est votée la Constitution civile du clergé ?', ['1790', '1789', '1792', '1801'], 'Elle fait des prêtres des agents publics élus et divise durablement le clergé et le pays.'],
+    ['Quand Louis XVI est-il exécuté ?', ['Le 21 janvier 1793', 'Le 14 juillet 1790', 'Le 10 août 1792', 'Le 9 thermidor an II'], 'Jugé par la Convention, il est guillotiné sur l’actuelle place de la Concorde.'],
+    ['Quand la Convention abolit-elle l’esclavage pour la première fois ?', ['En 1794', 'En 1789', 'En 1802', 'En 1848'], 'Décret du 4 février 1794. Bonaparte rétablit l’esclavage en 1802 ; l’abolition définitive date de 1848.'],
+    ['Avec qui Bonaparte signe-t-il le Concordat de 1801 ?', ['Le pape Pie VII', 'Le tsar Alexandre Ier', 'Le roi d’Angleterre', 'L’empereur d’Autriche'], 'Le catholicisme est reconnu « religion de la grande majorité des Français ». L’État nomme les évêques.'],
+    ['Quelle victoire Napoléon remporte-t-il le 2 décembre 1805 ?', ['Austerlitz', 'Iéna', 'Wagram', 'Marengo'], 'La « bataille des Trois Empereurs » contre l’Autriche et la Russie, un an jour pour jour après le sacre.'],
+    ['Quel roi de Prusse, correspondant de Voltaire, incarne le despotisme éclairé ?', ['Frédéric II', 'Joseph II', 'Frédéric-Guillaume Ier', 'Gustave III'], 'Frédéric II réforme son État au nom de la raison sans rien céder de son pouvoir. Joseph II règne en Autriche.']
+  ],
+  s:['Les Lumières et la contestation de l’absolutisme', 'La France en révolution : rompre avec l’Ancien Régime (1789-1799)'] },
+
+{ id:'h7', d:'h', p:'Histoire contemporaine', t:'Le XIXe siècle français', o:'Le XIXe siècle français : économie, société et politique, métropole et colonies (1815-1914)',
+  r:[
+    ['1830', 'Trois Glorieuses et monarchie de Juillet. Début de la conquête de l’Algérie.'],
+    ['1848', 'IIe République : suffrage universel masculin et abolition définitive de l’esclavage (décret Schœlcher).'],
+    ['2 décembre 1851', 'Coup d’État de Louis-Napoléon Bonaparte. Le Second Empire suit en 1852.'],
+    ['4 septembre 1870', 'Proclamation de la IIIe République après la défaite de Sedan.'],
+    ['1871', 'Commune de Paris (mars-mai), écrasée lors de la Semaine sanglante.'],
+    ['1881-1882', 'Lois Ferry : école primaire gratuite, puis laïque et obligatoire.'],
+    ['1884', 'Loi Waldeck-Rousseau : les syndicats sont autorisés.'],
+    ['1905', 'Loi de séparation des Églises et de l’État.']
+  ],
+  q:[
+    ['Que prévoit la loi Guizot de 1833 ?', ['Une école primaire de garçons dans chaque commune', 'L’école obligatoire jusqu’à 13 ans', 'La gratuité des lycées', 'La création des écoles normales supérieures'], 'Première grande loi scolaire du siècle. L’obligation et la laïcité n’arrivent qu’avec Ferry.'],
+    ['Quelle loi reconnaît le droit de grève en 1864 ?', ['La loi Ollivier', 'La loi Le Chapelier', 'La loi Waldeck-Rousseau', 'La loi Falloux'], 'Sous le Second Empire libéral. La loi Le Chapelier (1791) interdisait les coalitions.'],
+    ['Dans quel journal Zola publie-t-il « J’accuse… ! » en janvier 1898 ?', ['L’Aurore', 'Le Figaro', 'Le Petit Journal', 'L’Humanité'], 'L’article relance l’affaire Dreyfus et divise le pays. L’Humanité n’est fondée qu’en 1904.'],
+    ['Quel régime dirige la France de 1852 à 1870 ?', ['Le Second Empire', 'La monarchie de Juillet', 'La IIe République', 'La Restauration'], 'Napoléon III règne jusqu’à la défaite de Sedan face à la Prusse.'],
+    ['Que garantit la loi de 1901 ?', ['La liberté d’association', 'La liberté de la presse', 'Le repos hebdomadaire', 'Le vote des femmes'], 'La liberté de la presse date de 1881, le repos hebdomadaire de 1906.'],
+    ['Qui dirige les grands travaux de Paris sous le Second Empire ?', ['Le préfet Haussmann', 'Gustave Eiffel', 'Viollet-le-Duc', 'Adolphe Thiers'], 'Percées, égouts, parcs, immeubles alignés : Paris est transformé entre 1853 et 1870.'],
+    ['Sur quel territoire le traité du Bardo (1881) établit-il un protectorat français ?', ['La Tunisie', 'Le Maroc', 'L’Algérie', 'Madagascar'], 'Le protectorat sur le Maroc date de 1912. L’Algérie, elle, est divisée en départements.'],
+    ['Que met en place le code de l’indigénat ?', ['Un régime pénal d’exception pour les colonisés', 'La citoyenneté pour les habitants des colonies', 'L’école obligatoire outre-mer', 'L’interdiction du travail forcé'], 'Appliqué en Algérie en 1881 puis étendu à l’empire, il soumet les « indigènes » à des peines spéciales.']
+  ],
+  s:['L’enracinement de la République en France (1870-1914)', 'Industrialisation et monde ouvrier en France (1815-1914)'] },
+
+{ id:'h8', d:'h', p:'Histoire contemporaine', t:'Le XXe siècle', o:'Le XXe siècle : guerres mondiales, totalitarismes, génocides, guerre froide, construction européenne, décolonisation',
+  r:[
+    ['11 novembre 1918', 'Armistice de Rethondes : fin des combats de la Première Guerre mondiale.'],
+    ['1917', 'Révolutions russes : chute du tsar en février, prise du pouvoir par les bolcheviks en octobre.'],
+    ['30 janvier 1933', 'Hitler est nommé chancelier d’Allemagne.'],
+    ['20 janvier 1942', 'Conférence de Wannsee : les dirigeants nazis organisent la « solution finale ».'],
+    ['1947', 'Doctrine Truman et plan Marshall : entrée dans la guerre froide.'],
+    ['25 mars 1957', 'Traités de Rome : création de la Communauté économique européenne.'],
+    ['1962', 'Accords d’Évian et indépendance de l’Algérie.'],
+    ['9 novembre 1989', 'Chute du mur de Berlin. L’URSS disparaît en décembre 1991.']
+  ],
+  q:[
+    ['Quelle bataille de 1916 symbolise la guerre d’usure sur le front de l’Ouest ?', ['Verdun', 'La Marne', 'Tannenberg', 'Le Chemin des Dames'], 'De février à décembre 1916, environ 300 000 morts. La Marne date de 1914, le Chemin des Dames de 1917.'],
+    ['Dans quel État le génocide des Arméniens est-il perpétré à partir de 1915 ?', ['L’Empire ottoman', 'L’Empire russe', 'L’Autriche-Hongrie', 'La Perse'], 'Déportations et massacres font plus d’un million de morts.'],
+    ['Quelle philosophe publie Les Origines du totalitarisme en 1951 ?', ['Hannah Arendt', 'Simone Weil', 'Simone de Beauvoir', 'Raymond Aron'], 'Arendt rapproche nazisme et stalinisme autour de l’idéologie et de la terreur.'],
+    ['Quelle crise d’octobre 1962 mène le monde au bord de la guerre nucléaire ?', ['La crise de Cuba', 'Le blocus de Berlin', 'La guerre de Corée', 'La crise de Suez'], 'Des missiles soviétiques sont installés à Cuba. Leur retrait ouvre la période de la Détente.'],
+    ['Que marque la conférence de Bandung en 1955 ?', ['L’affirmation des pays d’Asie et d’Afrique sur la scène internationale', 'La fin de la guerre d’Indochine', 'La création de l’ONU', 'La naissance du pacte de Varsovie'], 'Vingt-neuf pays y condamnent la colonisation. La fin de la guerre d’Indochine est réglée à Genève en 1954.'],
+    ['Quelle déclaration du 9 mai 1950 lance la construction européenne ?', ['La déclaration Schuman', 'Le discours de Fulton', 'L’appel de Stockholm', 'Le plan Fouchet'], 'Elle propose de mettre en commun le charbon et l’acier : la CECA naît en 1951.'],
+    ['Quelle défaite de 1954 met fin à la présence française en Indochine ?', ['Diên Biên Phu', 'Cao Bang', 'Saigon', 'Hanoï'], 'Elle est suivie des accords de Genève, qui partagent le Vietnam au 17e parallèle.'],
+    ['Quel traité crée l’Union européenne en 1992 ?', ['Maastricht', 'Rome', 'Lisbonne', 'Nice'], 'Maastricht crée la citoyenneté européenne et prépare la monnaie unique.'],
+    ['Dans quel pays le génocide des Tutsi a-t-il lieu en 1994 ?', ['Le Rwanda', 'Le Burundi', 'L’Ouganda', 'Le Congo'], 'D’avril à juillet 1994, il fait environ 800 000 morts selon l’ONU.']
+  ],
+  s:['Les démocraties face aux totalitarismes (1919-1945)', 'La décolonisation : indépendances et nouveaux États (1945-années 1970)'] },
+
+/* ----------------------------- GÉOGRAPHIE ----------------------------- */
+{ id:'g1', d:'g', p:'Géographie', t:'Géographie de la population', o:'Géographie de la population : démographie, distribution spatiale',
+  r:[
+    ['Transition démographique', 'Passage d’une natalité et d’une mortalité élevées à une natalité et une mortalité faibles, avec une phase de forte croissance entre les deux.'],
+    ['Indice synthétique de fécondité', 'Nombre moyen d’enfants par femme. Le renouvellement des générations est assuré autour de 2,1.'],
+    ['Solde naturel', 'Différence entre les naissances et les décès sur un territoire pendant une période.'],
+    ['Solde migratoire', 'Différence entre les entrées et les sorties d’un territoire.'],
+    ['Foyer de peuplement', 'Grande concentration humaine. Les trois principaux : Asie de l’Est, Asie du Sud, Europe.'],
+    ['Diaspora', 'Dispersion d’un peuple dans plusieurs pays, qui garde des liens entre ses communautés et avec le pays d’origine.'],
+    ['8 milliards', 'Seuil franchi par la population mondiale en novembre 2022, selon l’ONU.']
+  ],
+  q:[
+    ['Quel est le pays le plus peuplé du monde depuis 2023 ?', ['L’Inde', 'La Chine', 'Les États-Unis', 'L’Indonésie'], 'Selon l’ONU, l’Inde a dépassé la Chine en 2023, avec plus de 1,4 milliard d’habitants.'],
+    ['Quel continent connaît la croissance démographique la plus rapide ?', ['L’Afrique', 'L’Asie', 'L’Amérique latine', 'L’Océanie'], 'Sa population pourrait presque doubler d’ici 2050, portée par l’Afrique subsaharienne.'],
+    ['Qu’appelle-t-on le dividende démographique ?', ['L’avantage économique d’une forte part d’actifs dans la population', 'Les revenus envoyés par les émigrés', 'L’excédent des naissances sur les décès', 'Une aide versée aux familles nombreuses'], 'Il apparaît quand la fécondité baisse : moins de jeunes à charge, pas encore beaucoup de personnes âgées.'],
+    ['Que traduit une pyramide des âges à base large et à sommet étroit ?', ['Une population jeune, à forte natalité', 'Une population vieillissante', 'Une forte immigration', 'Une population stable'], 'C’est le profil des pays au début ou au milieu de leur transition démographique.'],
+    ['Quel texte international de 1951 définit le statut de réfugié ?', ['La convention de Genève', 'Le pacte de Marrakech', 'La charte de l’ONU', 'Les accords de Schengen'], 'Est réfugiée la personne qui fuit son pays par crainte fondée de persécution.'],
+    ['Quelle part de la population mondiale vit aujourd’hui en ville ?', ['Un peu plus de la moitié', 'Environ un tiers', 'Environ les trois quarts', 'Près de 90 %'], 'Les urbains sont majoritaires depuis la fin des années 2000.'],
+    ['Entre quels espaces les migrations internationales sont-elles les plus nombreuses ?', ['Entre pays d’une même région du monde', 'Des pays du Sud vers l’Europe', 'De l’Afrique vers l’Amérique', 'De l’Asie vers l’Océanie'], 'La majorité des migrants restent sur leur continent : les flux Sud-Sud pèsent autant que les flux Sud-Nord.'],
+    ['Comment calcule-t-on une densité de population ?', ['Habitants divisés par la superficie', 'Naissances divisées par la population', 'Urbains divisés par ruraux', 'Superficie divisée par habitants'], 'Elle s’exprime en habitants par km² et masque souvent de forts contrastes internes.']
+  ],
+  s:['Les migrations internationales : flux et territoires', 'Le vieillissement de la population, un défi pour les territoires'] },
+
+{ id:'g2', d:'g', p:'Géographie', t:'Géographie de la mondialisation', o:'Géographie de la mondialisation : acteurs, territoires, maritimisation, flux',
+  r:[
+    ['Mondialisation', 'Mise en relation des territoires à l’échelle du monde par des flux de marchandises, de capitaux, de personnes et d’informations.'],
+    ['Conteneur', 'Boîte métallique standardisée, apparue dans les années 1950. Unité de mesure : l’EVP (équivalent vingt pieds).'],
+    ['Firme transnationale', 'Entreprise implantée dans plusieurs pays, qui organise sa production à l’échelle mondiale.'],
+    ['Façade maritime', 'Littoral où se concentrent de grands ports qui desservent un vaste arrière-pays.'],
+    ['Hub', 'Plate-forme qui concentre des flux pour les redistribuer vers d’autres destinations.'],
+    ['ZEE', 'Zone économique exclusive : jusqu’à 200 milles marins des côtes, l’État y exploite les ressources.'],
+    ['Ville mondiale', 'Métropole qui concentre des fonctions de commandement à l’échelle planétaire (notion de Saskia Sassen).']
+  ],
+  q:[
+    ['Quelle part du commerce mondial de marchandises, en volume, passe par la mer ?', ['Plus de 80 %', 'Environ 50 %', 'Environ 30 %', 'Moins de 20 %'], 'D’où le terme de maritimisation de l’économie.'],
+    ['Quelle convention de 1982 fixe le droit de la mer ?', ['Montego Bay', 'Kyoto', 'Bretton Woods', 'Marrakech'], 'Elle définit les eaux territoriales, les ZEE et la haute mer.'],
+    ['Entre quels territoires passe le détroit de Malacca ?', ['La péninsule malaise et Sumatra', 'L’Iran et Oman', 'Le Yémen et Djibouti', 'L’Espagne et le Maroc'], 'Un des passages les plus fréquentés du monde, entre océan Indien et mer de Chine méridionale.'],
+    ['Quel est le premier port à conteneurs du monde ?', ['Shanghai', 'Rotterdam', 'Singapour', 'Los Angeles'], 'Les plus grands ports à conteneurs sont presque tous en Asie de l’Est. Rotterdam est le premier d’Europe.'],
+    ['Quelles mers le canal de Suez relie-t-il ?', ['La Méditerranée et la mer Rouge', 'La mer Noire et la Méditerranée', 'L’Atlantique et le Pacifique', 'La mer Rouge et le golfe Persique'], 'Ouvert en 1869, il évite le contournement de l’Afrique.'],
+    ['Quelle organisation, créée en 1995, encadre le commerce mondial ?', ['L’OMC', 'Le FMI', 'L’OCDE', 'La CNUCED'], 'L’Organisation mondiale du commerce succède au GATT de 1947. Son siège est à Genève.'],
+    ['Par où transite l’essentiel des communications numériques entre continents ?', ['Les câbles sous-marins', 'Les satellites', 'Les ondes radio', 'Les réseaux hertziens'], 'Plus de 95 % des données intercontinentales passent par des câbles posés au fond des océans.'],
+    ['Que désigne la « division internationale du travail » ?', ['La répartition des étapes de production entre plusieurs pays', 'Le partage du temps de travail entre salariés', 'L’interdiction du travail des enfants', 'La fixation mondiale des salaires'], 'Conception, fabrication et assemblage se font dans des pays différents, selon leurs avantages.']
+  ],
+  s:['Mers et océans, au cœur de la mondialisation', 'Les métropoles, centres d’impulsion de la mondialisation'] },
+
+{ id:'g3', d:'g', p:'Géographie', t:'Géographie de l’environnement', o:'Géographie de l’environnement : milieux, ressources, risques',
+  r:[
+    ['Risque', 'Rencontre entre un aléa et des enjeux vulnérables.'],
+    ['Aléa', 'Phénomène naturel ou technologique qui peut se produire : séisme, crue, explosion…'],
+    ['Vulnérabilité', 'Fragilité d’une société face à un aléa. Elle dépend de sa préparation et de ses moyens.'],
+    ['Anthropocène', 'Proposition de nouvelle époque où l’humanité est devenue une force qui transforme la planète (Paul Crutzen, 2000).'],
+    ['Ressource', 'Élément du milieu qu’une société sait utiliser et valoriser. Une ressource n’existe que par l’usage qu’on en fait.'],
+    ['Résilience', 'Capacité d’un territoire à absorber un choc et à se réorganiser ensuite.'],
+    ['Stress hydrique', 'Situation où l’eau disponible passe sous 1 700 m³ par habitant et par an.']
+  ],
+  q:[
+    ['Quel objectif l’accord de Paris (2015) fixe-t-il ?', ['Limiter le réchauffement bien en dessous de 2 °C', 'Interdire le charbon avant 2030', 'Diviser par deux la population urbaine', 'Supprimer les subventions agricoles'], 'Adopté à la COP21, il vise si possible 1,5 °C par rapport à l’ère préindustrielle.'],
+    ['En quelle année le GIEC est-il créé ?', ['1988', '1972', '1997', '2005'], 'Le Groupe d’experts intergouvernemental sur l’évolution du climat synthétise l’état des connaissances.'],
+    ['Quel rapport de 1987 popularise la notion de développement durable ?', ['Le rapport Brundtland', 'Le rapport Meadows', 'Le rapport Stern', 'Le rapport Brandt'], 'Il définit un développement qui répond aux besoins du présent sans compromettre ceux des générations futures.'],
+    ['Où se tient le Sommet de la Terre de 1992 ?', ['Rio de Janeiro', 'Stockholm', 'Johannesburg', 'Kyoto'], 'Il débouche sur l’Agenda 21 et la convention sur le climat. Stockholm avait accueilli la première conférence en 1972.'],
+    ['Quel enchaînement provoque la catastrophe de Fukushima en 2011 ?', ['Séisme, tsunami, puis accident nucléaire', 'Typhon, puis glissement de terrain', 'Éruption volcanique, puis incendie', 'Explosion chimique, puis marée noire'], 'Un exemple de risque en cascade, où un aléa naturel déclenche un accident technologique.'],
+    ['Quelle est la cause principale de l’assèchement de la mer d’Aral ?', ['L’irrigation massive du coton', 'Le réchauffement climatique', 'Un barrage hydroélectrique', 'L’exploitation pétrolière'], 'Les eaux de l’Amou-Daria et du Syr-Daria ont été détournées à partir des années 1960.'],
+    ['En France, à quoi sert un plan de prévention des risques (PPR) ?', ['Réglementer l’occupation des sols dans les zones exposées', 'Indemniser les victimes de catastrophes', 'Organiser les secours pendant une crise', 'Mesurer la qualité de l’air'], 'Créé par la loi Barnier de 1995, il peut interdire ou limiter la construction.'],
+    ['Quel pays abrite la plus grande partie de la forêt amazonienne ?', ['Le Brésil', 'Le Pérou', 'La Colombie', 'Le Venezuela'], 'Environ 60 % du massif. La Guyane en fait aussi partie.']
+  ],
+  s:['L’eau : une ressource sous tension', 'Habiter des territoires à risques'] },
+
+{ id:'g4', d:'g', p:'Géographie', t:'Géographie de la France', o:'Géographie de la France',
+  r:[
+    ['Métropolisation', 'Concentration des habitants, des emplois qualifiés et des fonctions de commandement dans les grandes villes.'],
+    ['Diagonale des faibles densités', 'Bande peu peuplée qui traverse la France de la Meuse aux Landes.'],
+    ['Périurbanisation', 'Extension de la ville sur les campagnes proches, portée par la maison individuelle et la voiture.'],
+    ['DROM', 'Départements et régions d’outre-mer : Guadeloupe, Martinique, Guyane, La Réunion et Mayotte.'],
+    ['ZEE française', 'Environ 10 millions de km², la deuxième du monde, grâce aux outre-mer.'],
+    ['Aire d’attraction d’une ville', 'Zonage de l’Insee (2020) : un pôle et les communes dont au moins 15 % des actifs y travaillent.'],
+    ['13 régions', 'Nombre de régions en métropole depuis 2016.']
+  ],
+  q:[
+    ['Combien de régions la France métropolitaine compte-t-elle depuis 2016 ?', ['13', '22', '18', '12'], 'Elles étaient 22 avant la réforme. Avec l’outre-mer, la France compte 18 régions.'],
+    ['Quel territoire est devenu département d’outre-mer en 2011 ?', ['Mayotte', 'La Guyane', 'La Nouvelle-Calédonie', 'Saint-Martin'], 'Mayotte est le cinquième DROM. La Nouvelle-Calédonie a un statut particulier.'],
+    ['Quel est le premier aéroport français par le nombre de passagers ?', ['Paris-Charles-de-Gaulle', 'Paris-Orly', 'Nice-Côte d’Azur', 'Lyon-Saint-Exupéry'], 'Roissy est aussi l’un des tout premiers hubs européens. Nice est le premier aéroport de province.'],
+    ['Quelle loi de 1986 encadre l’urbanisation des côtes ?', ['La loi Littoral', 'La loi Montagne', 'La loi SRU', 'La loi NOTRe'], 'Elle protège notamment la bande des 100 mètres. La loi Montagne date de 1985.'],
+    ['Quelle est la deuxième aire d’attraction de France par sa population ?', ['Lyon', 'Marseille - Aix-en-Provence', 'Lille', 'Toulouse'], 'Derrière Paris, l’aire de Lyon dépasse légèrement celle de Marseille - Aix-en-Provence.'],
+    ['Quel est le plus long fleuve de France ?', ['La Loire', 'La Seine', 'Le Rhône', 'La Garonne'], 'Un peu plus de 1 000 km, du Massif central à l’Atlantique.'],
+    ['Avec quels pays la Guyane a-t-elle une frontière ?', ['Le Brésil et le Suriname', 'Le Brésil et le Venezuela', 'Le Suriname et le Guyana', 'La Colombie et le Brésil'], 'La frontière avec le Brésil, longue de 730 km, est la plus longue frontière terrestre de la France.'],
+    ['Quelle loi de 2014 crée le statut de métropole ?', ['La loi MAPTAM', 'La loi Defferre', 'La loi ALUR', 'La loi Climat et résilience'], 'Elle donne aux grandes intercommunalités des compétences renforcées. Les lois Defferre (1982) lancent la décentralisation.']
+  ],
+  s:['La France : une métropolisation inégale', 'Les territoires ultramarins français : atouts et contraintes'] },
+
+{ id:'g5', d:'g', p:'Géographie', t:'Géographie de l’Union européenne', o:'Géographie de l’Union européenne',
+  r:[
+    ['27 États membres', 'Depuis la sortie du Royaume-Uni, effective le 31 janvier 2020.'],
+    ['Espace Schengen', 'Espace de libre circulation des personnes, sans contrôle aux frontières intérieures. Accord signé en 1985.'],
+    ['PAC', 'Politique agricole commune, lancée en 1962. Longtemps le premier budget de l’Union.'],
+    ['Politique de cohésion', 'Politique qui réduit les écarts entre régions, notamment grâce au FEDER créé en 1975.'],
+    ['Dorsale européenne', 'Axe de fortes densités et de richesse, de Londres à Milan. Aussi appelée mégalopole européenne.'],
+    ['2004', 'Le plus grand élargissement : dix nouveaux États, surtout d’Europe centrale et orientale.'],
+    ['Critères de Copenhague', 'Conditions d’adhésion fixées en 1993 : démocratie, économie de marché, reprise du droit européen.']
+  ],
+  q:[
+    ['Combien d’États l’Union européenne compte-t-elle ?', ['27', '28', '25', '30'], 'Elle en comptait 28 avant le Brexit.'],
+    ['Quel est le dernier État entré dans l’Union européenne ?', ['La Croatie', 'La Roumanie', 'La Slovénie', 'La Serbie'], 'En 2013. Roumanie et Bulgarie sont entrées en 2007.'],
+    ['Dans quelle ville siège le Parlement européen ?', ['Strasbourg', 'Luxembourg', 'Francfort', 'La Haye'], 'Les sessions plénières ont lieu à Strasbourg, le travail en commission à Bruxelles.'],
+    ['Où se trouve la Banque centrale européenne ?', ['Francfort', 'Bruxelles', 'Paris', 'Amsterdam'], 'Elle conduit la politique monétaire de la zone euro.'],
+    ['Quel traité, entré en vigueur en 2009, réforme les institutions de l’Union ?', ['Lisbonne', 'Maastricht', 'Amsterdam', 'Nice'], 'Il crée notamment un président stable du Conseil européen.'],
+    ['Quel est le rôle de Frontex ?', ['Surveiller les frontières extérieures de l’Union', 'Gérer le budget agricole', 'Contrôler les banques', 'Organiser les élections européennes'], 'L’agence européenne de garde-frontières et de garde-côtes a son siège à Varsovie.'],
+    ['Qu’est-ce qu’une région ultrapériphérique (RUP) ?', ['Un territoire de l’Union très éloigné du continent européen', 'Une région frontalière de la Russie', 'Un État candidat à l’adhésion', 'Une région en retard de développement'], 'Neuf RUP : les territoires français d’outre-mer concernés, les Açores, Madère et les Canaries.'],
+    ['Qui a popularisé l’image de la « banane bleue » ?', ['Roger Brunet', 'Jean Gottmann', 'Yves Lacoste', 'Paul Vidal de la Blache'], 'L’expression naît en 1989 d’une étude dirigée par Roger Brunet sur les villes européennes.']
+  ],
+  s:['L’Union européenne : des territoires inégalement intégrés', 'Les frontières de l’Union européenne'] },
+
+{ id:'g6', d:'g', p:'Géographie', t:'Géopolitique : frontières, conflits', o:'Géopolitique : frontières, conflits',
+  r:[
+    ['Géopolitique', 'Étude des rivalités de pouvoir sur des territoires (définition d’Yves Lacoste).'],
+    ['Frontière', 'Limite de la souveraineté d’un État. Elle sépare, mais elle met aussi en contact.'],
+    ['Dyade', 'Frontière commune à deux États (terme de Michel Foucher).'],
+    ['Soft power', 'Capacité d’influencer sans contraindre, par la culture, les valeurs, l’image (Joseph Nye).'],
+    ['Conflit gelé', 'Conflit sans combats majeurs mais sans règlement politique, comme en Transnistrie.'],
+    ['Eaux territoriales', 'Bande de 12 milles marins où l’État exerce sa pleine souveraineté.'],
+    ['193', 'Nombre d’États membres de l’ONU depuis l’entrée du Soudan du Sud en 2011.']
+  ],
+  q:[
+    ['Quel géographe fonde la revue Hérodote en 1976 ?', ['Yves Lacoste', 'Michel Foucher', 'Roger Brunet', 'Pierre George'], 'Lacoste relance la géopolitique en France avec cette revue.'],
+    ['Qui a forgé la notion de soft power ?', ['Joseph Nye', 'Samuel Huntington', 'Henry Kissinger', 'Francis Fukuyama'], 'Nye l’oppose au hard power, fondé sur la force militaire et économique.'],
+    ['Quelle ligne sépare les deux Corées depuis 1953 ?', ['Une zone démilitarisée autour du 38e parallèle', 'Le 17e parallèle', 'Le fleuve Yalou', 'La ligne Durand'], 'La DMZ fait environ 4 km de large. Le 17e parallèle séparait les deux Vietnam.'],
+    ['Quand la Russie lance-t-elle l’invasion à grande échelle de l’Ukraine ?', ['Le 24 février 2022', 'Le 18 mars 2014', 'Le 8 août 2008', 'Le 1er septembre 2021'], 'L’annexion de la Crimée date de 2014 ; la guerre en Géorgie de 2008.'],
+    ['Combien de membres permanents le Conseil de sécurité de l’ONU compte-t-il ?', ['5', '7', '10', '15'], 'États-Unis, Russie, Chine, France et Royaume-Uni. Ils disposent du droit de veto.'],
+    ['Quels États se disputent le Cachemire ?', ['L’Inde et le Pakistan', 'L’Inde et le Bangladesh', 'L’Iran et l’Afghanistan', 'La Chine et le Népal'], 'Le conflit remonte à la partition de 1947. La Chine contrôle aussi une partie de la région.'],
+    ['Dans quelle mer se trouvent les îles Spratleys, revendiquées par plusieurs États ?', ['La mer de Chine méridionale', 'La mer du Japon', 'La mer d’Arabie', 'La mer des Caraïbes'], 'Chine, Vietnam, Philippines, Malaisie, Brunei et Taïwan y ont des revendications concurrentes.'],
+    ['Quelle est la plus longue frontière terrestre entre deux États ?', ['Canada - États-Unis', 'Russie - Kazakhstan', 'Chili - Argentine', 'Chine - Mongolie'], 'Environ 8 900 km, Alaska compris.']
+  ],
+  s:['Les frontières dans le monde : entre ouverture et fermeture', 'Les espaces maritimes, objets de rivalités'] },
+
+{ id:'g7', d:'g', p:'Géographie', t:'Géographie urbaine', o:'Géographie urbaine : populations, dynamiques, activités',
+  r:[
+    ['Gentrification', 'Installation de catégories aisées dans un quartier populaire, qui en transforme l’habitat et les commerces.'],
+    ['Étalement urbain', 'Extension de la ville plus rapide que la croissance de sa population.'],
+    ['Mégapole', 'Très grande agglomération, de plus de 10 millions d’habitants.'],
+    ['Mégalopole', 'Région urbaine formée de plusieurs métropoles reliées entre elles (Jean Gottmann, 1961).'],
+    ['CBD', 'Central business district : le quartier des affaires d’une métropole.'],
+    ['Ségrégation socio-spatiale', 'Séparation des groupes sociaux dans l’espace urbain, subie ou recherchée.'],
+    ['Habitat informel', 'Logements construits sans droit sur le sol. Environ un milliard de personnes y vivent.']
+  ],
+  q:[
+    ['Quelle région urbaine Jean Gottmann décrit-il sous le nom de Megalopolis en 1961 ?', ['Le nord-est des États-Unis, de Boston à Washington', 'Le littoral japonais de Tokyo à Osaka', 'La vallée du Rhin', 'La Californie du Sud'], 'Les géographes ont ensuite étendu le terme au Japon et à l’Europe.'],
+    ['Quelle est l’agglomération la plus peuplée du monde ?', ['Tokyo', 'Delhi', 'Shanghai', 'Mexico'], 'Environ 37 millions d’habitants. Delhi la talonne et devrait la dépasser.'],
+    ['Dans quelle région du monde la croissance urbaine est-elle la plus rapide ?', ['L’Afrique subsaharienne', 'L’Europe', 'L’Amérique du Nord', 'L’Asie de l’Est'], 'Lagos ou Kinshasa gagnent plusieurs centaines de milliers d’habitants par an.'],
+    ['Que prévoit la loi SRU de 2000 ?', ['Un minimum de logements sociaux dans les communes urbaines', 'La création des métropoles', 'La fin des grands ensembles', 'La gratuité des transports'], 'Le seuil, fixé à 20 %, a été porté à 25 % dans la plupart des communes concernées en 2013.'],
+    ['Qu’est-ce qu’une edge city ?', ['Un pôle d’emplois et de commerces en périphérie d’une métropole', 'Un quartier historique réhabilité', 'Une ville frontalière', 'Un bidonville'], 'Le terme vient du journaliste Joel Garreau (1991), à partir du cas des États-Unis.'],
+    ['Quel phénomène la ville de Detroit illustre-t-elle ?', ['La décroissance urbaine', 'La gentrification', 'La métropolisation', 'La littoralisation'], 'On parle de shrinking city : Detroit a perdu plus de la moitié de ses habitants depuis 1950.'],
+    ['Que désigne un QPV en France ?', ['Un quartier prioritaire de la politique de la ville', 'Un quartier piéton végétalisé', 'Un quartier patrimonial à valoriser', 'Un périmètre de vidéoprotection'], 'Défini depuis 2014 par un critère unique : le faible revenu des habitants.'],
+    ['Comment appelle-t-on un quartier résidentiel fermé et surveillé ?', ['Une gated community', 'Une favela', 'Un CBD', 'Une ville nouvelle'], 'Ces quartiers fermés illustrent une ségrégation choisie par les plus aisés.']
+  ],
+  s:['Les villes face aux inégalités socio-spatiales', 'L’étalement urbain : dynamiques et enjeux'] },
+
+{ id:'g8', d:'g', p:'Géographie', t:'Géographie rurale', o:'Géographie rurale : populations, dynamiques, activités',
+  r:[
+    ['Espace rural', 'Pour l’Insee, depuis 2020 : l’ensemble des communes peu denses et très peu denses.'],
+    ['Exode rural', 'Départ durable des habitants des campagnes vers les villes.'],
+    ['Renaissance rurale', 'Retour de la croissance démographique dans une partie des campagnes (Bernard Kayser, 1990).'],
+    ['Agriculture productiviste', 'Agriculture qui recherche de forts rendements grâce aux machines, aux engrais et à la sélection.'],
+    ['Agriculture vivrière', 'Agriculture destinée d’abord à nourrir ceux qui la pratiquent.'],
+    ['Front pionnier', 'Espace en cours de peuplement et de mise en valeur, souvent aux dépens de la forêt.'],
+    ['Multifonctionnalité', 'Le fait qu’un espace rural soit à la fois productif, résidentiel, récréatif et de nature.']
+  ],
+  q:[
+    ['Qu’appelle-t-on la « révolution verte » ?', ['La hausse des rendements par les variétés sélectionnées, l’irrigation et les engrais', 'Le passage à l’agriculture biologique', 'Le reboisement des terres agricoles', 'L’interdiction des pesticides'], 'Lancée dans les années 1960, notamment en Inde et au Mexique, elle a fait reculer les famines.'],
+    ['Quel est le premier pays agricole de l’Union européenne par la valeur de sa production ?', ['La France', 'L’Allemagne', 'L’Espagne', 'La Pologne'], 'Elle devance l’Allemagne, l’Italie et l’Espagne.'],
+    ['Quelle part du territoire métropolitain la surface agricole utile occupe-t-elle ?', ['Environ la moitié', 'Environ un quart', 'Environ les trois quarts', 'Moins de 10 %'], 'Cette part recule lentement, au profit de la forêt et des espaces urbanisés.'],
+    ['Quelle part de l’emploi les agriculteurs exploitants représentent-ils en France ?', ['Moins de 2 %', 'Environ 8 %', 'Environ 15 %', 'Environ 25 %'], 'L’agriculture occupait encore environ un tiers des actifs au lendemain de la Seconde Guerre mondiale.'],
+    ['Que garantit une AOP ?', ['Un produit dont toutes les étapes sont réalisées dans une aire géographique donnée', 'Un produit issu de l’agriculture biologique', 'Un prix minimum payé au producteur', 'Un produit vendu en circuit court'], 'L’appellation d’origine protégée est un label européen.'],
+    ['Quelles productions font avancer le front pionnier amazonien ?', ['L’élevage bovin et le soja', 'Le riz et le thé', 'Le blé et la vigne', 'Le cacao et l’hévéa'], 'Pâturages et grandes cultures d’exportation remplacent la forêt.'],
+    ['Qu’est-ce qu’un bocage ?', ['Un paysage de parcelles encloses de haies', 'Un paysage de champs ouverts', 'Une forêt exploitée', 'Un vignoble en terrasses'], 'Typique de l’ouest de la France. Il s’oppose à l’openfield du Bassin parisien.'],
+    ['Que désigne l’accaparement des terres ?', ['L’achat ou la location de vastes surfaces agricoles par des investisseurs étrangers', 'Le partage des terres entre héritiers', 'La mise en jachère obligatoire', 'Le regroupement de parcelles par l’État'], 'En anglais land grabbing. Il concerne surtout l’Afrique, l’Asie du Sud-Est et l’Amérique latine.']
+  ],
+  s:['Les espaces ruraux : entre déprise et renouveau', 'Nourrir le monde : agricultures et territoires'] }
+];
+
+/* ---------- les épreuves (note du jury, session 2027) ---------- */
+const EPREUVES = [
+  { t:'Composition', s:'Écrit. Deux sujets au choix, dans la même discipline.', d:'5 h', c:'coef. 2,5' },
+  { t:'Analyse d’un corpus documentaire', s:'Écrit, dans l’autre discipline. Cartes, textes, images, statistiques.', d:'5 h', c:'coef. 2,5' },
+  { t:'Exposé disciplinaire', s:'Oral. 4 h de préparation, 20 min d’exposé, 40 min d’échange.', d:'1 h', c:'coef. 5' },
+  { t:'Entretien avec le jury', s:'Oral. Parcours et motivation, puis deux questions.', d:'35 min', c:'coef. 3' }
+];
+
+/* ---------- entretien : questions d’entraînement (rédigées pour l’app, sur les quatre thèmes cités par le jury) ---------- */
+const JURY = [
+  ['Question générale', 'Que signifie, pour vous, faire partager les valeurs de la République ?'],
+  ['Question générale', 'La laïcité à l’école : une contrainte ou une liberté ?'],
+  ['Question générale', 'Comment l’histoire-géographie contribue-t-elle à former des citoyens ?'],
+  ['Question générale', 'Comment l’école peut-elle lutter contre les stéréotypes de genre ?'],
+  ['Question générale', 'Quel rôle pour l’enseignant dans l’éducation à la transition écologique ?'],
+  ['Question générale', 'Qu’est-ce qu’un élève épanoui à l’école ?'],
+  ['Question contextualisée', 'Un élève refuse d’étudier un document en cours d’histoire au nom de ses convictions. Qu’en pensez-vous ?'],
+  ['Question contextualisée', 'Pendant un travail de groupe, les garçons monopolisent la parole. Qu’en pensez-vous ?'],
+  ['Question contextualisée', 'Un élève conteste en classe la réalité du changement climatique. Qu’en pensez-vous ?'],
+  ['Question contextualisée', 'Vous remarquez qu’un élève s’isole et que ses résultats chutent. Qu’en pensez-vous ?'],
+  ['Question contextualisée', 'Un parent conteste le contenu d’un cours sur les faits religieux. Qu’en pensez-vous ?'],
+  ['Question contextualisée', 'Vous entendez des propos racistes dans le couloir, en dehors de votre cours. Qu’en pensez-vous ?']
+];
+
+/* ---------- encouragements ---------- */
+const MSG = {
+  start:   ['Une première séance et la série démarre, {p}.', 'Dix questions pour lancer la série. Tu commences quand tu veux.'],
+  todo:    ['Il te reste {n} pour valider la journée.', 'Encore {n} et la série continue.', 'Plus que {n}. Cinq minutes suffisent.'],
+  morning: ['Bonne heure pour réviser, {p} : la mémoire est fraîche.', 'Une séance ce matin, et la journée est déjà gagnée.'],
+  evening: ['Il est encore temps de sauver la série, {p}.', 'Une petite séance avant de fermer les cahiers ?'],
+  done:    ['Objectif atteint, {p}. Le reste, c’est du bonus.', 'Journée validée, {p}. Tu peux être tranquille.', 'C’est fait pour aujourd’hui. La régularité paie.'],
+  lost:    ['La série repart de zéro, pas ce que tu as appris. On relance, {p} ?', 'Une série se reconstruit en un jour. On y va ?'],
+  good:    ['Exact.', 'Bien vu.', 'C’est ça.', 'Juste.', 'Parfait.', 'Oui.'],
+  good3:   ['Trois de suite.', 'Tu enchaînes.', 'Rien ne t’arrête.'],
+  bad:     ['Pas tout à fait.', 'Raté, mais ça va rester.', 'Pas cette fois.', 'On la reverra.'],
+  endTop:  ['Sans faute, {p}.', 'Rien à redire, {p}.'],
+  endOk:   ['Belle séance, {p}.', 'Solide, {p}.', 'Du bon travail, {p}.'],
+  endLow:  ['Séance utile, {p}.', 'C’est en se trompant qu’on retient.'],
+  endTopS: ['Dix sur dix au concours, ça commence comme ça.', 'Tout était su. Les prochaines cartes arriveront plus tard.'],
+  endOkS:  ['Les erreurs reviendront dans tes prochaines séances.', 'Ce que tu as raté reviendra bientôt, le reste s’espace.'],
+  endLowS: ['Ces questions reviendront vite : c’est comme ça qu’elles rentrent.', 'Relis la fiche du thème, puis retente ta chance.']
+};
+
+/* ---------- niveaux (points d’expérience) ---------- */
+const LEVELS = [
+  [0, 'Élève'], [100, 'Étudiant'], [300, 'Candidat'], [700, 'Admissible'], [1500, 'Admis'], [3000, 'Stagiaire'], [5000, 'Titulaire'], [8000, 'Inspecteur']
+];
+
+/* ---------- constantes ---------- */
+const MIN = 60000, DAY = 86400000;
+const BOX_DAYS = [0, 1, 3, 7, 14, 30];   // répétition espacée : délai avant de revoir une carte, selon sa boîte
+const MAX_JOKERS = 2;
+
+const SVG = (p, sw)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 1.8) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+const ICONS = {
+  mark:  SVG('<path d="M8.71 5.49Q12 3.1 15.29 5.49L17.84 7.35Q21.13 9.73 19.87 13.6L18.9 16.6Q17.64 20.47 13.58 20.47L10.42 20.47Q6.36 20.47 5.1 16.6L4.13 13.6Q2.87 9.73 6.16 7.35Z"/><circle cx="12" cy="12.7" r="2.7"/>'),
+  book:  SVG('<path d="M4.5 5.5A2.5 2.5 0 0 1 7 3h12.5v15H7a2.5 2.5 0 0 0-2.5 2.5v-15Z"/><path d="M4.5 20.5A2.5 2.5 0 0 0 7 21h12.5"/>'),
+  chart: SVG('<path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/>'),
+  cap:   SVG('<path d="m2.5 9.5 9.5-4.5 9.5 4.5-9.5 4.5-9.5-4.5Z"/><path d="M6.5 11.5v4.7c1.5 1.4 3.4 2.1 5.5 2.1s4-.7 5.5-2.1v-4.7"/><path d="M21.5 9.5v5"/>'),
+  check: SVG('<path d="m5 12.5 4.2 4.2L19 7"/>', 2.6),
+  x:     SVG('<path d="M6 6l12 12M18 6 6 18"/>', 2.4),
+  ice:   SVG('<path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/>', 2.2),
+  star:  SVG('<path d="m12 4 2.3 4.9 5.2.6-3.9 3.6 1.1 5.2L12 15.7l-4.7 2.6 1.1-5.2-3.9-3.6 5.2-.6Z"/>'),
+  chev:  SVG('<path d="m9.5 6 6 6-6 6"/>', 2.2)
+};
+
+/* ---------- onglets ---------- */
+const TABS = [
+  { id:'today',    label:'Aujourd’hui', icon:ICONS.mark },
+  { id:'study',    label:'Réviser',     icon:ICONS.book },
+  { id:'progress', label:'Progrès',     icon:ICONS.chart },
+  { id:'exam',     label:'Concours',    icon:ICONS.cap }
+];
+
+/* ---------- réglages d’interface ---------- */
+const DEFAULTS = { theme:'auto', glass:true, autoUpdate:true, tab:0, lastCheck:0, disc:'h' };
+let S = Object.assign({}, DEFAULTS);
+try { Object.assign(S, JSON.parse(localStorage.getItem(SETTINGS_KEY) || localStorage.getItem(OLD_SETTINGS_KEY) || '{}')); } catch(e){}
+function save(){ try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(S)); } catch(e){} }
+
+/* ---------- utilitaires ---------- */
+const $ = (id)=>document.getElementById(id);
+/* ⚠ piège n°1 du kit : ne jamais réécrire une classe / un attribut sans changement sur un élément observé */
+function setOn(el, on){ if (el.classList.contains('on') !== !!on) el.classList.toggle('on', !!on); }
+function setClass(el, c, on){ if (el.classList.contains(c) !== !!on) el.classList.toggle(c, !!on); }
+function setChecked(inp, v){ if (inp.checked !== !!v) inp.checked = !!v; }
+function setHidden(el, h){ if (el.hidden !== !!h) el.hidden = !!h; }
+function setText(el, t){ t = String(t); if (el.textContent !== t) el.textContent = t; }
+function setHTML(el, h){ if (el._h !== h) { el._h = h; el.innerHTML = h; } }
+function setW(el, pct){ const w = clamp(pct, 0, 100).toFixed(1) + '%'; if (el.style.width !== w) el.style.width = w; }
+function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+const pad = (n)=>String(n).padStart(2, '0');
+const esc = (s)=>String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const pl = (n, one, many)=>(Math.abs(n) >= 2 ? many : one);
+const pick = (arr, seed)=>arr[Math.abs(seed == null ? Math.floor(Math.random() * 1e6) : seed) % arr.length];
+const fmtInt = (n)=>new Intl.NumberFormat('fr-FR').format(Math.round(n));
+let NOW_OFF = 0;                                  // décalage d’horloge, pour les tests uniquement
+const now = ()=>Date.now() + NOW_OFF;
+function dayKey(ts){ const d = new Date(ts); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function dayStart(ts){ const d = new Date(ts); d.setHours(0,0,0,0); return d.getTime(); }
+function keyTs(k){ const p = k.split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]).getTime(); }
+function addDays(ts, n){ const d = new Date(ts); d.setDate(d.getDate() + n); return d.getTime(); }
+function daysBetween(a, b){ return Math.round((keyTs(b) - keyTs(a)) / DAY); }
+function weekStart(ts){ const d = dayStart(ts); return addDays(d, -((new Date(d).getDay() + 6) % 7)); }   // lundi
+function fmtDay(ts, opts){ return new Date(ts).toLocaleDateString('fr-FR', opts || { day:'numeric', month:'long' }); }
+function fmtDate(ts){
+  if (!ts) return 'jamais';
+  const d = new Date(ts);
+  return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long' }) + ' à ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+function cmpVer(a, b){
+  const x = String(a).split('.').map(n=>parseInt(n,10)||0), y = String(b).split('.').map(n=>parseInt(n,10)||0);
+  for (let i = 0; i < Math.max(x.length, y.length); i++){ const d = (x[i]||0) - (y[i]||0); if (d) return d > 0 ? 1 : -1; }
+  return 0;
+}
+function pop(el, cls){ if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+function shuffle(a){ for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function haptic(){ try { if (navigator.vibrate) navigator.vibrate(12); } catch(e){} }
+const isDate = (s)=>typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(keyTs(s));
+
+/* ---------- index du contenu ---------- */
+const ALL = [], THEME = {};
+THEMES.forEach(th=>{
+  THEME[th.id] = th; th.items = [];
+  th.q.forEach((q, ix)=>{ const it = { id:th.id + '.q' + ix, th, kind:'q', ix }; ALL.push(it); th.items.push(it); });
+  th.r.forEach((r, ix)=>{ const it = { id:th.id + '.r' + ix, th, kind:'r', ix }; ALL.push(it); th.items.push(it); });
+});
+const SUJETS = []; THEMES.forEach(th=>th.s.forEach(s=>SUJETS.push([th, s])));
+
+/* ---------- données ---------- */
+function cleanName(v){ return typeof v === 'string' ? v.replace(/[<>\u0000-\u001f]/g, '').replace(/\s+/g, ' ').trim().slice(0, 24) : ''; }
+/* met le prénom dans un message ; sans prénom, la virgule et le prénom disparaissent */
+function say(msg){ return D.name ? msg.replace('{p}', D.name) : msg.replace(/,? ?\{p\}/, ''); }
+/* items : { id : { b: boîte 0-5, d: prochaine échéance, n: vues, k: réussites } }
+   days  : { 'AAAA-MM-JJ' : { n: réponses, ok: bonnes, xp, h, g, done } }
+   frozen : jours protégés par un joker */
+function defData(){
+  return { v:1, since:now(), goal:10, exam:'', items:{}, days:{}, xp:0, jokers:1, frozen:[], best:0, badges:{}, sessions:0, perfect:0, name:'', prio:'b', onboarded:false };
+}
+function sanitize(raw){
+  const d = defData(); if (!raw || typeof raw !== 'object') return d;
+  const num = (v, def, a, b)=>(Number.isFinite(+v) ? clamp(+v, a, b) : def);
+  d.since = num(raw.since, d.since, 0, 9e15);
+  d.goal = [10, 20, 30].indexOf(+raw.goal) >= 0 ? +raw.goal : 10;
+  d.exam = isDate(raw.exam) ? raw.exam : '';
+  d.xp = Math.round(num(raw.xp, 0, 0, 1e9));
+  d.jokers = Math.round(num(raw.jokers, 1, 0, MAX_JOKERS));
+  d.best = Math.round(num(raw.best, 0, 0, 1e5));
+  d.sessions = Math.round(num(raw.sessions, 0, 0, 1e7));
+  d.perfect = Math.round(num(raw.perfect, 0, 0, 1e7));
+  d.name = cleanName(raw.name);
+  d.prio = ['h', 'b', 'g'].indexOf(raw.prio) >= 0 ? raw.prio : 'b';
+  d.onboarded = !!raw.onboarded;
+  if (raw.items && typeof raw.items === 'object') for (const id in raw.items){
+    const s = raw.items[id]; if (!s || typeof s !== 'object') continue;
+    d.items[id] = { b:Math.round(num(s.b, 0, 0, 5)), d:num(s.d, 0, 0, 9e15), n:Math.round(num(s.n, 0, 0, 1e6)), k:Math.round(num(s.k, 0, 0, 1e6)) };
+  }
+  if (raw.days && typeof raw.days === 'object') for (const k in raw.days){
+    const s = raw.days[k]; if (!isDate(k) || !s || typeof s !== 'object') continue;
+    d.days[k] = { n:Math.round(num(s.n, 0, 0, 1e5)), ok:Math.round(num(s.ok, 0, 0, 1e5)), xp:Math.round(num(s.xp, 0, 0, 1e7)),
+                  h:Math.round(num(s.h, 0, 0, 1e5)), g:Math.round(num(s.g, 0, 0, 1e5)), done:!!s.done };
+  }
+  if (Array.isArray(raw.frozen)) d.frozen = raw.frozen.filter(isDate);
+  if (raw.badges && typeof raw.badges === 'object') for (const id in raw.badges) d.badges[id] = num(raw.badges[id], 0, 0, 9e15);
+  return d;
+}
+let D = defData();
+try { const raw = localStorage.getItem(DATA_KEY) || localStorage.getItem(OLD_DATA_KEY); if (raw) D = sanitize(JSON.parse(raw)); } catch(e){}
+function saveD(){ try { localStorage.setItem(DATA_KEY, JSON.stringify(D)); } catch(e){} }
+
+/* ---------- calculs ---------- */
+function valid(k){ const d = D.days[k]; return (d && d.done) ? 1 : (D.frozen.indexOf(k) >= 0 ? 2 : 0); }   // 1 = objectif atteint, 2 = joker
+function streak(){
+  let ts = dayStart(now()), n = 0;
+  if (!valid(dayKey(ts))) ts = addDays(ts, -1);          // aujourd’hui pas encore validé : la série tient jusqu’à ce soir
+  for (let i = 0; i < 4000; i++){ const v = valid(dayKey(ts)); if (!v) break; if (v === 1) n++; ts = addDays(ts, -1); }
+  return n;
+}
+/* au changement de jour : si un ou deux jours ont été manqués et qu’il reste des jokers, ils protègent la série */
+function reconcile(){
+  const t = dayStart(now());
+  let last = 0;
+  for (let i = 1; i <= 400; i++){ if (valid(dayKey(addDays(t, -i)))) { last = i; break; } }
+  if (last < 2) return false;
+  const gap = last - 1;
+  if (gap > D.jokers) return false;
+  for (let j = 1; j <= gap; j++) D.frozen.push(dayKey(addDays(t, -j)));
+  D.jokers -= gap; saveD();
+  return true;
+}
+function totals(){ let n = 0, ok = 0, days = 0; for (const k in D.days){ const d = D.days[k]; n += d.n; ok += d.ok; if (d.done) days++; } return { n, ok, days }; }
+function mastery(items){ let b = 0; items.forEach(it=>{ const s = D.items[it.id]; if (s) b += s.b; }); return items.length ? b / (5 * items.length) : 0; }
+function seenCount(items){ let n = 0; items.forEach(it=>{ if (D.items[it.id]) n++; }); return n; }
+function toReview(){ return ALL.filter(it=>{ const s = D.items[it.id]; return s && s.b === 0; }); }
+function level(xp){
+  let i = 0; while (i + 1 < LEVELS.length && xp >= LEVELS[i + 1][0]) i++;
+  const cur = LEVELS[i], nx = LEVELS[i + 1] || null;
+  return { i, name:cur[1], next:nx ? nx[1] : '', left:nx ? nx[0] - xp : 0, pct:nx ? (xp - cur[0]) / (nx[0] - cur[0]) * 100 : 100 };
+}
+function today(){ const k = dayKey(now()); return D.days[k] || { n:0, ok:0, xp:0, h:0, g:0, done:false }; }
+/* valide la journée si l’objectif est atteint ; renvoie true la première fois */
+function markDone(){
+  const k = dayKey(now()), d = D.days[k];
+  if (!d || d.done || d.n < D.goal) return false;
+  d.done = true;
+  const s = streak();
+  if (s > D.best) D.best = s;
+  if (s > 0 && s % 7 === 0 && D.jokers < MAX_JOKERS) { D.jokers++; jokerWon = true; }
+  return true;
+}
+let jokerWon = false;
+function record(it, ok){
+  const t = now(), st = D.items[it.id] || { b:0, d:0, n:0, k:0 };
+  st.n++;
+  if (ok) { st.k++; st.b = Math.min(5, st.b + 1); st.d = dayStart(t) + BOX_DAYS[st.b] * DAY; }
+  else { st.b = 0; st.d = t + 10 * MIN; }
+  D.items[it.id] = st;
+  const k = dayKey(t), day = D.days[k] || (D.days[k] = { n:0, ok:0, xp:0, h:0, g:0, done:false });
+  day.n++; if (ok) day.ok++; day[it.th.d]++;
+  const xp = ok ? (it.kind === 'q' ? 10 : 6) : 2;
+  day.xp += xp; D.xp += xp;
+  const justDone = markDone();
+  saveD();
+  return { xp, justDone };
+}
+
+/* ---------- badges ---------- */
+const BADGES = [
+  { id:'first',   t:'Premier pas',       s:'Terminer une séance',                    ok:()=>D.sessions >= 1 },
+  { id:'s3',      t:'Trois jours',       s:'Tenir une série de 3 jours',             ok:()=>D.best >= 3 },
+  { id:'s7',      t:'Une semaine',       s:'Tenir une série de 7 jours',             ok:()=>D.best >= 7 },
+  { id:'s30',     t:'Un mois',           s:'Tenir une série de 30 jours',            ok:()=>D.best >= 30 },
+  { id:'a100',    t:'Cent réponses',     s:'Donner 100 réponses',                    ok:()=>totals().n >= 100 },
+  { id:'a500',    t:'Cinq cents',        s:'Donner 500 réponses',                    ok:()=>totals().n >= 500 },
+  { id:'perfect', t:'Sans faute',        s:'Finir une séance sans erreur',           ok:()=>D.perfect >= 1 },
+  { id:'both',    t:'Bivalent',          s:'Histoire et géographie le même jour',    ok:()=>{ for (const k in D.days) if (D.days[k].h > 0 && D.days[k].g > 0) return true; return false; } },
+  { id:'all',     t:'Tour du programme', s:'Commencer les 16 thèmes',                ok:()=>THEMES.every(th=>seenCount(th.items) > 0) },
+  { id:'master',  t:'Spécialiste',       s:'Maîtriser un thème à 80 %',              ok:()=>THEMES.some(th=>mastery(th.items) >= .8) }
+];
+function checkBadges(){ const got = []; BADGES.forEach(b=>{ if (!D.badges[b.id] && b.ok()) { D.badges[b.id] = now(); got.push(b); } }); return got; }
+
+/* ---------- thème ---------- */
+const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+function applyTheme(){
+  const dark = S.theme === 'dark' || (S.theme === 'auto' && mq && mq.matches);
+  const v = dark ? 'dark' : 'light', root = document.documentElement;
+  if (root.getAttribute('data-theme') !== v) root.setAttribute('data-theme', v);
+  const m = document.querySelector('meta[name=theme-color]');
+  if (m) m.setAttribute('content', dark ? '#2a1233' : '#e7d5ed');
+}
+if (mq) (mq.addEventListener ? mq.addEventListener('change', ()=>{ if (S.theme === 'auto') applyTheme(); })
+                              : mq.addListener(()=>{ if (S.theme === 'auto') applyTheme(); }));
+
+/* ---------- onglets ---------- */
+const scroller = $('scroll'), top = $('top'), topTitle = $('topTitle'), tabbar = $('tabbar');
+const tabBtns = [], pages = TABS.map(t=>$('page-' + t.id));
+TABS.forEach((t, i)=>{
+  const b = document.createElement('button');
+  b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', t.label);
+  b.innerHTML = t.icon + '<span>' + t.label + '</span>';
+  tabbar.appendChild(b); tabBtns.push(b);
+});
+function showTab(i, persist){
+  i = clamp(i | 0, 0, TABS.length - 1);
+  TABS.forEach((t, k)=>{ setHidden(pages[k], k !== i); setOn(tabBtns[k], k === i); const c = k === i ? 'page' : 'false'; if (tabBtns[k].getAttribute('aria-current') !== c) tabBtns[k].setAttribute('aria-current', c); });
+  setText(topTitle, TABS[i].label);
+  window.scrollTo(0, 0);
+  S.tab = i; if (persist !== false) save();
+  render();
+}
+tabbar.addEventListener('click', (e)=>{
+  const b = e.target.closest('button'); if (!b || !tabbar.contains(b)) return;
+  const i = +b.dataset.i;
+  if (i === S.tab) { window.scrollTo({ top:0, behavior:'smooth' }); return; }
+  showTab(i);
+});
+let ticking = false;
+window.addEventListener('scroll', ()=>{
+  if (ticking) return; ticking = true;
+  requestAnimationFrame(()=>{ ticking = false; const s = (window.scrollY || document.documentElement.scrollTop) > 44; if (top.classList.contains('scrolled') !== s) top.classList.toggle('scrolled', s); });
+}, { passive:true });
+
+/* ============================================================
+   Rendu
+   ============================================================ */
+let lastDay = '';
+function render(){
+  const k = dayKey(now());
+  if (k !== lastDay){ lastDay = k; if (reconcile()) setTimeout(()=>toast('Un joker a protégé ta série.'), 600); }
+  renderToday();
+  const id = TABS[S.tab].id;
+  if (id === 'study') renderStudy();
+  else if (id === 'progress') renderProgress();
+  else if (id === 'exam') renderExam();
+}
+
+/* ---------- Aujourd’hui ---------- */
+const DOW = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+function cheerText(st, td){
+  const seed = Math.floor(dayStart(now()) / DAY), left = D.goal - td.n;
+  if (td.done) return pick(MSG.done, seed);
+  const everDone = totals().days > 0 || D.frozen.length > 0;
+  if (!everDone && td.n === 0) return pick(MSG.start, seed);
+  if (st === 0 && everDone && td.n === 0) return pick(MSG.lost, seed);
+  const h = new Date(now()).getHours();
+  if (td.n === 0 && h < 12) return pick(MSG.morning, seed);
+  if (td.n === 0 && h >= 19) return pick(MSG.evening, seed);
+  return pick(MSG.todo, seed).replace('{n}', left + ' ' + pl(left, 'réponse', 'réponses'));
+}
+function renderToday(){
+  const t = now(), td = today(), st = streak(), tk = dayKey(t);
+  setText($('todayDate'), cap(fmtDay(t, { weekday:'long', day:'numeric', month:'long' })));
+  const hr = new Date(t).getHours(), hi = hr >= 18 || hr < 5 ? 'Bonsoir' : 'Bonjour';
+  setText($('hello'), D.name ? hi + ' ' + D.name : 'Aujourd’hui');
+  const sn = $('streakN');
+  if (sn.textContent !== String(st)) { const first = sn._init; setText(sn, st); if (first) pop(sn, 'tick'); }
+  sn._init = true;
+  setClass(sn, 'small', st >= 100);
+  setText($('streakL'), pl(st, 'jour de série', 'jours de série'));
+  /* la marque : une couche de verre s’allume à chaque quart de l’objectif, le cœur quand la journée est validée */
+  const pct = clamp(td.n / D.goal, 0, 1), lit = td.done ? 4 : Math.min(3, Math.floor(pct * 4));
+  const mk = $('mark'), mc = 'mark p' + lit; if (mk.getAttribute('class') !== mc) mk.setAttribute('class', mc);
+  setClass($('markBox'), 'full', td.done);
+  setText($('goalN'), td.done ? 'Journée validée, ' + td.n + ' ' + pl(td.n, 'réponse', 'réponses') : Math.min(td.n, 999) + ' sur ' + D.goal + ' aujourd’hui');
+  setW($('goalBar'), pct * 100);
+  /* la semaine, en frise */
+  const w0 = weekStart(t); let h = '';
+  for (let i = 0; i < 7; i++){
+    const ts = addDays(w0, i), k = dayKey(ts), v = valid(k);
+    const cls = (v === 1 ? ' done' : v === 2 ? ' ice' : '') + (k === tk ? ' today' : '') + (ts > t ? ' fut' : '');
+    h += '<div class="fd' + cls + '"><i>' + (v === 1 ? ICONS.check : v === 2 ? ICONS.ice : '') + '</i>' + DOW[i] + '</div>';
+  }
+  setHTML($('frise'), h);
+  setText($('cheer'), say(cheerText(st, td)));
+  const jok = $('jok');
+  setHidden(jok, D.jokers < 1);
+  setHTML(jok, ICONS.ice + '<span>' + D.jokers + ' ' + pl(D.jokers, 'joker en réserve', 'jokers en réserve') + '</span>');
+  setText($('btnDaily'), td.done ? 'Continuer à réviser' : td.n > 0 ? 'Reprendre la séance du jour' : 'Lancer la séance du jour');
+  /* erreurs à revoir */
+  const rv2 = toReview().length;
+  setHidden($('reviewCard'), rv2 === 0);
+  setText($('reviewN'), rv2);
+  setText($('reviewL'), pl(rv2, 'question à revoir', 'questions à revoir'));
+  /* compte à rebours */
+  const ex = examInfo();
+  setHidden($('examCard'), !ex || ex.j < 0);
+  if (ex && ex.j >= 0){ setText($('examJ'), ex.j === 0 ? 'Jour J' : 'J-' + ex.j); setText($('examS'), ex.j === 0 ? 'Les écrits, c’est aujourd’hui. Tu es prêt.' : 'avant les écrits, le ' + ex.label); }
+  /* niveau */
+  const lv = level(D.xp);
+  setText($('lvlName'), lv.name);
+  setText($('lvlXp'), fmtInt(D.xp) + ' ' + pl(D.xp, 'point', 'points'));
+  setW($('lvlBar'), lv.pct);
+  setText($('lvlNext'), lv.next ? 'Encore ' + fmtInt(lv.left) + ' ' + pl(lv.left, 'point', 'points') + ' avant « ' + lv.next + ' ».' : 'Dernier niveau atteint.');
+}
+function examInfo(){
+  if (!D.exam) return null;
+  return { j:daysBetween(dayKey(now()), D.exam), label:fmtDay(keyTs(D.exam), { weekday:'long', day:'numeric', month:'long', year:'numeric' }) };
+}
+
+/* ---------- Réviser ---------- */
+const discSeg = $('discSeg');
+function renderStudy(){
+  for (const b of discSeg.querySelectorAll('button')) setOn(b, b.dataset.v === S.disc);
+  let h = '';
+  THEMES.filter(th=>th.d === S.disc).forEach(th=>{
+    const m = Math.round(mastery(th.items) * 100);
+    h += '<button type="button" class="th d-' + th.d + '" data-id="' + th.id + '"><div class="th-l">' + (th.d === 'h' ? '<div class="th-p">' + esc(th.p) + '</div>' : '') + '<div class="th-t">' + esc(th.t) + '</div>' +
+         '<div class="bar"><i style="width:' + m + '%"></i></div></div><div class="th-v num">' + m + ' %</div></button>';
+  });
+  setHTML($('themeList'), h);
+}
+discSeg.addEventListener('click', (e)=>{
+  const b = e.target.closest('button'); if (!b || !discSeg.contains(b)) return;
+  S.disc = b.dataset.v; save(); renderStudy();
+});
+$('themeList').addEventListener('click', (e)=>{ const b = e.target.closest('.th'); if (b) openFiche(b.dataset.id); });
+
+/* ---------- Progrès ---------- */
+let calOff = 0;   // 0 = mois en cours, -1 = mois précédent…
+function renderProgress(){
+  const tt = totals(), st = streak();
+  setText($('progKicker'), tt.days ? tt.days + ' ' + pl(tt.days, 'journée validée', 'journées validées') + ' depuis le ' + fmtDay(D.since) : 'Tes chiffres apparaîtront après ta première séance');
+  setText($('stStreak'), st + ' j');
+  setText($('stBest'), Math.max(D.best, st) + ' j');
+  setText($('stN'), fmtInt(tt.n));
+  setText($('stPct'), tt.n ? Math.round(tt.ok / tt.n * 100) + ' %' : '–');
+  renderCal();
+  let h = '';
+  [['h', 'Histoire'], ['g', 'Géographie']].forEach(d=>{
+    const items = ALL.filter(it=>it.th.d === d[0]), m = Math.round(mastery(items) * 100), seen = seenCount(items);
+    h += '<div class="dbar d-' + d[0] + '"><div class="dbar-h"><b>' + d[1] + '</b><span>' + m + ' %</span></div><div class="bar thick"><i style="width:' + m + '%"></i></div><div class="sub">' + seen + ' sur ' + items.length + ' cartes déjà vues</div></div>';
+  });
+  setHTML($('mastery'), h);
+  setHTML($('badges'), BADGES.map(b=>{
+    const got = D.badges[b.id];
+    return '<div class="badge' + (got ? ' got' : '') + '"><div class="badge-i">' + (got ? ICONS.check : ICONS.star) + '</div><div class="row-l"><div class="row-t">' + b.t + '</div><div class="row-s">' +
+           (got ? 'Obtenu le ' + fmtDay(got) : b.s) + '</div></div></div>';
+  }).join(''));
+}
+function renderCal(){
+  const t = now(), base = new Date(t); base.setDate(1); base.setHours(0,0,0,0); base.setMonth(base.getMonth() + calOff);
+  const y = base.getFullYear(), m = base.getMonth(), nDays = new Date(y, m + 1, 0).getDate(), lead = (base.getDay() + 6) % 7;
+  setText($('calTitle'), cap(base.toLocaleDateString('fr-FR', { month:'long', year:'numeric' })));
+  const tk = dayKey(t), sinceK = dayKey(D.since);
+  let h = '';
+  for (let i = 0; i < lead; i++) h += '<span></span>';
+  for (let dn = 1; dn <= nDays; dn++){
+    const k = y + '-' + pad(m + 1) + '-' + pad(dn), d = D.days[k], v = valid(k);
+    let cls = 'cal-d';
+    if (k > tk) cls += ' fut';
+    else if (v === 2) cls += ' ice';
+    else if (v === 1) cls += ' on ' + (d.n >= D.goal * 3 ? 'l3' : d.n >= D.goal * 2 ? 'l2' : 'l1');
+    else if (d && d.n > 0) cls += ' part';
+    else if (k < sinceK) cls += ' pre';
+    if (k === tk) cls += ' today';
+    h += '<div class="' + cls + '"' + (d && d.n ? ' title="' + d.n + ' ' + pl(d.n, 'réponse', 'réponses') + '"' : '') + '>' + dn + '</div>';
+  }
+  setHTML($('calGrid'), h);
+  const nx = $('calNext'), dis = calOff >= 0; if (nx.disabled !== dis) nx.disabled = dis;
+}
+$('calPrev').addEventListener('click', ()=>{ calOff--; renderCal(); });
+$('calNext').addEventListener('click', ()=>{ if (calOff < 0) { calOff++; renderCal(); } });
+
+/* ---------- Concours ---------- */
+let juryIx = -1, sujIx = -1;
+function renderExam(){
+  const ex = examInfo();
+  if (!ex){ setText($('jxN'), 'J-?'); setText($('jxS'), 'Indique la date de tes écrits pour lancer le compte à rebours.'); }
+  else if (ex.j > 0){ setText($('jxN'), 'J-' + ex.j); setText($('jxS'), 'avant les écrits, le ' + ex.label + (ex.j >= 14 ? ', soit ' + Math.floor(ex.j / 7) + ' semaines' : '') + '.'); }
+  else if (ex.j === 0){ setText($('jxN'), 'Jour J'); setText($('jxS'), 'Les écrits, c’est aujourd’hui. Tu es prêt.'); }
+  else { setText($('jxN'), 'J+' + (-ex.j)); setText($('jxS'), 'Les écrits sont passés. Change la date pour préparer la suite.'); }
+  const inp = $('examDate'); if (document.activeElement !== inp && inp.value !== D.exam) inp.value = D.exam;
+  setHTML($('epList'), EPREUVES.map(e=>'<div class="row"><div class="row-l"><div class="row-t">' + esc(e.t) + '</div><div class="row-s">' + esc(e.s) + '</div></div><div class="ep-v"><b>' + e.d + '</b>' + e.c + '</div></div>').join(''));
+  const seed = Math.floor(dayStart(now()) / DAY);
+  if (juryIx < 0) juryIx = seed % JURY.length;
+  if (sujIx < 0) sujIx = (seed * 7) % SUJETS.length;
+  setText($('juryTag'), JURY[juryIx][0]); setText($('juryQ'), JURY[juryIx][1]);
+  setText($('sujTag'), SUJETS[sujIx][0].d === 'h' ? SUJETS[sujIx][0].p : SUJETS[sujIx][0].t);
+  setText($('sujQ'), SUJETS[sujIx][1]);
+}
+$('btnJury').addEventListener('click', ()=>{ juryIx = (juryIx + 1 + Math.floor(Math.random() * (JURY.length - 1))) % JURY.length; renderExam(); });
+$('btnSuj').addEventListener('click', ()=>{ sujIx = (sujIx + 1 + Math.floor(Math.random() * (SUJETS.length - 1))) % SUJETS.length; renderExam(); });
+function setExam(v){ D.exam = isDate(v) ? v : ''; saveD(); render(); }
+$('examDate').addEventListener('change', (e)=>setExam(e.target.value));
+
+/* ============================================================
+   Feuilles et superpositions
+   ============================================================ */
+const overlays = [];
+function syncInert(){
+  const any = overlays.length > 0;
+  scroller.inert = any; $('tabwrap').inert = any; top.inert = any;
+  if (document.documentElement.classList.contains('noscroll') !== any) document.documentElement.classList.toggle('noscroll', any);
+}
+function makeSheet(el, back, bar, onClose){
+  const o = { el, open:false };
+  el.inert = true;
+  o.set = function(v){
+    if (o.open === v) return; o.open = v;
+    el.classList.toggle('open', v); if (back) back.classList.toggle('open', v);
+    el.setAttribute('aria-hidden', v ? 'false' : 'true'); el.inert = !v;
+    const ix = overlays.indexOf(o); if (v && ix < 0) overlays.push(o); if (!v && ix >= 0) overlays.splice(ix, 1);
+    syncInert();
+    if (v) { try { el.focus({ preventScroll:true }); } catch(e){} }
+    else { try { if (document.activeElement && el.contains(document.activeElement)) document.activeElement.blur(); } catch(e){} if (onClose) onClose(); }
+  };
+  if (back) back.addEventListener('click', ()=>o.set(false));
+  if (bar){
+    let y0 = null, dy = 0;
+    bar.addEventListener('touchstart', (e)=>{ if (e.target.closest('button')) return; y0 = e.touches[0].clientY; dy = 0; el.classList.add('drag'); }, { passive:true });
+    bar.addEventListener('touchmove', (e)=>{ if (y0 === null) return; dy = Math.max(0, e.touches[0].clientY - y0); el.style.transform = 'translateY(' + dy + 'px)'; }, { passive:true });
+    const end = ()=>{ if (y0 === null) return; y0 = null; el.classList.remove('drag'); el.style.transform = ''; if (dy > 90) o.set(false); dy = 0; };
+    bar.addEventListener('touchend', end); bar.addEventListener('touchcancel', end);
+  }
+  return o;
+}
+document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && overlays.length) overlays[overlays.length - 1].set(false); });
+
+/* ---------- toast ---------- */
+let toastTimer = null, toastUndo = null;
+function toast(msg, undo){
+  setText($('toastT'), msg);
+  toastUndo = undo || null;
+  setHidden($('toastBtn'), !undo);
+  const t = $('toast'); t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, undo ? 5000 : 3200);
+}
+function hideToast(){ $('toast').classList.remove('show'); toastUndo = null; }
+$('toastBtn').addEventListener('click', ()=>{ const f = toastUndo; hideToast(); if (f) f(); });
+
+/* ---------- fiche d’un thème ---------- */
+const ficheSheet = makeSheet($('fiche'), $('ficheBack'), $('ficheBar'));
+let ficheId = '';
+function openFiche(id){
+  const th = THEME[id]; if (!th) return;
+  ficheId = id;
+  const m = Math.round(mastery(th.items) * 100), seen = seenCount(th.items);
+  $('ficheHead').innerHTML = '<div class="fiche-h d-' + th.d + '"><div class="th-p">' + esc(th.p) + '</div><h2>' + esc(th.t) + '</h2>' +
+    (th.o !== th.t ? '<p>Intitulé officiel : ' + esc(th.o) + '</p>' : '') + '</div>' +
+    '<div class="fiche-m d-' + th.d + '"><div class="bar thick"><i style="width:' + m + '%"></i></div><span>' + m + ' %</span></div>' +
+    '<p class="note" style="margin-top:8px">' + seen + ' sur ' + th.items.length + ' cartes déjà vues.</p>';
+  $('ficheBody').innerHTML = '<h3 class="group-title">Repères à connaître</h3><div class="group d-' + th.d + '">' +
+    th.r.map(r=>'<div class="rep"><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + '</span></div>').join('') + '</div>' +
+    '<h3 class="group-title">Sujets pour s’entraîner</h3><div class="group">' + th.s.map(s=>'<div class="suj">' + esc(s) + '</div>').join('') + '</div>';
+  $('ficheScroll').scrollTop = 0;
+  ficheSheet.set(true);
+}
+$('btnFicheClose').addEventListener('click', ()=>ficheSheet.set(false));
+$('btnTheme').addEventListener('click', ()=>{ const id = ficheId; ficheSheet.set(false); startSession('theme', id); });
+
+/* ============================================================
+   Séances
+   modes : daily (séance du jour), flash (5 QCM), reps (cartes), review (erreurs), theme (un thème)
+   ============================================================ */
+function buildSession(mode, thId){
+  const t = now(), N = mode === 'flash' ? 5 : 10;
+  let pool = ALL;
+  if (mode === 'theme') pool = THEME[thId] ? THEME[thId].items : [];
+  else if (mode === 'flash') pool = ALL.filter(x=>x.kind === 'q');
+  else if (mode === 'reps') pool = ALL.filter(x=>x.kind === 'r');
+  else if (mode === 'review') pool = toReview();
+  const due = [], rest = [], freshBy = {};
+  pool.forEach(x=>{
+    const s = D.items[x.id];
+    if (!s) (freshBy[x.th.id] || (freshBy[x.th.id] = [])).push(x);
+    else if (s.d <= t) due.push(x); else rest.push(x);
+  });
+  due.sort((a, b)=>D.items[a.id].d - D.items[b.id].d);
+  rest.sort((a, b)=>D.items[a.id].d - D.items[b.id].d);
+  /* nouvelles cartes : une par thème à tour de rôle, pour varier */
+  const fresh = [], lists = shuffle(Object.keys(freshBy).map(k=>shuffle(freshBy[k])));
+  for (let more = true; more;){ more = false; lists.forEach(l=>{ if (l.length){ fresh.push(l.pop()); more = true; } }); }
+  /* priorité choisie dans les objectifs : deux nouvelles cartes sur trois dans la discipline privilégiée */
+  if (mode !== 'theme' && mode !== 'review' && D.prio !== 'b'){
+    const a = fresh.filter(x=>x.th.d === D.prio), b = fresh.filter(x=>x.th.d !== D.prio);
+    fresh.length = 0;
+    while (a.length || b.length){ if (a.length) fresh.push(a.shift()); if (a.length) fresh.push(a.shift()); if (b.length) fresh.push(b.shift()); }
+  }
+  const out = [], take = (arr, n)=>{ while (n-- > 0 && arr.length && out.length < N) out.push(arr.shift()); };
+  take(due, mode === 'daily' ? Math.ceil(N * .6) : N);   // d’abord ce qui est à revoir
+  take(fresh, N); take(due, N); take(rest, N);
+  return shuffle(out);
+}
+
+const MARK_SVG = '<svg class="mark p4" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg>';
+const playEl = $('play'), stage = $('plStage');
+const playSheet = makeSheet(playEl, null, null, ()=>{ P = null; render(); });
+const PL = { show:$('plShow'), no:$('plNo'), yes:$('plYes'), next:$('plNext'), again:$('plAgain'), done:$('plDone') };
+function foot(){ const on = Array.prototype.slice.call(arguments); for (const k in PL) setHidden(PL[k], on.indexOf(k) < 0); }
+let P = null;
+function startSession(mode, thId){
+  let items = buildSession(mode, thId);
+  if (!items.length && mode === 'review') { mode = 'daily'; items = buildSession(mode); }
+  if (!items.length) { toast('Rien à réviser ici pour l’instant.'); return false; }
+  jokerWon = false;
+  P = { mode, thId, items, i:0, ok:0, xp:0, run:0, goalHit:false, answered:false, opts:null, ended:false };
+  playSheet.set(true);
+  showItem();
+  return true;
+}
+function showItem(){
+  const it = P.items[P.i], th = it.th;
+  P.answered = false;
+  setText($('plCount'), (P.i + 1) + '/' + P.items.length);
+  setW($('plBar'), P.i / P.items.length * 100);
+  let h = '<div class="pl-tag d-' + th.d + '"><i></i>' + esc(th.t) + '</div>';
+  if (it.kind === 'q'){
+    const q = th.q[it.ix];
+    P.opts = shuffle(q[1].map((t, k)=>({ t, ok:k === 0 })));
+    h += '<h2 class="pl-q">' + esc(q[0]) + '</h2><div class="opts" id="opts">' +
+         P.opts.map((o, k)=>'<button type="button" class="opt" data-k="' + k + '"><em>' + 'ABCD'[k] + '</em><span>' + esc(o.t) + '</span></button>').join('') + '</div><div id="fbBox"></div>';
+    foot();
+  } else {
+    h += '<div class="fc d-' + th.d + '"><div class="fc-k">' + (/^\D*\d{3,4}|^\d{1,2} |^Vers \d/.test(th.r[it.ix][0]) ? 'Que se passe-t-il ?' : 'Que signifie ?') + '</div><div class="fc-f">' + esc(th.r[it.ix][0]) + '</div><div id="fcBack"></div></div>';
+    foot('show');
+  }
+  stage.innerHTML = h; pop(stage, 'swap'); stage.scrollTop = 0;
+}
+function afterAnswer(it, ok){
+  const r = record(it, ok);
+  if (ok) { P.ok++; P.run++; } else P.run = 0;
+  P.xp += r.xp; if (r.justDone) P.goalHit = true;
+  P.answered = true; haptic();
+  setW($('plBar'), (P.i + 1) / P.items.length * 100);
+}
+function answer(k){
+  if (!P || P.ended || P.answered) return;
+  const it = P.items[P.i]; if (it.kind !== 'q') return;
+  const q = it.th.q[it.ix], ok = !!P.opts[k].ok, box = $('opts');
+  box.classList.add('locked');
+  Array.from(box.children).forEach((b, j)=>{
+    if (P.opts[j].ok) { b.classList.add('good'); b.firstChild.innerHTML = ICONS.check; }
+    else if (j === k) { b.classList.add('bad'); b.firstChild.innerHTML = ICONS.x; }
+  });
+  afterAnswer(it, ok);
+  const head = ok ? (P.run >= 3 && P.run % 3 === 0 ? pick(MSG.good3) : pick(MSG.good)) : pick(MSG.bad);
+  $('fbBox').innerHTML = '<div class="fb ' + (ok ? 'good' : 'bad') + '"><b>' + head + '</b>' + esc(q[2]) + '</div>';
+  setText(PL.next, P.i + 1 >= P.items.length ? 'Voir le bilan' : 'Continuer');
+  foot('next');
+  requestAnimationFrame(()=>{ try { stage.scrollTo({ top:stage.scrollHeight, behavior:'smooth' }); } catch(e){ stage.scrollTop = stage.scrollHeight; } });
+}
+function reveal(){
+  if (!P || P.ended) return;
+  const it = P.items[P.i]; if (it.kind !== 'r' || P.answered) return;
+  $('fcBack').innerHTML = '<div class="fc-b">' + esc(it.th.r[it.ix][1]) + '</div>';
+  foot('no', 'yes');
+}
+function grade(ok){
+  if (!P || P.ended || P.answered) return;
+  const it = P.items[P.i]; if (it.kind !== 'r') return;
+  afterAnswer(it, ok); next();
+}
+function next(){
+  if (!P || P.ended || !P.answered) return;
+  P.i++;
+  if (P.i >= P.items.length) showEnd(); else showItem();
+}
+function showEnd(){
+  P.ended = true;
+  const n = P.items.length, perfect = P.ok === n, bonus = 20 + (perfect ? 10 : 0), k = dayKey(now());
+  D.xp += bonus; if (D.days[k]) D.days[k].xp += bonus; P.xp += bonus;
+  D.sessions++; if (perfect) D.perfect++;
+  const got = checkBadges(); saveD();
+  const tier = perfect ? 'Top' : P.ok / n >= .6 ? 'Ok' : 'Low', st = streak();
+  setText($('plCount'), ''); setW($('plBar'), 100);
+  stage.innerHTML = '<div class="end"><div class="end-mark">' + MARK_SVG + '</div>' +
+    '<h2>' + esc(say(pick(MSG['end' + tier]))) + '</h2><p>' + pick(MSG['end' + tier + 'S']) + '</p>' +
+    '<div class="end-grid"><div><b>' + P.ok + '/' + n + '</b><span>' + pl(P.ok, 'bonne réponse', 'bonnes réponses') + '</span></div>' +
+    '<div><b>+' + P.xp + '</b><span>points</span></div><div><b>' + st + '</b><span>' + pl(st, 'jour de série', 'jours de série') + '</span></div></div>' +
+    (P.goalHit ? '<div class="end-badge">Objectif du jour atteint. La série continue.</div>' : '') +
+    (jokerWon ? '<div class="end-badge">Sept jours de plus : tu gagnes un joker.</div>' : '') +
+    got.map(b=>'<div class="end-badge">Nouveau badge : ' + b.t + '</div>').join('') + '</div>';
+  pop(stage, 'swap'); stage.scrollTop = 0;
+  foot('again', 'done');
+}
+stage.addEventListener('click', (e)=>{ const b = e.target.closest('.opt'); if (b && stage.contains(b)) answer(+b.dataset.k); });
+PL.show.addEventListener('click', reveal);
+PL.no.addEventListener('click', ()=>grade(false));
+PL.yes.addEventListener('click', ()=>grade(true));
+PL.next.addEventListener('click', next);
+PL.done.addEventListener('click', ()=>playSheet.set(false));
+PL.again.addEventListener('click', ()=>{ const m = P ? P.mode : 'daily', id = P ? P.thId : ''; startSession(m, id); });
+$('plClose').addEventListener('click', ()=>playSheet.set(false));
+$('btnDaily').addEventListener('click', ()=>startSession('daily'));
+$('btnFlash').addEventListener('click', ()=>startSession('flash'));
+$('btnReps').addEventListener('click', ()=>startSession('reps'));
+$('btnReview').addEventListener('click', ()=>startSession('review'));
+
+/* ============================================================
+   Réglages
+   ============================================================ */
+const settingsSheet = makeSheet($('settings'), $('sheetBack'), $('sheetBar'));
+const themeSeg = $('themeSeg'), themeBtns = Array.from(themeSeg.querySelectorAll('button'));
+const goalSeg = $('goalSeg'), prioSeg = $('prioSeg'), nameInp = $('nameInp');
+const swGlass = $('swGlass'), swAuto = $('swAuto');
+function openSettings(){ syncSettingsUI(); renderUpdate(); $('sheetScroll').scrollTop = 0; settingsSheet.set(true); }
+$('btnSettings').addEventListener('click', openSettings);
+$('btnClose').addEventListener('click', ()=>settingsSheet.set(false));
+
+function syncSettingsUI(){
+  { if (window.__fit) window.__fit();
+    const app = navigator.standalone === true || !!(window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+    const scr = Math.max(screen.width || 0, screen.height || 0);
+    setText($('scrLine'), 'Écran ' + scr + ', fenêtre ' + innerHeight + ', mode ' + (app ? 'app' : 'navigateur') + (document.documentElement.classList.contains('cut') ? ', bande iOS de ' + (scr - innerHeight) + ' px' : '') + '.'); }
+  themeBtns.forEach(b=>setOn(b, b.dataset.v === S.theme));
+  for (const b of goalSeg.querySelectorAll('button')) setOn(b, +b.dataset.v === D.goal);
+  for (const b of prioSeg.querySelectorAll('button')) setOn(b, b.dataset.v === D.prio);
+  if (document.activeElement !== nameInp && nameInp.value !== D.name) nameInp.value = D.name;
+  setChecked(swGlass, S.glass !== false);
+  setChecked(swAuto, S.autoUpdate !== false);
+  setText($('jokInfo'), D.jokers + ' / ' + MAX_JOKERS);
+  const tt = totals();
+  setText($('dataInfo'), tt.n + ' ' + pl(tt.n, 'réponse', 'réponses') + ', ' + Object.keys(D.items).length + ' ' + pl(Object.keys(D.items).length, 'carte vue', 'cartes vues') + ', ' + D.sessions + ' ' + pl(D.sessions, 'séance', 'séances') + ', depuis le ' + fmtDay(D.since) + '.');
+}
+function setGoal(v){
+  if ([10, 20, 30].indexOf(v) < 0) return;
+  D.goal = v; markDone(); saveD(); syncSettingsUI(); render();
+}
+goalSeg.addEventListener('click', (e)=>{ const b = e.target.closest('button'); if (b && goalSeg.contains(b)) setGoal(+b.dataset.v); });
+function setPrio(v){ if (['h', 'b', 'g'].indexOf(v) < 0) return; D.prio = v; saveD(); syncSettingsUI(); }
+function setName(v){ D.name = cleanName(v); saveD(); if (document.activeElement !== nameInp && nameInp.value !== D.name) nameInp.value = D.name; render(); }
+prioSeg.addEventListener('click', (e)=>{ const b = e.target.closest('button'); if (b && prioSeg.contains(b)) setPrio(b.dataset.v); });
+nameInp.addEventListener('input', ()=>setName(nameInp.value));
+nameInp.addEventListener('change', ()=>{ setName(nameInp.value); nameInp.value = D.name; });
+nameInp.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') nameInp.blur(); });
+$('btnIntro').addEventListener('click', ()=>{ settingsSheet.set(false); setTimeout(openOnboarding, 380); });
+themeSeg.addEventListener('click', (e)=>{
+  const b = e.target.closest('button'); if (!b || !themeSeg.contains(b)) return;
+  S.theme = b.dataset.v; save(); applyTheme(); syncSettingsUI();
+});
+swGlass.addEventListener('change', ()=>{ S.glass = swGlass.checked; save(); if (window.GlassKitLoader) window.GlassKitLoader.sync(); });
+swAuto.addEventListener('change', ()=>{ S.autoUpdate = swAuto.checked; save(); scheduleAuto(); });
+
+/* ============================================================
+   Parcours d’accueil : prénom et objectifs
+   étapes : 0 bienvenue, 1 prénom, 2 date des écrits, 3 objectif par jour, 4 priorité, 5 récapitulatif
+   ============================================================ */
+const obEl = $('ob'), obSteps = Array.from(obEl.querySelectorAll('.ob-step')), obDots = Array.from($('obDots').children);
+const obName = $('obName'), obDate = $('obDate');
+const OB = { i:0, name:'', exam:'', goal:10, prio:'b' };
+const PRIO_L = { h:'L’histoire d’abord', b:'Les deux à égalité', g:'La géographie d’abord' };
+const obSheet = makeSheet(obEl, null, null, ()=>{
+  setClass(document.documentElement, 'ob-on', false);
+  if (!D.onboarded) { D.onboarded = true; saveD(); }
+  syncSettingsUI(); render();
+});
+function openOnboarding(){
+  OB.i = 0; OB.name = D.name; OB.exam = D.exam; OB.goal = D.goal; OB.prio = D.prio;
+  obName.value = OB.name; obDate.value = OB.exam;
+  setClass(document.documentElement, 'ob-on', true);
+  obSheet.set(true); syncOb();
+}
+function obDays(){ return isDate(OB.exam) ? daysBetween(dayKey(now()), OB.exam) : null; }
+function setRadio(box, test){
+  for (const b of box.children){ const on = test(b); setOn(b, on); const c = on ? 'true' : 'false'; if (b.getAttribute('aria-checked') !== c) b.setAttribute('aria-checked', c); }
+}
+function syncOb(){
+  const i = OB.i, last = obSteps.length - 1;
+  obSteps.forEach((el, k)=>setHidden(el, k !== i));
+  obDots.forEach((el, k)=>setOn(el, k === i));
+  setHidden($('obBack'), i === 0); setHidden($('obSp'), i !== 0);
+  setText($('obNext'), i === 0 ? 'Commencer' : i === last ? 'Lancer ma première séance' : (i === 2 && !OB.exam) || (i === 1 && !cleanName(obName.value)) ? 'Passer' : 'Continuer');
+  setHidden($('obLater'), i !== last);
+  setText($('obDateH'), OB.name ? OB.name + ', tes écrits, c’est pour quand ?' : 'Tes écrits, c’est pour quand ?');
+  const j = obDays();
+  setText($('obDateLive'), j === null ? '' : j > 0 ? 'J-' + j + ' : il te reste ' + (j >= 14 ? Math.floor(j / 7) + ' semaines' : j + ' ' + pl(j, 'jour', 'jours')) + '.' : j === 0 ? 'C’est aujourd’hui.' : 'Cette date est déjà passée.');
+  setRadio($('obGoal'), b=>+b.dataset.v === OB.goal);
+  setRadio($('obPrio'), b=>b.dataset.v === OB.prio);
+  /* estimation : une fois les révisions lancées, environ 4 réponses sur 10 portent sur des cartes nouvelles */
+  const need = Math.ceil(ALL.length / (OB.goal * .4));
+  setText($('obGoalLive'), 'À ce rythme, tu auras vu les ' + ALL.length + ' cartes en ' + need + ' jours environ' + (j !== null && j > 0 ? (need <= j ? ', avant les écrits.' : ', donc après les écrits : vise plus haut si tu peux.') : '.'));
+  if (i === last){
+    setText($('obEndH'), OB.name ? 'C’est parti, ' + OB.name + '.' : 'C’est parti.');
+    $('obSum').innerHTML = '<div><span>Chaque jour</span><b>' + OB.goal + ' réponses</b></div>' +
+      '<div><span>Les écrits</span><b>' + (j === null ? 'Date à préciser' : j >= 0 ? fmtDay(keyTs(OB.exam), { day:'numeric', month:'long', year:'numeric' }) + ', J-' + j : 'Date à corriger') + '</b></div>' +
+      '<div><span>Priorité</span><b>' + PRIO_L[OB.prio] + '</b></div>';
+  }
+}
+function obCommit(){
+  D.name = cleanName(OB.name); D.exam = isDate(OB.exam) ? OB.exam : ''; D.prio = OB.prio;
+  D.goal = OB.goal; markDone(); D.onboarded = true; saveD();
+}
+function obGo(d){
+  if (document.activeElement && obEl.contains(document.activeElement) && document.activeElement.matches('input')) document.activeElement.blur();
+  OB.name = cleanName(obName.value); OB.exam = isDate(obDate.value) ? obDate.value : '';
+  const last = obSteps.length - 1;
+  if (d > 0 && OB.i === last){ obCommit(); obSheet.set(false); startSession('daily'); return; }
+  OB.i = clamp(OB.i + d, 0, last);
+  if (OB.i === last) obCommit();          // tout est enregistré dès le récapitulatif
+  syncOb(); $('obStage').scrollTop = 0;
+  if (OB.i === 1 && !navigator.webdriver) setTimeout(()=>{ try { obName.focus({ preventScroll:true }); } catch(e){} }, 380);
+}
+$('obNext').addEventListener('click', ()=>obGo(1));
+$('obBack').addEventListener('click', ()=>obGo(-1));
+$('obLater').addEventListener('click', ()=>{ obCommit(); obSheet.set(false); });
+obName.addEventListener('input', syncOb);
+obName.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') { e.preventDefault(); obGo(1); } });
+obDate.addEventListener('change', ()=>{ OB.exam = isDate(obDate.value) ? obDate.value : ''; syncOb(); });
+obDate.addEventListener('input', ()=>{ OB.exam = isDate(obDate.value) ? obDate.value : ''; syncOb(); });
+$('obGoal').addEventListener('click', (e)=>{ const b = e.target.closest('.choice'); if (b) { OB.goal = +b.dataset.v; syncOb(); } });
+$('obPrio').addEventListener('click', (e)=>{ const b = e.target.closest('.choice'); if (b) { OB.prio = b.dataset.v; syncOb(); } });
+
+/* ---------- données ---------- */
+$('btnExport').addEventListener('click', async ()=>{
+  const name = 'reussite-' + dayKey(Date.now()) + '.json';
+  const blob = new Blob([JSON.stringify(D, null, 2)], { type:'application/json' });
+  try {
+    const file = new File([blob], name, { type:'application/json' });
+    if (navigator.canShare && navigator.canShare({ files:[file] })) { await navigator.share({ files:[file], title:'Réussite' }); return; }
+  } catch(e){ if (e && e.name === 'AbortError') return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  toast('Fichier exporté.');
+});
+$('btnImport').addEventListener('click', ()=>$('fileImport').click());
+$('fileImport').addEventListener('change', async (e)=>{
+  const f = e.target.files && e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  try {
+    const raw = JSON.parse(await f.text());
+    if (!raw || typeof raw.items !== 'object' || typeof raw.days !== 'object' || !raw.items || !raw.days) throw new Error('format');
+    const nd = sanitize(raw); nd.onboarded = true;
+    const n = Object.keys(nd.items).length;
+    if (!confirm('Remplacer tes données actuelles par ce fichier (' + n + ' ' + pl(n, 'carte vue', 'cartes vues') + ') ?')) return;
+    D = nd; saveD(); lastDay = ''; syncSettingsUI(); render(); toast('Données importées.');
+  } catch(err){ toast('Ce fichier n’est pas un export de Réussite.'); }
+});
+$('btnReset').addEventListener('click', ()=>{
+  if (!confirm('Effacer ta série, tes points et toute ta progression ? Pense à exporter avant si tu veux les garder.')) return;
+  const keep = { goal:D.goal, exam:D.exam, name:D.name, prio:D.prio };
+  D = defData(); Object.assign(D, keep); D.onboarded = true; saveD(); lastDay = ''; syncSettingsUI(); render(); toast('Progression effacée.');
+});
+
+/* ---------- système de mise à jour ---------- */
+/* Principe : on relit index.html sur le serveur (GitHub Pages, sans cache) et on compare son APP_VERSION à celui du code en cours. */
+const U = { state:'idle', latest:null, busy:false };
+const VER_RE = /const APP_VERSION\s*=\s*'([^']+)'/;
+function renderUpdate(){
+  const last = 'Dernière vérification : ' + fmtDate(S.lastCheck);
+  let title = 'Mises à jour', sub = last, spin = false;
+  switch (U.state){
+    case 'checking':   title = 'Recherche en cours…'; sub = 'Connexion au serveur'; spin = true; break;
+    case 'uptodate':   title = 'Réussite est à jour'; sub = last; break;
+    case 'available':  title = 'Version ' + U.latest + ' disponible'; sub = 'Version installée : ' + APP_VERSION; break;
+    case 'installing': title = 'Installation…'; sub = 'L’app va redémarrer'; spin = true; break;
+    case 'offline':    title = 'Vérification impossible'; sub = 'Pas de connexion ou serveur injoignable. ' + last; break;
+    case 'error':      title = 'Vérification impossible'; sub = 'Réponse inattendue du serveur. ' + last; break;
+  }
+  setText($('updTitle'), title); setText($('updSub'), sub);
+  setHidden($('updSpin'), !spin);
+  const avail = U.state === 'available';
+  setHidden($('btnInstall'), !avail);
+  setText($('btnInstall'), avail ? 'Installer la version ' + U.latest : 'Installer');
+  setHidden($('banner'), !avail);
+  if (avail) setText($('bannerSub'), 'Version ' + U.latest + ' (installée : ' + APP_VERSION + ')');
+  const chk = $('btnCheck'), dis = U.state === 'checking' || U.state === 'installing';
+  if (chk.disabled !== dis) chk.disabled = dis;
+}
+async function checkUpdate(opts){
+  const manual = !!(opts && opts.manual);
+  if (U.busy || U.state === 'installing') return U.state;
+  U.busy = true;
+  const prev = U.state;
+  if (manual) { U.state = 'checking'; renderUpdate(); }
+  const t0 = Date.now();
+  try {
+    const url = new URL('index.html', location.href); url.searchParams.set('_', Date.now());
+    const r = await fetch(url.href, { cache:'no-store' });
+    if (!r.ok) throw new Error('http ' + r.status);
+    const m = VER_RE.exec(await r.text());
+    if (!m) throw new Error('version introuvable');
+    S.lastCheck = Date.now(); save();
+    if (cmpVer(m[1], APP_VERSION) > 0) { U.latest = m[1]; U.state = 'available'; }
+    else U.state = 'uptodate';
+  } catch (err) {
+    U.state = (navigator.onLine === false || err instanceof TypeError) ? 'offline' : 'error';
+    if (!manual && prev === 'available') U.state = 'available';
+  }
+  if (manual) { const wait = 700 - (Date.now() - t0); if (wait > 0) await new Promise(r=>setTimeout(r, wait)); }
+  U.busy = false; renderUpdate();
+  return U.state;
+}
+async function installUpdate(){
+  if (U.state !== 'available') return;
+  U.state = 'installing'; renderUpdate();
+  try { if ('serviceWorker' in navigator) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r=>r.update().catch(()=>{}))); } } catch(e){}
+  try { if (window.caches) { const keys = await caches.keys(); await Promise.all(keys.filter(k=>(k.indexOf('reussite-') === 0 && k !== 'reussite-fonts') || k.indexOf('revision-') === 0).map(k=>caches.delete(k))); } } catch(e){}
+  location.reload();
+}
+$('btnCheck').addEventListener('click', ()=>checkUpdate({ manual:true }));
+$('btnInstall').addEventListener('click', installUpdate);
+$('btnBanner').addEventListener('click', installUpdate);
+let autoTimer = null;
+function scheduleAuto(){
+  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  if (S.autoUpdate !== false) autoTimer = setInterval(()=>checkUpdate({ auto:true }), 30 * 60 * 1000);
+}
+document.addEventListener('visibilitychange', ()=>{
+  if (document.hidden) return;
+  if (window.__fit) window.__fit();
+  if (!P) render();
+  if (S.autoUpdate !== false && Date.now() - (S.lastCheck || 0) > 10 * 60 * 1000) checkUpdate({ auto:true });
+});
+
+/* ---------- nouveautés ---------- */
+$('changelog').innerHTML = CHANGELOG.map(c =>
+  '<div class="row cl"><div class="cl-h"><b>v' + c.v + '</b><span>' + c.date + '</span></div><ul>' +
+  c.items.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>').join('');
+setText($('verNow'), APP_VERSION); setText($('verAbout'), 'v' + APP_VERSION);
+
+/* ---------- clavier iOS : à la fermeture, la page peut rester décalée (iOS 26/27) ---------- */
+document.addEventListener('focusout', (e)=>{
+  if (!e.target || !e.target.matches || !e.target.matches('input')) return;
+  setTimeout(()=>{
+    if (document.activeElement && document.activeElement.matches && document.activeElement.matches('input')) return;
+    if (window.__fit) window.__fit();
+  }, 80);
+});
+if (window.visualViewport) visualViewport.addEventListener('resize', ()=>{ if (window.__fit) window.__fit(); });
+let rsT = null;
+window.addEventListener('resize', ()=>{ clearTimeout(rsT); rsT = setTimeout(()=>{ if (!P) render(); }, 150); });
+
+/* ---------- démarrage ---------- */
+applyTheme();
+syncSettingsUI();
+showTab(S.tab, false);
+renderUpdate();
+scheduleAuto();
+if (!D.onboarded) openOnboarding();
+setInterval(()=>{ if (!document.hidden && !P) render(); }, 60000);   // changement de jour, compte à rebours
+setTimeout(()=>{ if (S.autoUpdate !== false) checkUpdate({ auto:true }); }, 2500);
+
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  navigator.serviceWorker.register('sw.js', { updateViaCache:'none' }).catch(()=>{});
+}
+
+/* ---------- Liquid Glass Kit ---------- */
+window.GLASS_KIT_OPTIONS = {
+  buttons:  '.btn',
+  segs:     '.seg',
+  switches: '.sw',
+  ranges:   'input[type=range][data-glass-range]',
+  skip:     '[data-glass-skip]',
+  onClass:  'on',
+  accent:   'var(--accent)'
+};
+window.GLASS_KIT_VERSION = '4';
+window.GLASS_KIT_ENABLED = ()=>S.glass !== false;
+
+/* accès pour les tests / le débogage */
+window.Reussite = { version:APP_VERSION, data:()=>D, settings:()=>S, themes:()=>THEMES, all:()=>ALL, streak, totals, level, reconcile, showTab, render, checkUpdate, state:()=>U.state,
+  openSettings, closeSettings:()=>settingsSheet.set(false), openFiche, start:startSession, session:()=>P, answer, reveal, grade, next, build:buildSession, setGoal, setExam, setName, setPrio, openOnboarding, ob:()=>OB, obGo,
+  closeSession:()=>playSheet.set(false), shift:(days)=>{ NOW_OFF += days * DAY; render(); },
+  load:(d)=>{ D = sanitize(d); saveD(); lastDay = ''; syncSettingsUI(); render(); } };
+})();
+</script>
+<script src="glass-kit-loader.js"></script>
+<script>setTimeout(function(){ if (window.GlassKitLoader) GlassKitLoader.sync(); }, 700);</script>
+</body>
+</html>
