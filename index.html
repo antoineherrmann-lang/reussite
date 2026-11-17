@@ -2394,8 +2394,8 @@ $('btnFeed').addEventListener('click', ()=>openFeed());
    L'app s'abonne au push, donne au Worker l'heure choisie, puis le prévient quand la journée est validée
    pour qu'il n'écrive pas pour rien. Tant que les deux constantes ci-dessous sont vides, la fonction reste éteinte.
    ============================================================ */
-const PUSH_URL = '';          // ← adresse du Worker, par exemple https://reussite-push.ton-compte.workers.dev
-const PUSH_KEY = '';          // ← clé PUBLIQUE VAPID (jamais la clé privée)
+const PUSH_URL = 'https://reussite-push.antoine-herrmann.workers.dev';          // ← adresse du Worker, par exemple https://reussite-push.ton-compte.workers.dev
+const PUSH_KEY = 'BF12lgrp8VvRIYvePOHTPTKrh92lEwKRsB3FYTHqcJb2xiTfy8JV647cOoLhdukA_fBpI4TlvcwFFYXRmAt6en8';          // ← clé PUBLIQUE VAPID (jamais la clé privée)
 const PUSH_HOURS = ['07:30', '12:30', '18:30', '20:30'];
 function pushCfg(){ const o = window.REUSSITE_PUSH || {}; return { url:String(o.url || PUSH_URL).replace(/\/+$/, ''), key:String(o.key || PUSH_KEY) }; }   // REUSSITE_PUSH : pour les tests
 if (!S.push || typeof S.push !== 'object') S.push = {};
