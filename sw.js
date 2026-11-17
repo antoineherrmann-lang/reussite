@@ -2,7 +2,7 @@
    Stratégie : réseau d'abord (on voit toujours la dernière version), cache en repli (hors ligne).
    Les requêtes de vérification de mise à jour (?_=…) ne sont jamais mises en cache.
    À CHAQUE NOUVELLE VERSION : changer VERSION ici ET APP_VERSION dans index.html. */
-const VERSION = '0.4.0';
+const VERSION = '0.5.0';
 const CACHE = 'reussite-' + VERSION;
 const FONTS = 'reussite-fonts';
 const IMG = 'reussite-img';      // photos de Découvrir (Wikimedia), gardées d'une version à l'autre
@@ -23,6 +23,23 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('message', e => { if (e.data === 'SKIP_WAITING') self.skipWaiting(); });
+
+/* ---------- rappels : notification reçue du Worker Cloudflare ---------- */
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) { try { d = { body: e.data.text() }; } catch (err2) {} }
+  e.waitUntil(self.registration.showNotification(d.title || 'Réussite', {
+    body: d.body || 'Ta séance du jour t’attend.', icon: 'icon-192.png', badge: 'icon-192.png', tag: d.tag || 'reussite-rappel', data: { url: d.url || './' }
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || './', self.registration.scope).href;
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+    for (const c of list) if (c.url.indexOf(self.registration.scope) === 0 && 'focus' in c) return c.focus();
+    return self.clients.openWindow(url);
+  }));
+});
 
 self.addEventListener('fetch', e => {
   const req = e.request;

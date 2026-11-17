@@ -540,9 +540,15 @@ html[data-theme="dark"] .feed{background:radial-gradient(125% 85% at 100% 66%,#8
 .dv-keep{height:40px;padding:0 15px;border:0;border-radius:20px;background:var(--card-strong);box-shadow:inset 0 0 0 1px var(--glass-line);color:var(--ink);font:500 14px/1 var(--font);cursor:pointer;white-space:nowrap}
 .dv-keep.on{background:var(--sel);color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent)}
 .dv-keep:active{transform:scale(.96)}
-.dv-hint{display:inline-flex;align-items:center;gap:2px;font-size:13.5px;font-weight:500;color:var(--ink2);animation:nudge 1.8s ease-in-out infinite}
-.dv-hint svg{width:16px;height:16px;transform:rotate(90deg)}
-@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+#pushSeg button{padding:9px 4px;white-space:nowrap}
+/* l'indice de défilement : une petite gélule dont le point remonte, qui s'efface au premier geste */
+.feed-hint{position:absolute;right:24px;bottom:calc(var(--safe-b) + 18px);z-index:3;width:22px;height:40px;color:var(--ink);opacity:.5;pointer-events:none;transition:opacity .5s ease,transform .5s ease}
+.feed-hint svg{display:block;width:100%;height:100%;overflow:visible}
+.feed-hint.gone{opacity:0;transform:translateY(-8px)}
+.feed-hint .h-d{animation:hintDot 2.1s cubic-bezier(.4,0,.2,1) infinite}
+.feed-hint .h-c{animation:hintChev 2.1s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes hintDot{0%{transform:translateY(0);opacity:0}18%{opacity:1}62%{transform:translateY(-11px);opacity:1}82%,100%{transform:translateY(-11px);opacity:0}}
+@keyframes hintChev{0%,45%{opacity:.25;transform:translateY(0)}70%{opacity:1;transform:translateY(-2px)}100%{opacity:.25;transform:translateY(0)}}
 @media (max-height:700px){.dv-img{flex-basis:40%}.dv-body h3{font-size:26px}.dv-body p{font-size:16px}}
 
 /* ---------- victoire : badge obtenu ---------- */
@@ -649,7 +655,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .page{animation:none}
   .sheet,.sheet-back,.toast,.play,.ob,.feed,.win{transition:none!important}
-  .win .wl,.win .win-g,.win h2,.win p,.win-foot,.win-k,.win-halo{opacity:1!important}.win-rays{display:none}
+  .win .wl,.win .win-g,.win h2,.win p,.win-foot,.win-k,.win-halo{opacity:1!important}.win-rays{display:none}.feed-hint .h-d{transform:translateY(-6px);opacity:1}
 }
 </style>
 </head>
@@ -841,6 +847,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 <!-- Découvrir : cartes à faire défiler -->
 <section class="feed" id="feed" tabindex="-1" role="dialog" aria-modal="true" aria-label="Découvrir" aria-hidden="true">
   <div class="feed-list" id="feedList"></div>
+  <div class="feed-hint" id="feedHint" aria-hidden="true"><svg viewBox="0 0 22 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path class="h-c" d="m7 8.5 4-4 4 4"/><rect x="4.5" y="13" width="13" height="24" rx="6.5"/><circle class="h-d" cx="11" cy="30" r="1.9" fill="currentColor" stroke="none"/></svg></div>
   <div class="feed-top">
     <button class="btn ib" id="feedClose" data-glass-icon aria-label="Fermer Découvrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     <div class="chips feed-chips" id="feedChips" role="group" aria-label="Discipline">
@@ -1005,6 +1012,19 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
       <div class="row"><div class="row-l"><div class="row-t">Jokers</div><div class="row-s">Un joker protège la série si tu manques un jour. Tu en gagnes un tous les 7 jours de série, deux au maximum.</div></div><div class="row-v" id="jokInfo"></div></div>
     </div>
 
+    <h3 class="group-title">Rappels</h3>
+    <div class="group">
+      <div class="row">
+        <div class="row-l"><div class="row-t">Rappel quotidien</div><div class="row-s" id="pushInfo"></div></div>
+        <span class="sw"><input type="checkbox" id="swPush" aria-label="Rappel quotidien"><i></i></span>
+      </div>
+      <div class="row stack" id="rowPushHour" hidden>
+        <div class="row-t">Heure du rappel</div>
+        <div class="seg" id="pushSeg" data-glass-full aria-label="Heure du rappel"><button data-v="07:30">7h30</button><button data-v="12:30">12h30</button><button data-v="18:30">18h30</button><button data-v="20:30">20h30</button></div>
+      </div>
+      <div class="row actions" id="rowPushTest" hidden><button class="btn" id="btnPushTest">Envoyer un test</button></div>
+    </div>
+
     <h3 class="group-title">Tes données</h3>
     <div class="group">
       <div class="row"><div class="row-l"><div class="row-t">Sur cet appareil</div><div class="row-s" id="dataInfo"></div></div></div>
@@ -1053,12 +1073,17 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 (function(){
 'use strict';
 
-const APP_VERSION = '0.4.0';          // ← à changer à chaque version (et VERSION dans sw.js)
+const APP_VERSION = '0.5.0';          // ← à changer à chaque version (et VERSION dans sw.js)
 const SETTINGS_KEY = 'reussite.settings', DATA_KEY = 'reussite.data';
 const OLD_SETTINGS_KEY = 'revision.settings', OLD_DATA_KEY = 'revision.data';   // nom provisoire de la v0.1.0 : relu une fois, jamais réécrit
 
 /* ---------- nouveautés (la plus récente en premier) ---------- */
 const CHANGELOG = [
+  { v:'0.5.0', date:'17 novembre 2026', items:[
+    'Rappels : une notification par jour à l’heure de ton choix, envoyée par un serveur Cloudflare. Rien si ta journée est déjà validée.',
+    'Le rappel connaît ton prénom et ta série, et se fait plus rare si tu délaisses l’app.',
+    'Découvrir : un petit indice animé montre qu’il faut faire défiler, puis s’efface au premier geste.'
+  ] },
   { v:'0.4.0', date:'17 novembre 2026', items:[
     'Découvrir : des cartes de révision à faire défiler, une par écran, avec un filtre par discipline.',
     'Des photos sur les cartes : elles sont cherchées sur Wikipédia en arrière-plan, puis gardées sur le téléphone.',
@@ -1703,6 +1728,7 @@ function record(it, ok){
   day.xp += xp; D.xp += xp;
   const justDone = markDone();
   saveD();
+  if (justDone) setTimeout(()=>pushPing(true), 0);          // journée validée : le serveur n’enverra pas de rappel aujourd’hui
   return { xp, justDone };
 }
 
@@ -2291,7 +2317,7 @@ function feedCard(it, first){
   if (it.kind === 'r') h += '<h3>' + esc(th.r[it.ix][0]) + '</h3><p>' + esc(th.r[it.ix][1]) + '</p>';
   else h += '<h3 class="qst">' + esc(th.q[it.ix][0]) + '</h3><button type="button" class="dv-rev">Voir la réponse</button><div class="dv-ans" hidden><b>' + esc(th.q[it.ix][1][0]) + '</b><p>' + esc(th.q[it.ix][2]) + '</p></div>';
   h += '<div class="dv-foot"><button type="button" class="dv-keep' + (D.items[it.id] ? ' on' : '') + '">' + keepLabel(it) + '</button>' +
-       (first ? '<span class="dv-hint">Fais défiler' + ICONS.chev + '</span>' : '') + '</div></div>';
+       '</div></div>';
   el.innerHTML = h;
   return el;
 }
@@ -2308,6 +2334,7 @@ function feedStart(){
   feedList.innerHTML = ''; feedList.scrollTop = 0; FD.pool = []; FD.n = 0;
   FD.io = 'IntersectionObserver' in window ? new IntersectionObserver(feedSeen, { root:feedList, threshold:.6 }) : null;
   for (const b of feedChips.children) setOn(b, b.dataset.v === FD.filter);
+  setClass($('feedHint'), 'gone', false);
   feedMore(8);
   if (!FD.io) Array.from(feedList.children).forEach(feedWant);
 }
@@ -2358,8 +2385,109 @@ feedList.addEventListener('click', (e)=>{
   }
 });
 feedChips.addEventListener('click', (e)=>{ const b = e.target.closest('.chip'); if (!b || b.dataset.v === FD.filter) return; FD.filter = b.dataset.v; feedStart(); });
+feedList.addEventListener('scroll', ()=>{ if (feedList.scrollTop > 60) setClass($('feedHint'), 'gone', true); }, { passive:true });
 $('feedClose').addEventListener('click', ()=>feedSheet.set(false));
 $('btnFeed').addEventListener('click', ()=>openFeed());
+
+/* ============================================================
+   Rappels : une notification par jour, envoyée par un Worker Cloudflare (dossier « cloudflare-worker »)
+   L'app s'abonne au push, donne au Worker l'heure choisie, puis le prévient quand la journée est validée
+   pour qu'il n'écrive pas pour rien. Tant que les deux constantes ci-dessous sont vides, la fonction reste éteinte.
+   ============================================================ */
+const PUSH_URL = '';          // ← adresse du Worker, par exemple https://reussite-push.ton-compte.workers.dev
+const PUSH_KEY = '';          // ← clé PUBLIQUE VAPID (jamais la clé privée)
+const PUSH_HOURS = ['07:30', '12:30', '18:30', '20:30'];
+function pushCfg(){ const o = window.REUSSITE_PUSH || {}; return { url:String(o.url || PUSH_URL).replace(/\/+$/, ''), key:String(o.key || PUSH_KEY) }; }   // REUSSITE_PUSH : pour les tests
+if (!S.push || typeof S.push !== 'object') S.push = {};
+S.push = { on:!!S.push.on, hour:PUSH_HOURS.indexOf(S.push.hour) >= 0 ? S.push.hour : '18:30', endpoint:String(S.push.endpoint || ''), sig:String(S.push.sig || ''), at:+S.push.at || 0 };
+const isIOS = ()=>/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isApp = ()=>navigator.standalone === true || !!(window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+/* où en est-on ? unconfigured, unsupported, install (iPhone : à ajouter à l'écran d'accueil), denied, off, on */
+function pushState(){
+  const c = pushCfg();
+  if (!c.url || !c.key) return 'unconfigured';
+  if (isIOS() && !isApp()) return 'install';
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window) || location.protocol === 'file:') return 'unsupported';
+  if (Notification.permission === 'denied') return 'denied';
+  return S.push.on && S.push.endpoint ? 'on' : 'off';
+}
+function lastDoneKey(){ let m = ''; for (const k in D.days) if (D.days[k].done && k > m) m = k; return m; }
+function pushInfo(){ return { hour:S.push.hour, name:D.name, streak:streak(), goal:D.goal, done:lastDoneKey() }; }
+function keyBytes(b64){ const s = atob(b64.replace(/-/g, '+').replace(/_/g, '/')), out = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i); return out; }
+async function pushPost(path, body){
+  const r = await fetch(pushCfg().url + path, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(body), keepalive:true });
+  return r;
+}
+async function pushSubscribe(){
+  const reg = await Promise.race([navigator.serviceWorker.ready, new Promise((_, no)=>setTimeout(()=>no(new Error('sw')), 8000))]);
+  const opts = { userVisibleOnly:true, applicationServerKey:keyBytes(pushCfg().key) };
+  let sub = await reg.pushManager.getSubscription();
+  if (!sub) { try { sub = await reg.pushManager.subscribe(opts); } catch (e) { const old = await reg.pushManager.getSubscription(); if (old) await old.unsubscribe(); sub = await reg.pushManager.subscribe(opts); } }
+  const info = pushInfo(), r = await pushPost('/subscribe', Object.assign({ sub:sub.toJSON() }, info));
+  if (!r.ok) throw new Error('serveur ' + r.status);
+  S.push.on = true; S.push.endpoint = sub.endpoint; S.push.sig = JSON.stringify(info); S.push.at = Date.now(); save();
+}
+async function enablePush(){
+  const st = pushState();
+  if (st === 'unconfigured') { toast('Les rappels ne sont pas encore reliés au serveur.'); return false; }
+  if (st === 'install') { toast('Ajoute d’abord Réussite à l’écran d’accueil, puis ouvre-la depuis son icône.'); return false; }
+  if (st === 'unsupported') { toast('Ce navigateur ne gère pas les notifications.'); return false; }
+  let perm = Notification.permission;
+  if (perm === 'default') perm = await Notification.requestPermission();
+  if (perm !== 'granted') { toast('Notifications refusées. Tu peux les autoriser dans les réglages du téléphone.'); return false; }
+  try { await pushSubscribe(); toast('Rappel activé : chaque jour à ' + S.push.hour.replace(':', ' h ') + '.'); return true; }
+  catch (e) { S.push.on = false; save(); toast(navigator.onLine === false ? 'Pas de connexion : réessaie plus tard.' : 'Le rappel n’a pas pu être activé. Réessaie.'); return false; }
+}
+async function disablePush(){
+  const ep = S.push.endpoint;
+  S.push.on = false; S.push.endpoint = ''; S.push.sig = ''; save();
+  try { const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription(); if (sub) await sub.unsubscribe(); } catch (e) {}
+  try { if (ep) await pushPost('/unsubscribe', { endpoint:ep }); } catch (e) {}
+  toast('Rappel coupé.');
+}
+/* prévient le Worker de l'état du jour ; force = sans attendre (journée validée, heure changée) */
+async function pushPing(force){
+  if (pushState() !== 'on') return;
+  const info = pushInfo(), sig = JSON.stringify(info);
+  if (!force && sig === S.push.sig && Date.now() - S.push.at < 12 * 3600 * 1000) return;
+  try {
+    const r = await pushPost('/ping', Object.assign({ endpoint:S.push.endpoint }, info));
+    if (r.status === 404) { await pushSubscribe(); return; }           // le serveur ne nous connaît plus : on se réabonne
+    if (r.ok) { S.push.sig = sig; S.push.at = Date.now(); save(); }
+  } catch (e) {}
+}
+async function pushTest(){
+  if (pushState() !== 'on') { toast('Active d’abord le rappel.'); return; }
+  try {
+    const r = await pushPost('/test', { endpoint:S.push.endpoint });
+    if (r.ok) toast('Notification de test envoyée. Elle arrive dans quelques secondes.');
+    else if (r.status === 429) toast('Attends quelques secondes avant un nouveau test.');
+    else if (r.status === 404 || r.status === 410) { await pushSubscribe(); toast('Abonnement renouvelé. Relance le test.'); }
+    else toast('Le serveur n’a pas pu envoyer le test (' + r.status + ').');
+  } catch (e) { toast('Serveur injoignable. Vérifie ta connexion.'); }
+}
+const swPush = $('swPush'), pushSeg = $('pushSeg');
+function syncPushUI(){
+  const st = pushState(), on = st === 'on';
+  setChecked(swPush, on);
+  for (const b of pushSeg.querySelectorAll('button')) setOn(b, b.dataset.v === S.push.hour);
+  setHidden($('rowPushHour'), !on); setHidden($('rowPushTest'), !on);
+  const T = { unconfigured:'Pas encore relié au serveur de rappels. Voir le dossier « cloudflare-worker ».', install:'Sur iPhone, ajoute d’abord Réussite à l’écran d’accueil et ouvre-la depuis son icône.',
+    unsupported:'Ce navigateur ne gère pas les notifications.', denied:'Notifications refusées pour Réussite. Autorise-les dans les réglages du téléphone.',
+    off:'Une notification par jour, à l’heure que tu choisis. Rien si ta journée est déjà validée.', on:'Chaque jour à ' + S.push.hour.replace(':', ' h ') + ', sauf si ta journée est déjà validée.' };
+  setText($('pushInfo'), T[st]);
+}
+let pushBusy = false;
+swPush.addEventListener('change', async ()=>{
+  if (pushBusy) { syncPushUI(); return; } pushBusy = true;
+  try { if (swPush.checked) await enablePush(); else await disablePush(); } catch (e) {}
+  pushBusy = false; syncPushUI();
+});
+pushSeg.addEventListener('click', (e)=>{
+  const b = e.target.closest('button'); if (!b || !pushSeg.contains(b) || PUSH_HOURS.indexOf(b.dataset.v) < 0) return;
+  S.push.hour = b.dataset.v; save(); syncPushUI(); pushPing(true);
+});
+$('btnPushTest').addEventListener('click', pushTest);
 
 /* ============================================================
    Réglages
@@ -2383,7 +2511,7 @@ function syncSettingsUI(){
   if (document.activeElement !== nameInp && nameInp.value !== D.name) nameInp.value = D.name;
   setChecked(swGlass, S.glass !== false);
   setChecked(swAuto, S.autoUpdate !== false);
-  setChecked(swPhotos, photosOn()); phInfo();
+  setChecked(swPhotos, photosOn()); phInfo(); syncPushUI();
   setText($('jokInfo'), D.jokers + ' / ' + MAX_JOKERS);
   const tt = totals();
   setText($('dataInfo'), tt.n + ' ' + pl(tt.n, 'réponse', 'réponses') + ', ' + seenCount(ALL) + ' ' + pl(seenCount(ALL), 'carte vue', 'cartes vues') + ', ' + D.sessions + ' ' + pl(D.sessions, 'séance', 'séances') + ', depuis le ' + fmtDay(D.since) + '.');
@@ -2585,6 +2713,7 @@ document.addEventListener('visibilitychange', ()=>{
   if (document.hidden) return;
   if (window.__fit) window.__fit();
   if (!P) render();
+  pushPing();
   if (S.autoUpdate !== false && Date.now() - (S.lastCheck || 0) > 10 * 60 * 1000) checkUpdate({ auto:true });
 });
 
@@ -2613,6 +2742,7 @@ showTab(S.tab, false);
 renderUpdate();
 scheduleAuto();
 if (!D.onboarded) openOnboarding();
+setTimeout(()=>pushPing(), 3000);
 setTimeout(()=>phQueue(PH_ALL), 4000);                               // les photos se cherchent en fond, sans gêner le démarrage
 setInterval(()=>{ if (!document.hidden && !P) render(); }, 60000);   // changement de jour, compte à rebours
 setTimeout(()=>{ if (S.autoUpdate !== false) checkUpdate({ auto:true }); }, 2500);
@@ -2635,7 +2765,8 @@ window.GLASS_KIT_VERSION = '4';
 window.GLASS_KIT_ENABLED = ()=>S.glass !== false;
 
 /* accès pour les tests / le débogage */
-window.Reussite = { openFeed, closeFeed:()=>feedSheet.set(false), feed:()=>FD, photos:()=>PC, phStats, phState:()=>PH.state, phQueue, celebrate, badges:()=>BADGES, closeWin:()=>{ WIN.queue.length = 0; pendingWin = []; winSheet.set(false); }, winQueue:()=>WIN.queue.length,
+window.Reussite = { pushState, pushPing, enablePush, disablePush, pushInfo,
+  openFeed, closeFeed:()=>feedSheet.set(false), feed:()=>FD, photos:()=>PC, phStats, phState:()=>PH.state, phQueue, celebrate, badges:()=>BADGES, closeWin:()=>{ WIN.queue.length = 0; pendingWin = []; winSheet.set(false); }, winQueue:()=>WIN.queue.length,
   version:APP_VERSION, data:()=>D, settings:()=>S, themes:()=>THEMES, all:()=>ALL, streak, totals, level, reconcile, showTab, render, checkUpdate, state:()=>U.state,
   openSettings, closeSettings:()=>settingsSheet.set(false), openFiche, start:startSession, session:()=>P, answer, reveal, grade, next, build:buildSession, setGoal, setExam, setName, setPrio, openOnboarding, ob:()=>OB, obGo,
   closeSession:()=>playSheet.set(false), shift:(days)=>{ NOW_OFF += days * DAY; render(); },
