@@ -615,7 +615,13 @@ html.tab-feed .top{display:none}
 /* cartes cliquables d'une ligne */
 button.card{display:block;width:100%;border:0;text-align:left;font-family:var(--font);color:var(--ink);cursor:pointer;-webkit-appearance:none;appearance:none}
 button.card:active{transform:scale(.985)}
-.linecard{display:flex!important;align-items:center;gap:12px;padding:14px 14px 14px 18px}
+button.card.linecard{display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px}
+button.card[hidden]{display:none!important}
+.linecard .mini-crest{flex:none;width:34px;height:38px;color:var(--accent)}
+.linecard .mini-crest svg{display:block;width:100%;height:100%}
+#hero{cursor:pointer}
+#hero:active{transform:scale(.99)}
+.hero-go{position:absolute;right:14px;top:14px;width:18px;height:18px;color:rgba(255,255,255,.6);z-index:3}
 .linecard .row-l{flex:1;min-width:0;display:flex;flex-direction:column}
 .linecard .row-t,.linecard .row-s,.linecard .big-n,.linecard .sub{display:block}
 .linecard svg.go,.pl-row svg{flex:none;width:18px;height:18px;color:var(--ink3)}
@@ -857,7 +863,8 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
     <p class="kicker" id="todayDate"></p>
     <h1 class="large" id="hello">Aujourd’hui</h1>
 
-    <div class="card hero-card" id="hero">
+    <div class="card hero-card" id="hero" role="button" tabindex="0" aria-label="Voir mes progrès">
+      <svg class="hero-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>
       <div class="hero-top">
         <div class="mark-box" id="markBox">
           <svg class="mark p0" id="mark" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg>
@@ -879,7 +886,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
       <span id="dayPh"></span>
       <span class="day-b"><span class="q-tag">Le repère du jour</span><b id="dayT"></b><span class="day-x" id="dayX"></span><span class="sub" id="feedSub"></span></span>
     </button>
-    <button type="button" class="card linecard" id="clubCard" hidden><span class="row-l"><span class="row-t" id="clubCardT"></span><span class="row-s" id="clubCardS"></span></span><svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+    <button type="button" class="card linecard" id="clubCard"><span class="mini-crest" aria-hidden="true"><svg viewBox="0 0 64 72" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"><path d="M32 4 7 12.5V34c0 16 10 27.5 25 34 15-6.5 25-18 25-34V12.5L32 4Z"/><circle cx="32" cy="34" r="9" fill="currentColor" stroke="none"/></svg></span><span class="row-l"><span class="row-t" id="clubCardT"></span><span class="row-s" id="clubCardS"></span></span><svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
     <div class="duo">
       <button type="button" class="tile" id="btnFlash">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10.5 21 19 10h-6.2L13 3Z"/></svg>
@@ -1326,12 +1333,18 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 (function(){
 'use strict';
 
-const APP_VERSION = '1.1.0';          // ← à changer à chaque version (et VERSION dans sw.js)
+const APP_VERSION = '1.1.1';          // ← à changer à chaque version (et VERSION dans sw.js)
 const SETTINGS_KEY = 'reussite.settings', DATA_KEY = 'reussite.data';
 const OLD_SETTINGS_KEY = 'revision.settings', OLD_DATA_KEY = 'revision.data';   // nom provisoire de la v0.1.0 : relu une fois, jamais réécrit
 
 /* ---------- nouveautés (la plus récente en premier) ---------- */
 const CHANGELOG = [
+  { v:'1.1.1', date:'18 novembre 2026', items:[
+    'Menu : depuis Progrès, toucher Aujourd’hui ramène bien à l’accueil.',
+    'Accueil : toucher le bloc de la série ouvre Progrès.',
+    'Accueil : le résumé du Club est toujours rempli (points à dépenser, prochain match), ou t’invite à fonder ton club.',
+    'Photos : la recherche est relancée à chaque mise à jour pour les cartes restées sans image.'
+  ] },
   { v:'1.1.0', date:'18 novembre 2026', items:[
     'Réglages réparés : les lignes Thème, Majeure, Objectif et Heure du rappel ne se chevauchent plus.',
     'Menu réordonné : Aujourd’hui, Réviser, Découvrir, Club. Progrès a maintenant sa propre bulle, à droite.',
@@ -2134,6 +2147,13 @@ TABS.forEach((t, i)=>{
   b.innerHTML = t.icon + '<span>' + t.label + '</span>';
   tabbar.appendChild(b); tabBtns.push(b);
 });
+/* avec le verre, aucun onglet n'est sélectionné sur Progrès, mais le kit croit que le premier l'est et ignore le toucher : on le rattrape ici */
+$('tabwrap').addEventListener('click', (e)=>{
+  if (TABS[S.tab].id !== 'progress') return;
+  const t = e.target.closest('[role=tab]'); if (!t || !$('tabwrap').contains(t)) return;
+  const i = Array.from(t.parentNode.children).filter(x=>x.getAttribute('role') === 'tab').indexOf(t);
+  if (i >= 0 && i < TABS.length - 1) showTab(i);
+}, true);
 $('tabProg').addEventListener('click', ()=>{ if (TABS[S.tab].id === 'progress') window.scrollTo({ top:0, behavior:'smooth' }); else showTab('progress'); });
 function showTab(i, persist){
   if (typeof i === 'string') i = Math.max(0, TABS.findIndex(t=>t.id === i));
@@ -2223,9 +2243,12 @@ function renderToday(){
   const di = dayItem();
   if (di){ setHTML($('dayPh'), ph(PHOTOS[di.id], 'cover')); setText($('dayT'), di.th.r[di.ix][0]); setText($('dayX'), di.th.r[di.ix][1]); hydrate($('btnFeed')); }
   /* le club : un match à jouer ? */
-  const cl = D.club, show = !!cl.phi && cl.tickets > 0;
-  setHidden($('clubCard'), !show);
-  if (show){ setText($('clubCardT'), 'Un match t’attend'); setText($('clubCardS'), cl.name + ' contre ' + rival().n); }
+  const cl = D.club, bud = D.xp + cl.bank - cl.spent;
+  if (!cl.phi){ setText($('clubCardT'), 'Fonde ton club'); setText($('clubCardS'), bud > 0 ? fmtInt(bud) + ' ' + pl(bud, 'point t’attend', 'points t’attendent') + ' pour bâtir ton équipe' : 'Tes points de révision financeront ton équipe'); }
+  else {
+    setText($('clubCardT'), cl.tickets > 0 ? 'Un match t’attend' : cl.name);
+    setText($('clubCardS'), (cl.tickets > 0 ? cl.name + ' contre ' + rival().n : 'Valide ta journée pour jouer contre ' + rival().n) + ', ' + fmtInt(bud) + ' ' + pl(bud, 'point', 'points') + ' à dépenser');
+  }
   setHidden($('reviewCard'), rv2 === 0);
   setText($('reviewN'), rv2);
   setText($('reviewL'), pl(rv2, 'question à revoir', 'questions à revoir'));
@@ -3160,6 +3183,8 @@ $('btnExamClose').addEventListener('click', ()=>examSheet.set(false));
 $('examCard').addEventListener('click', openExam);
 $('btnExamRow').addEventListener('click', openExam);
 $('clubCard').addEventListener('click', ()=>showTab('club'));
+$('hero').addEventListener('click', ()=>showTab('progress'));
+$('hero').addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showTab('progress'); } });
 
 /* ============================================================
    Réglages
@@ -3416,6 +3441,10 @@ renderUpdate();
 scheduleAuto();
 if (!D.onboarded) openOnboarding();
 setTimeout(()=>pushPing(), 3000);
+if (S.phVer !== APP_VERSION){                                       // nouvelle version : on retente les cartes restées sans image
+  for (const q in PC) if (!PC[q][0]) delete PC[q];
+  S.phVer = APP_VERSION; save(); phSave();
+}
 setTimeout(()=>phQueue(PH_ALL), 4000);                               // les photos se cherchent en fond, sans gêner le démarrage
 setInterval(()=>{ if (!document.hidden && !P) render(); }, 60000);   // changement de jour, compte à rebours
 setTimeout(()=>{ if (S.autoUpdate !== false) checkUpdate({ auto:true }); }, 2500);
