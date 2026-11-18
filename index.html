@@ -503,26 +503,27 @@ html[data-theme="dark"] .feed{background:radial-gradient(125% 85% at 100% 66%,#8
 html.tab-feed .top{display:none}
 .feed-list{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
 .feed-list::-webkit-scrollbar{display:none}
-.feed-top{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(var(--safe-t) + var(--top-x)) 14px 0;pointer-events:none}
+.feed-top{position:absolute;left:0;right:0;top:0;z-index:3;padding:calc(var(--safe-t) + var(--top-x) + 2px) 18px 12px;background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(1.7);backdrop-filter:blur(26px) saturate(1.7);box-shadow:0 .5px 0 var(--hair)}
+.feed-h{margin:0 0 10px}
 .feed-top>*{pointer-events:auto}
-.feed-chips{flex:1;min-width:0;flex-wrap:nowrap;justify-content:center;gap:6px}
-.feed-chips .chip{height:36px;padding:0 12px;font-size:14px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6)}
+.feed-chips{flex-wrap:nowrap;justify-content:flex-start;gap:6px}
+.feed-chips .chip{height:34px;padding:0 13px;font-size:14px}
 .feed-chips .chip.on{background:var(--accent)}
 .dv-card{position:relative;height:100%;display:flex;flex-direction:column;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
-.dv-img{position:relative;flex:0 0 46%;overflow:hidden;background:var(--grad-icon);
+.dv-img{position:relative;flex:0 0 52%;overflow:hidden;background:var(--grad-icon);
   -webkit-mask-image:linear-gradient(180deg,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 78%,transparent 100%)}
 .dv-ph{position:absolute;inset:0;display:grid;place-items:center}
 .dv-ph .mark{width:120px;height:120px;opacity:.55}
-.dv-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 28%;opacity:0;transition:opacity .5s ease}
+.dv-img img{position:absolute;left:0;right:0;bottom:0;top:calc(var(--safe-t) + 96px);width:100%;height:calc(100% - var(--safe-t) - 96px);object-fit:cover;object-position:50% 28%;opacity:0;transition:opacity .5s ease}
 .dv-card.ok .dv-img img{opacity:1}
 .dv-credit{position:absolute;right:12px;bottom:34px;padding:5px 9px;border-radius:10px;background:rgba(20,8,26,.5);color:rgba(255,255,255,.9);font-size:11.5px;font-weight:500;text-decoration:none;
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .dv-card.txt .dv-img{display:none}
-.dv-deco{position:absolute;right:-70px;top:calc(var(--safe-t) + 70px);width:270px;height:270px;border-radius:50%;pointer-events:none;opacity:.9;
+.dv-deco{position:absolute;right:-70px;top:calc(var(--safe-t) + 130px);width:270px;height:270px;border-radius:50%;pointer-events:none;opacity:.9;
   -webkit-mask-image:linear-gradient(200deg,#000,transparent 75%);mask-image:linear-gradient(200deg,#000,transparent 75%)}
 .dv-deco .mk{fill:color-mix(in srgb,var(--dc) 12%,transparent);stroke:color-mix(in srgb,var(--dc) 38%,transparent)}
 .dv-body{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;padding:6px 22px calc(max(8px, var(--safe-b) - 6px) + 78px)}
-.dv-card.txt .dv-body{padding-top:calc(var(--safe-t) + var(--top-x) + 64px);justify-content:center}
+.dv-card.txt .dv-body{padding-top:calc(var(--safe-t) + var(--top-x) + 118px);justify-content:center}
 .dv-body h3{margin:10px 0 0;font-size:30px;font-weight:600;letter-spacing:-.025em;line-height:1.12;color:var(--dc)}
 .dv-body h3.qst{font-size:23px;line-height:1.22;letter-spacing:-.015em;color:var(--ink)}
 .dv-card.txt .dv-body h3{font-size:34px}
@@ -640,12 +641,12 @@ button.card:active{transform:scale(.985)}
 .cb b{font-size:11.5px;font-weight:600;margin-bottom:3px;color:var(--ink2);font-variant-numeric:tabular-nums}
 .cb-goal{position:absolute;left:0;right:0;height:0;border-top:1.5px dashed var(--ink3);margin-bottom:20px;pointer-events:none}
 .cb-goal span{position:absolute;right:0;top:-17px;font-size:10.5px;color:var(--ink2)}
-.stack{display:flex;gap:3px;height:16px;border-radius:8px;overflow:hidden}
-.stack i{display:block;min-width:4px}
+.stk{display:flex;gap:3px;height:16px;border-radius:8px;overflow:hidden}
+.stk i{display:block;min-width:4px}
 .k4{background:var(--ok)} .k2{background:var(--accent)} .k0{background:var(--danger)} .kn{background:var(--fill)}
-.stack-key{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;margin-top:13px;font-size:13.5px;color:var(--ink2)}
-.stack-key span{display:flex;align-items:center;gap:7px}
-.stack-key i{width:11px;height:11px;border-radius:4px;flex:none}
+.stk-key{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;margin-top:13px;font-size:13.5px;color:var(--ink2)}
+.stk-key span{display:flex;align-items:center;gap:7px}
+.stk-key i{width:11px;height:11px;border-radius:4px;flex:none}
 .row-v.acc{font-weight:600;color:var(--dc);font-variant-numeric:tabular-nums}
 
 /* ---------- le Club ---------- */
@@ -709,6 +710,61 @@ button.card:active{transform:scale(.985)}
 .mt-line{margin:0 0 6px;font-size:14.5px;line-height:1.4;color:var(--ink2)}
 .mt-line.strong{color:var(--accent);font-weight:600;margin-bottom:12px}
 .match .opts{margin-top:14px}
+
+/* ---------- menu flottant : la bulle Progrès, à part ---------- */
+.tab-bub{flex:none;width:62px!important;height:62px;border-radius:31px;padding:0;color:var(--ink);background:var(--glass);
+  -webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);box-shadow:inset 0 0 0 1px var(--glass-line),0 10px 30px rgba(40,20,50,.16)}
+.tab-bub svg{width:27px;height:27px}
+.tab-bub.on{color:var(--accent);background:var(--card-strong)}
+html[data-dg] .tab-bub.on{color:var(--accent)}
+/* sur Progrès, plus rien n'est sélectionné dans le menu : la lentille de verre s'efface */
+html.tab-progress .tabbar-wrap .dg-seg .lg-track__lens,html.tab-progress .tabbar-wrap .dg-seg .lg-track__select{opacity:0!important}
+html.tab-progress .tabbar-wrap .dg-seg [aria-selected="true"] .dg-svg{color:var(--ink)}
+
+/* ============================================================
+   Le Club : sa propre identité, bleu de maillot et blanc, plus sportive
+   Elle s'applique à tout l'écran tant que l'onglet Club est ouvert (page, recrutement, match).
+   ============================================================ */
+html.tab-club{
+  --accent:#1f4fd6; --on-accent:#fff; --sel:rgba(31,79,214,.11); --fill:rgba(60,84,140,.13);
+  --grad-icon:linear-gradient(162deg,#071436 0%,#0d2466 38%,#1f4fd6 78%,#5c8dff 100%);
+  --grad-h:linear-gradient(90deg,#1f4fd6,#7aa5ff); --grad-flame:linear-gradient(160deg,#9bbcff,#2f62e8 55%,#11308a);
+  --bg-a:#dce6fb; --bg-b:#ebf1fd; --bg-c:#f3f6fd; --sheet-bg:#eef3fc;
+  --ink:#0b1838; --ink2:rgba(11,24,56,.64); --ink3:rgba(11,24,56,.4); --hair:rgba(11,24,56,.1); --shadow:0 10px 30px rgba(13,36,102,.11);
+  --gold:#c9972b;
+}
+html.tab-club[data-theme="dark"]{
+  --accent:#8fb2ff; --on-accent:#071436; --sel:rgba(143,178,255,.2); --fill:rgba(255,255,255,.1);
+  --grad-h:linear-gradient(90deg,#5c8dff,#b9d0ff);
+  --bg-a:#071230; --bg-b:#071230; --bg-c:#071230; --sheet-bg:#0c1a40;
+  --ink:#f0f4ff; --ink2:rgba(240,244,255,.66); --ink3:rgba(240,244,255,.38); --hair:rgba(255,255,255,.1); --glass:rgba(16,32,80,.6);
+  --gold:#f2c761;
+}
+html.tab-club[data-theme="dark"] .bg{background:linear-gradient(180deg,rgba(7,18,48,0) 68%,#071230 100%),radial-gradient(125% 85% at 100% 66%,#1f4fd6 0%,#0f2466 44%,#071230 100%)}
+html.tab-club[data-theme="dark"] .play{background:radial-gradient(125% 85% at 100% 66%,#1f4fd6 0%,#0f2466 44%,#071230 100%)}
+html.tab-club .hero-card{box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 14px 34px rgba(13,36,102,.3)}
+html.tab-club #page-club .kicker{text-transform:uppercase;letter-spacing:.07em;font-size:12px;font-weight:600;color:var(--accent)}
+/* le maillot : de fines bandes en biais sur les blocs sombres */
+.club-hero::before,.mt-board::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:repeating-linear-gradient(115deg,rgba(255,255,255,.055) 0 16px,rgba(255,255,255,0) 16px 34px)}
+.club-hero>*,.mt-board>*{position:relative}
+.mt-board{position:relative;overflow:hidden}
+.crest{width:66px;height:74px;flex:none;filter:drop-shadow(0 8px 16px rgba(4,12,40,.35))}
+.crest svg{display:block;width:100%;height:100%}
+.club-n{font-size:15px;font-weight:600;letter-spacing:.01em;color:rgba(255,255,255,.9);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.club-b{min-width:0;flex:1}
+.club-b .big-n{font-size:42px;font-weight:600;letter-spacing:-.035em}
+.club-stats div{border-radius:12px;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.club-stats b{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.club-stats span,.mt-cmp span{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+.mt-cmp b{font-weight:700}
+.mt-score{font-weight:700;font-size:32px;font-variant-numeric:tabular-nums}
+.mt-team{text-transform:uppercase;letter-spacing:.05em;font-size:11.5px;font-weight:700}
+.mt-min{text-transform:uppercase;letter-spacing:.08em;font-size:11.5px}
+html.tab-club .pl-row .th-p,html.tab-club .q-tag{text-transform:uppercase;letter-spacing:.07em;font-size:11px}
+html.tab-club .row-v.res.W{color:var(--ok)}
+html.tab-club #trophies .row-t{color:var(--gold)}
+html.tab-club .dots i.on{background:var(--accent)}
 
 /* ---------- parcours d'accueil (toujours dans les couleurs de l'icône) ---------- */
 .ob{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;color:#fff;
@@ -917,7 +973,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
   <!-- ======================= Club ======================= -->
   <section class="page" id="page-club" role="tabpanel" aria-label="Club" hidden>
     <p class="kicker" id="clubKicker"></p>
-    <h1 class="large" id="clubTitle">Le Club</h1>
+    <h1 class="large" id="clubTitle">Club</h1>
     <div id="clubNew">
       <div class="card" style="margin-top:0">
         <p class="quote small">Chaque point gagné en révisant finance ton club : un effectif de personnages du programme, un stade à agrandir, et une saison de huit matchs. Les points ne suffisent pas pour tout : il faudra choisir.</p>
@@ -930,7 +986,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
     </div>
     <div id="clubMain" hidden>
       <div class="card hero-card club-hero" style="margin-top:0">
-        <div class="club-top"><div class="crest"><svg class="mark p4" viewBox="-106 -108 212 212" aria-hidden="true"><use href="#pentA" class="mk m1"/><use href="#pentA" class="mk m2" transform="rotate(-20) scale(.79)"/><use href="#pentA" class="mk m3" transform="rotate(13) scale(.6)"/><use href="#pentB" class="mk m4" transform="rotate(-8) scale(.43)"/></svg></div><div class="club-b"><div class="big-n num" id="clubBudget">0</div><div class="hero-g">points à dépenser</div></div></div>
+        <div class="club-top"><div class="crest" id="crest"></div><div class="club-b"><div class="club-n" id="clubNameH"></div><div class="big-n num" id="clubBudget">0</div><div class="hero-g">points à dépenser</div></div></div>
         <div class="club-stats" id="clubStats"></div>
         <p class="cheer" id="clubSeason"></p>
       </div>
@@ -954,6 +1010,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 <nav class="tabbar-wrap" id="tabwrap" aria-label="Navigation principale">
   <div class="tab-row">
     <div class="seg tabbar" id="tabbar" data-glass-full aria-label="Sections"></div>
+    <button class="btn ib tab-bub" id="tabProg" data-glass-icon aria-label="Progrès"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9"/></svg></button>
   </div>
 </nav>
 
@@ -965,6 +1022,7 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
   <div class="feed-list" id="feedList"></div>
   <div class="feed-hint" id="feedHint" aria-hidden="true"><svg viewBox="0 0 22 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path class="h-c" d="m7 8.5 4-4 4 4"/><rect x="4.5" y="13" width="13" height="24" rx="6.5"/><circle class="h-d" cx="11" cy="30" r="1.9" fill="currentColor" stroke="none"/></svg></div>
   <div class="feed-top">
+    <h1 class="large feed-h">Découvrir</h1>
     <div class="chips feed-chips" id="feedChips" role="group" aria-label="Discipline">
       <button type="button" class="chip" data-v="a">Tout</button><button type="button" class="chip" data-v="l">Lettres</button><button type="button" class="chip" data-v="h">Histoire</button><button type="button" class="chip" data-v="g">Géo</button>
     </div>
@@ -1268,12 +1326,18 @@ html.ob-on,html.ob-on body{background:#b866c0!important}
 (function(){
 'use strict';
 
-const APP_VERSION = '1.0.0';          // ← à changer à chaque version (et VERSION dans sw.js)
+const APP_VERSION = '1.1.0';          // ← à changer à chaque version (et VERSION dans sw.js)
 const SETTINGS_KEY = 'reussite.settings', DATA_KEY = 'reussite.data';
 const OLD_SETTINGS_KEY = 'revision.settings', OLD_DATA_KEY = 'revision.data';   // nom provisoire de la v0.1.0 : relu une fois, jamais réécrit
 
 /* ---------- nouveautés (la plus récente en premier) ---------- */
 const CHANGELOG = [
+  { v:'1.1.0', date:'18 novembre 2026', items:[
+    'Réglages réparés : les lignes Thème, Majeure, Objectif et Heure du rappel ne se chevauchent plus.',
+    'Menu réordonné : Aujourd’hui, Réviser, Découvrir, Club. Progrès a maintenant sa propre bulle, à droite.',
+    'Chaque page affiche son titre, y compris Découvrir.',
+    'Le Club a sa propre identité, bleue et plus sportive : écusson aux initiales du club, bandes de maillot, tableau d’affichage.'
+  ] },
   { v:'1.0.0', date:'18 novembre 2026', items:[
     'Le Club : tes points financent un club de football. Six postes à pourvoir parmi des personnages du programme, un stade en six chantiers, une saison de huit matchs.',
     'Les matchs : chaque journée validée donne un match. Tu choisis ton plan de jeu, puis trois questions décident des occasions.',
@@ -1850,8 +1914,8 @@ const ICONS = {
 /* ---------- onglets ---------- */
 const TABS = [
   { id:'today',    label:'Aujourd’hui', icon:ICONS.mark },
-  { id:'feed',     label:'Découvrir',   icon:ICONS.cards },
   { id:'study',    label:'Réviser',     icon:ICONS.book },
+  { id:'feed',     label:'Découvrir',   icon:ICONS.cards },
   { id:'club',     label:'Club',        icon:ICONS.shield },
   { id:'progress', label:'Progrès',     icon:ICONS.chart }
 ];
@@ -2055,7 +2119,7 @@ function applyTheme(){
   const v = dark ? 'dark' : 'light', root = document.documentElement;
   if (root.getAttribute('data-theme') !== v) root.setAttribute('data-theme', v);
   const m = document.querySelector('meta[name=theme-color]');
-  if (m) m.setAttribute('content', dark ? '#2a1233' : '#e7d5ed');
+  if (m) m.setAttribute('content', document.documentElement.classList.contains('tab-club') ? (dark ? '#071230' : '#dce6fb') : (dark ? '#2a1233' : '#e7d5ed'));
 }
 if (mq) (mq.addEventListener ? mq.addEventListener('change', ()=>{ if (S.theme === 'auto') applyTheme(); })
                               : mq.addListener(()=>{ if (S.theme === 'auto') applyTheme(); }));
@@ -2064,11 +2128,13 @@ if (mq) (mq.addEventListener ? mq.addEventListener('change', ()=>{ if (S.theme =
 const scroller = $('scroll'), top = $('top'), topTitle = $('topTitle'), tabbar = $('tabbar');
 const tabBtns = [], pages = TABS.map(t=>(t.id === 'feed' ? $('feed') : $('page-' + t.id)));
 TABS.forEach((t, i)=>{
+  if (t.id === 'progress') { const b = $('tabProg'); b.dataset.i = i; tabBtns.push(b); return; }   // Progrès : une bulle à part, à droite du menu
   const b = document.createElement('button');
   b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', t.label);
   b.innerHTML = t.icon + '<span>' + t.label + '</span>';
   tabbar.appendChild(b); tabBtns.push(b);
 });
+$('tabProg').addEventListener('click', ()=>{ if (TABS[S.tab].id === 'progress') window.scrollTo({ top:0, behavior:'smooth' }); else showTab('progress'); });
 function showTab(i, persist){
   if (typeof i === 'string') i = Math.max(0, TABS.findIndex(t=>t.id === i));
   i = clamp(i | 0, 0, TABS.length - 1);
@@ -2076,7 +2142,7 @@ function showTab(i, persist){
   setText(topTitle, TABS[i].label);
   window.scrollTo(0, 0);
   S.tab = i; if (persist !== false) save();
-  setClass(document.documentElement, 'tab-feed', TABS[i].id === 'feed'); setClass($('feed'), 'open', TABS[i].id === 'feed');
+  setClass(document.documentElement, 'tab-feed', TABS[i].id === 'feed'); setClass(document.documentElement, 'tab-club', TABS[i].id === 'club'); setClass(document.documentElement, 'tab-progress', TABS[i].id === 'progress'); applyTheme(); setClass($('feed'), 'open', TABS[i].id === 'feed');
   if (TABS[i].id === 'feed' && !feedList.children.length) feedStart();
   render();
 }
@@ -2121,9 +2187,10 @@ function cheerText(st, td){
 }
 function renderToday(){
   const t = now(), td = today(), st = streak(), tk = dayKey(t);
-  setText($('todayDate'), cap(fmtDay(t, { weekday:'long', day:'numeric', month:'long' })));
+  const dateL = fmtDay(t, { weekday:'long', day:'numeric', month:'long' });
   const hr = new Date(t).getHours(), hi = hr >= 18 || hr < 5 ? 'Bonsoir' : 'Bonjour';
-  setText($('hello'), D.name ? hi + ' ' + D.name : 'Aujourd’hui');
+  setText($('todayDate'), D.name ? hi + ' ' + D.name + ', ' + dateL : cap(dateL));
+  setText($('hello'), 'Aujourd’hui');
   const sn = $('streakN');
   if (sn.textContent !== String(st)) { const first = sn._init; setText(sn, st); if (first) pop(sn, 'tick'); }
   sn._init = true;
@@ -2838,7 +2905,7 @@ function renderStats(){
   /* où en sont les cartes */
   let b0 = 0, mid = 0, top = 0; ALL.forEach(it=>{ const s = D.items[it.id]; if (!s) return; if (s.b === 0) b0++; else if (s.b <= 3) mid++; else top++; });
   const nw = ALL.length - b0 - mid - top, seg = (n, c)=>n ? '<i class="' + c + '" style="flex:' + n + '"></i>' : '';
-  setHTML($('boxes'), '<div class="stack">' + seg(top, 'k4') + seg(mid, 'k2') + seg(b0, 'k0') + seg(nw, 'kn') + '</div><div class="stack-key">' +
+  setHTML($('boxes'), '<div class="stk">' + seg(top, 'k4') + seg(mid, 'k2') + seg(b0, 'k0') + seg(nw, 'kn') + '</div><div class="stk-key">' +
     '<span><i class="k4"></i>' + top + ' ' + pl(top, 'acquise', 'acquises') + '</span><span><i class="k2"></i>' + mid + ' en cours</span><span><i class="k0"></i>' + b0 + ' à revoir</span><span><i class="kn"></i>' + nw + ' ' + pl(nw, 'nouvelle', 'nouvelles') + '</span></div>');
   /* ce qui arrive dans les sept jours */
   const due = [0, 0, 0, 0, 0, 0, 0]; let dmax = 1;
@@ -2921,7 +2988,14 @@ function renderClub(){
   const c = C(), founded = !!c.phi;
   setHidden($('clubNew'), founded); setHidden($('clubMain'), !founded);
   setText($('clubKicker'), founded ? 'Saison ' + c.season + ', ' + PHILO.find(x=>x.id === c.phi).t.toLowerCase() : 'Tes points servent à bâtir une équipe');
-  setText($('clubTitle'), founded ? c.name : 'Le Club');
+  setText($('clubTitle'), 'Club');
+  if (founded){
+    const ini = c.name.split(/[\s-]+/).filter(Boolean).map(w=>w[0]).join('').slice(0, 3).toUpperCase() || 'FC';
+    setText($('clubNameH'), c.name);
+    setHTML($('crest'), '<svg viewBox="0 0 64 72" role="img" aria-label="Écusson du club"><path d="M32 3 6 11.5V34c0 16.5 10.5 28.5 26 35 15.500-6.500 26-18.500 26-35V11.5L32 3Z" fill="rgba(255,255,255,.14)" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>'.replace(/(\.5)00/g, '$1') +
+      '<path d="M12 18.500 32 12l20 6.500" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round"/>'.replace(/(\.5)00/g, '$1') +
+      '<text x="32" y="' + (ini.length > 2 ? 45 : 47) + '" text-anchor="middle" font-family="inherit" font-weight="700" font-size="' + (ini.length > 2 ? 17 : 22) + '" letter-spacing=".5" fill="#fff">' + esc(ini) + '</text></svg>');
+  }
   if (!founded){
     setHTML($('clubPhi'), PHILO.map(x=>'<button type="button" class="pick' + (phiPick === x.id ? ' on' : '') + '" data-v="' + x.id + '"><b>' + x.t + '</b><span>' + x.s + '</span><em>' + fmtBonus(x.b) + '</em></button>').join(''));
     return;
