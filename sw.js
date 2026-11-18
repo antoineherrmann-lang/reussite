@@ -2,13 +2,13 @@
    Stratégie : réseau d'abord (on voit toujours la dernière version), cache en repli (hors ligne).
    Les requêtes de vérification de mise à jour (?_=…) ne sont jamais mises en cache.
    À CHAQUE NOUVELLE VERSION : changer VERSION ici ET APP_VERSION dans index.html. */
-const VERSION = '0.5.0';
+const VERSION = '1.0.0';
 const CACHE = 'reussite-' + VERSION;
 const FONTS = 'reussite-fonts';
 const IMG = 'reussite-img';      // photos de Découvrir (Wikimedia), gardées d'une version à l'autre
-const IMG_MAX = 220;
+const IMG_MAX = 320;
 const PRECACHE = ['./', 'index.html', 'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
-  'icon-maskable-512.png', 'glass-kit.js', 'glass-kit-loader.js'];
+  'icon-maskable-512.png', 'glass-kit.js', 'glass-kit-loader.js', 'config.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE)
